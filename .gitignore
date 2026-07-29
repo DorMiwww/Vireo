@@ -1,0 +1,17 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE / editors
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo
+
+# Gradle build & cache outputs
+.gradle/
+build/
+**/build/
+bin/
+out/
