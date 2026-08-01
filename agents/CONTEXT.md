@@ -7,10 +7,8 @@ This file captures the live state of the project: what is decided, what is in pr
 
 ## Current Phase
 
-## Current Phase
-
-**Phase 3 — Language Features `[in progress]`**
-Completed `vireo-lexer` audit & extension (`Task 3-A`), `vireo-parser` `var` declarations (`Task 3-B`), `vireo-parser` `fun` declarations (`Task 3-C`), and `vireo-parser` conditionals (`Task 3-D`). AST nodes (`VarDeclaration`, `FunDeclaration`, `Parameter`, `ConditionalExpr`) added to `vireo-core` and `AstVisitor<T>`, `JsonRenderer`, `HtmlRenderer`, and `Analyzer` updated. Next is Task 3-E (Expression Evaluator).
+**Phase 3 — Language Features `[completed]`**
+Completed `vireo-lexer` extension (`Task 3-A`), `vireo-parser` `var` declarations (`Task 3-B`), `vireo-parser` `fun` declarations (`Task 3-C`), `vireo-parser` conditionals (`Task 3-D`), expression evaluator `ExprEvaluator` (`Task 3-E`), and End-to-End tests for Examples 5 & 6 (`Task 3-F`). Next is Phase 4 — Figma Renderer.
 
 ---
 
@@ -45,7 +43,8 @@ Completed `vireo-lexer` audit & extension (`Task 3-A`), `vireo-parser` `var` dec
 | Var Declarations (3-B) | Added `VarDeclaration` AST node in `vireo-core` and top-level `var` parsing in `vireo-parser` with unit tests | 2026-08-01 |
 | Fun Declarations (3-C) | Added `Parameter` and `FunDeclaration` AST nodes in `vireo-core` and top-level `fun` parsing in `vireo-parser` with unit tests | 2026-08-01 |
 | Conditionals Parsing (3-D) | Added `PropertyValue.ConditionalExpr` AST node in `vireo-core` and `if ... then ... else` conditional parsing in `vireo-parser` with unit tests | 2026-08-01 |
-| Visitor & Renderer Exhaustiveness | Extended `AstVisitor<T>` with `visitVarDeclaration` and `visitFunDeclaration`, and updated `JsonRenderer`, `HtmlRenderer`, and `Analyzer` | 2026-08-01 |
+| Expression Evaluator (3-E) | Implemented `ExprEvaluator` in `vireo-analysis` for variable substitution, arithmetic, function calls, relational offset evaluation, conditionals, and string interpolation, with full unit test coverage | 2026-08-01 |
+| End-to-End Tests (3-F) | Added CLI end-to-end integration tests for Example 5 (Variables) and Example 6 (Relational Constraints) rendering to JSON & HTML | 2026-08-01 |
 
 ---
 
@@ -59,24 +58,20 @@ Completed `vireo-lexer` audit & extension (`Task 3-A`), `vireo-parser` `var` dec
 
 ## What Was Done Last Session
 
-- **Task 3-A (vireo-lexer audit & extension)**:
-  - Added `DOUBLE_EQUALS` (`==`) token type in `Token.kt` and scanner support in `Lexer.kt`.
-  - Added unit test cases in `LexerTest.kt` verifying `var`, `fun`, and conditional statements with `==`.
-- **Task 3-B (vireo-parser var declarations)**:
-  - Defined `VarDeclaration` AST node in `vireo-core` with mandatory `SourceLocation`.
-  - Updated `VireoFile` to hold top-level `vars: List<VarDeclaration>`.
-  - Implemented top-level `var` declaration parsing in `Parser.kt` and added unit tests in `ParserTest.kt`.
-- **Task 3-C (vireo-parser fun declarations)**:
-  - Defined `Parameter` and `FunDeclaration` AST nodes in `vireo-core` with mandatory `SourceLocation`.
-  - Updated `VireoFile` to hold top-level `functions: List<FunDeclaration>`.
-  - Implemented top-level `fun` declaration parsing (`fun <name>(<param>: <type>, ...): <retType> { [return] <expr> }`) in `Parser.kt` and added unit tests in `ParserTest.kt`.
-- **Task 3-D (vireo-parser conditionals)**:
-  - Extended `PropertyValue` sealed class with `PropertyValue.ConditionalExpr(condition, thenBranch, elseBranch, location)`.
-  - Implemented conditional expression parsing (`if ... then ... else ...`) in `Parser.kt` and added unit tests in `ParserTest.kt`.
-- **AstVisitor<T> & Renderers Exhaustiveness**:
-  - Updated `AstVisitor<T>` with `visitVarDeclaration` and `visitFunDeclaration`.
-  - Updated `JsonRenderer` to serialize `vars`, `functions`, and `ConditionalExpr`.
-  - Updated `HtmlRenderer` and `Analyzer` for the new AST nodes.
+- **Task 3-E (Implement Expression Evaluator)**:
+  - Created `ExprEvaluator` in `vireo-analysis/src/main/kotlin/com/vireo/analysis/ExprEvaluator.kt`.
+  - Implemented expression parsing and evaluation for:
+    - Variable substitution (`$primaryColor` -> `#3B82F6`)
+    - Arithmetic operations (`+`, `-`, `*`, `/`, `%`, parentheses `()`)
+    - Function invocations (`fun spacing(n: Int): Int { return 8 * n }`, `spacing(2)`)
+    - Relational constraints (`50%parent` preserved, `parent.x + spacing(2)` evaluated offset to `parent.x + 16`)
+    - Conditional expressions (`if $variant == "primary" then #3B82F6 else #6B7280`)
+    - String interpolation (`"Hello $name"`, `"Padding is ${spacing(2)}px"`)
+  - Integrated `ExprEvaluator` into `Analyzer.analyze(...)` so that `ResolvedFile` AST holds fully resolved values where possible.
+  - Added unit test suite in `ExprEvaluatorTest.kt` covering all evaluation scenarios and error conditions.
+- **Task 3-F (End-to-End Tests for Examples 5 & 6)**:
+  - Added end-to-end CLI integration tests in `EndToEndTest.kt` for **Example 5 (Variables)** and **Example 6 (Relational Constraints)**.
+  - Verified JSON rendering, HTML rendering, and `vireo check` command behavior via CLI.
 - **Verification**:
   - Ran `./gradlew test` across all modules — 100% of tests passed cleanly.
 
@@ -84,7 +79,7 @@ Completed `vireo-lexer` audit & extension (`Task 3-A`), `vireo-parser` `var` dec
 
 ## What Is Next
 
-1. Task 3-E: Implement expression evaluator — arithmetic, string interpolation, basic conditionals (`ExprEvaluator` in `vireo-analysis`)
+1. Phase 4 — Figma Renderer: decide transport (Figma REST API vs Plugin) and implement `vireo-renderer-figma`.
 
 ---
 

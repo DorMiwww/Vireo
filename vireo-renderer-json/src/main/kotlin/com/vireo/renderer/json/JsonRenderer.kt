@@ -1,141 +1,104 @@
 package com.vireo.renderer.json
 
 import com.vireo.core.*
+import kotlinx.serialization.json.*
 
 object JsonRenderer : Renderer<String> {
 
-    override fun render(file: ResolvedFile): VireoResult<String> {
-        return render(file.file)
+    private val json = Json {
+        prettyPrint = true
+        prettyPrintIndent = "  "
     }
+
+    override fun render(file: ResolvedFile): VireoResult<String> = render(file.file)
 
     fun render(file: VireoFile): VireoResult<String> {
         return try {
-            val json = buildString {
-                append("{\n")
-                if (file.imports.isNotEmpty()) {
-                    append("  \"imports\": [\n")
-                    file.imports.forEachIndexed { index, imp ->
-                        append("    {\n")
-                        append("      \"alias\": \"${escapeJson(imp.alias)}\",\n")
-                        append("      \"filePath\": \"${escapeJson(imp.filePath)}\"\n")
-                        append("    }${if (index < file.imports.size - 1) "," else ""}\n")
-                    }
-                    append("  ],\n")
-                }
-                if (file.vars.isNotEmpty()) {
-                    append("  \"vars\": [\n")
-                    file.vars.forEachIndexed { index, v ->
-                        append("    {\n")
-                        append("      \"name\": \"${escapeJson(v.name)}\",\n")
-                        append("      \"value\": ")
-                        renderPropertyValue(this, v.value)
-                        append("\n    }${if (index < file.vars.size - 1) "," else ""}\n")
-                    }
-                    append("  ],\n")
-                }
-                if (file.functions.isNotEmpty()) {
-                    append("  \"functions\": [\n")
-                    file.functions.forEachIndexed { index, fn ->
-                        append("    {\n")
-                        append("      \"name\": \"${escapeJson(fn.name)}\",\n")
-                        append("      \"returnType\": \"${escapeJson(fn.returnType)}\"\n")
-                        append("    }${if (index < file.functions.size - 1) "," else ""}\n")
-                    }
-                    append("  ],\n")
-                }
-                append("  \"blocks\": [\n")
-                file.blocks.forEachIndexed { blockIdx, block ->
-                    renderBlock(this, block, "    ")
-                    if (blockIdx < file.blocks.size - 1) append(",")
-                    append("\n")
-                }
-                append("  ]\n")
-                append("}")
-            }
-            VireoResult.Ok(json)
+            VireoResult.Ok(json.encodeToString(JsonElement.serializer(), buildFileJson(file)))
         } catch (e: Exception) {
             VireoResult.Err(listOf(VireoError("Failed to render JSON: ${e.message}", file.location)))
         }
     }
 
-    private fun renderBlock(builder: StringBuilder, block: Block, indent: String) {
-        builder.append("$indent{\n")
-        builder.append("$indent  \"name\": \"${escapeJson(block.name)}\",\n")
-        builder.append("$indent  \"components\": [\n")
-        block.components.forEachIndexed { compIdx, comp ->
-            renderComponent(builder, comp, "$indent    ")
-            if (compIdx < block.components.size - 1) builder.append(",")
-            builder.append("\n")
-        }
-        builder.append("$indent  ]\n")
-        builder.append("$indent}")
-    }
-
-    private fun renderComponent(builder: StringBuilder, comp: ComponentNode, indent: String) {
-        builder.append("$indent{\n")
-        builder.append("$indent  \"name\": \"${escapeJson(comp.name)}\"")
-        if (comp.properties.isNotEmpty()) {
-            builder.append(",\n")
-            builder.append("$indent  \"properties\": {\n")
-            comp.properties.forEachIndexed { propIdx, prop ->
-                builder.append("$indent    \"${escapeJson(prop.key)}\": ")
-                renderPropertyValue(builder, prop.value)
-                if (propIdx < comp.properties.size - 1) builder.append(",")
-                builder.append("\n")
-            }
-            builder.append("$indent  }")
-        }
-        if (comp.children.isNotEmpty()) {
-            builder.append(",\n")
-            builder.append("$indent  \"children\": [\n")
-            comp.children.forEachIndexed { childIdx, child ->
-                renderComponent(builder, child, "$indent    ")
-                if (childIdx < comp.children.size - 1) builder.append(",")
-                builder.append("\n")
-            }
-            builder.append("$indent  ]")
-        }
-        builder.append("\n$indent}")
-    }
-
-    private fun renderPropertyValue(builder: StringBuilder, value: PropertyValue) {
-        when (value) {
-            is PropertyValue.Literal -> {
-                when (val v = value.value) {
-                    is Number -> builder.append(v)
-                    is Boolean -> builder.append(v)
-                    else -> builder.append("\"${escapeJson(v.toString())}\"")
+    private fun buildFileJson(file: VireoFile): JsonObject = buildJsonObject {
+        if (file.imports.isNotEmpty()) {
+            putJsonArray("imports") {
+                file.imports.forEach { imp ->
+                    addJsonObject {
+                        put("alias", imp.alias)
+                        put("filePath", imp.filePath)
+                    }
                 }
             }
-            is PropertyValue.Ref -> {
-                val ref = value.reference
-                val refStr = "${ref.file}.${ref.block}.${ref.component}"
-                builder.append("\"ref: ${escapeJson(refStr)}\"")
+        }
+        if (file.vars.isNotEmpty()) {
+            putJsonArray("vars") {
+                file.vars.forEach { v ->
+                    addJsonObject {
+                        put("name", v.name)
+                        put("value", propertyValueToJson(v.value))
+                    }
+                }
             }
-            is PropertyValue.Expr -> {
-                builder.append("\"${escapeJson(value.source)}\"")
+        }
+        if (file.functions.isNotEmpty()) {
+            putJsonArray("functions") {
+                file.functions.forEach { fn ->
+                    addJsonObject {
+                        put("name", fn.name)
+                        put("returnType", fn.returnType)
+                    }
+                }
             }
-            is PropertyValue.ConditionalExpr -> {
-                builder.append("{\n")
-                builder.append("  \"type\": \"conditional\",\n")
-                builder.append("  \"condition\": ")
-                renderPropertyValue(builder, value.condition)
-                builder.append(",\n  \"then\": ")
-                renderPropertyValue(builder, value.thenBranch)
-                builder.append(",\n  \"else\": ")
-                renderPropertyValue(builder, value.elseBranch)
-                builder.append("\n}")
+        }
+        putJsonArray("blocks") {
+            file.blocks.forEach { add(buildBlockJson(it)) }
+        }
+    }
+
+    private fun buildBlockJson(block: Block): JsonObject = buildJsonObject {
+        put("name", block.name)
+        putJsonArray("components") {
+            block.components.forEach { add(buildComponentJson(it)) }
+        }
+    }
+
+    private fun buildComponentJson(comp: ComponentNode): JsonObject = buildJsonObject {
+        put("name", comp.name)
+        if (comp.properties.isNotEmpty()) {
+            putJsonObject("properties") {
+                comp.properties.forEach { prop ->
+                    put(prop.key, propertyValueToJson(prop.value))
+                }
+            }
+        }
+        if (comp.children.isNotEmpty()) {
+            putJsonArray("children") {
+                comp.children.forEach { add(buildComponentJson(it)) }
             }
         }
     }
 
-    private fun escapeJson(str: String): String {
-        return str.replace("\\", "\\\\")
-            .replace("\"", "\\\"")
-            .replace("\b", "\\b")
-            .replace("\u000C", "\\f")
-            .replace("\n", "\\n")
-            .replace("\r", "\\r")
-            .replace("\t", "\\t")
+    private fun propertyValueToJson(value: PropertyValue): JsonElement = when (value) {
+        is PropertyValue.Literal -> when (val v = value.value) {
+            is Int -> JsonPrimitive(v)
+            is Long -> JsonPrimitive(v)
+            is Double -> JsonPrimitive(v)
+            is Float -> JsonPrimitive(v)
+            is Number -> JsonPrimitive(v.toDouble())
+            is Boolean -> JsonPrimitive(v)
+            else -> JsonPrimitive(v.toString())
+        }
+        is PropertyValue.Ref -> {
+            val ref = value.reference
+            JsonPrimitive("ref: ${ref.file}.${ref.block}.${ref.component}")
+        }
+        is PropertyValue.Expr -> JsonPrimitive(value.source)
+        is PropertyValue.ConditionalExpr -> buildJsonObject {
+            put("type", "conditional")
+            put("condition", propertyValueToJson(value.condition))
+            put("then", propertyValueToJson(value.thenBranch))
+            put("else", propertyValueToJson(value.elseBranch))
+        }
     }
 }

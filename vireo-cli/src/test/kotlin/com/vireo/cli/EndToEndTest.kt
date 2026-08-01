@@ -342,4 +342,100 @@ class EndToEndTest {
         assertTrue(checkStderr.isEmpty(), "stderr should be empty for check, got: $checkStderr")
         assertTrue(checkStdout.contains("OK: ${loginFile.absolutePath} passed analysis."))
     }
+
+    @Test
+    fun `test Example 5 - Variables renders to JSON with primaryColor resolved to #3B82F6 via CLI`() {
+        val dacFile = File.createTempFile("example5_variables", ".dac")
+        dacFile.deleteOnExit()
+        dacFile.writeText(
+            """
+            var primaryColor = #3B82F6
+            var textPrimary  = #111827
+            var textMuted    = #6B7280
+            var radiusBase   = 8
+            var spacingUnit  = 8
+
+            block Tokens {
+                component Badge {
+                    color: ${'$'}primaryColor
+                    radius: ${'$'}radiusBase
+                    padding: ${'$'}spacingUnit
+                    
+                    component Text {
+                        text: "New"
+                        fontSize: 12
+                        color: #FFFFFF
+                    }
+                }
+            }
+            """.trimIndent()
+        )
+
+        // 1. JSON render via CLI
+        val (jsonExitCode, jsonStdout, jsonStderr) = runCli("render", dacFile.absolutePath, "--to", "json")
+        assertEquals(0, jsonExitCode, "JSON render CLI failed: $jsonStderr")
+        assertTrue(jsonStderr.isEmpty(), "stderr should be empty for JSON render, got: $jsonStderr")
+        assertTrue(jsonStdout.contains("\"name\": \"primaryColor\""))
+        assertTrue(jsonStdout.contains("\"color\": \"#3B82F6\""), "JSON should have primaryColor resolved to #3B82F6")
+        assertTrue(jsonStdout.contains("\"radius\": 8"), "JSON should have radiusBase resolved to 8")
+        assertTrue(jsonStdout.contains("\"padding\": 8"), "JSON should have spacingUnit resolved to 8")
+
+        // 2. vireo check via CLI
+        val (checkExitCode, checkStdout, checkStderr) = runCli("check", dacFile.absolutePath)
+        assertEquals(0, checkExitCode, "check CLI failed: $checkStderr")
+        assertTrue(checkStderr.isEmpty(), "stderr should be empty for check, got: $checkStderr")
+        assertTrue(checkStdout.contains("OK: ${dacFile.absolutePath} passed analysis."))
+    }
+
+    @Test
+    fun `test Example 6 - Relational Constraints renders to valid JSON and HTML via CLI`() {
+        val dacFile = File.createTempFile("example6_relational", ".dac")
+        dacFile.deleteOnExit()
+        dacFile.writeText(
+            """
+            block Layouts {
+                component SplitPanel {
+                    layout: horizontal
+                    width: 800
+                    height: 600
+
+                    component Left {
+                        width: 50%parent
+                        height: fill
+                        color: #F9FAFB
+                    }
+
+                    component Right {
+                        width: 50%parent
+                        height: fill
+                        color: #FFFFFF
+                    }
+                }
+            }
+            """.trimIndent()
+        )
+
+        // 1. JSON render via CLI
+        val (jsonExitCode, jsonStdout, jsonStderr) = runCli("render", dacFile.absolutePath, "--to", "json")
+        assertEquals(0, jsonExitCode, "JSON render CLI failed: $jsonStderr")
+        assertTrue(jsonStderr.isEmpty(), "stderr should be empty for JSON render, got: $jsonStderr")
+        assertTrue(jsonStdout.contains("\"name\": \"SplitPanel\""))
+        assertTrue(jsonStdout.contains("\"name\": \"Left\""))
+        assertTrue(jsonStdout.contains("\"width\": \"50%parent\""))
+        assertTrue(jsonStdout.contains("\"name\": \"Right\""))
+
+        // 2. HTML render via CLI
+        val (htmlExitCode, htmlStdout, htmlStderr) = runCli("render", dacFile.absolutePath, "--to", "html")
+        assertEquals(0, htmlExitCode, "HTML render CLI failed: $htmlStderr")
+        assertTrue(htmlStderr.isEmpty(), "stderr should be empty for HTML render, got: $htmlStderr")
+        assertTrue(htmlStdout.contains("class=\"vireo-file\""))
+        assertTrue(htmlStdout.contains("data-name=\"SplitPanel\""))
+        assertTrue(htmlStdout.contains("width: 50%;"), "HTML should convert 50%parent to CSS width: 50%;")
+
+        // 3. vireo check via CLI
+        val (checkExitCode, checkStdout, checkStderr) = runCli("check", dacFile.absolutePath)
+        assertEquals(0, checkExitCode, "check CLI failed: $checkStderr")
+        assertTrue(checkStderr.isEmpty(), "stderr should be empty for check, got: $checkStderr")
+        assertTrue(checkStdout.contains("OK: ${dacFile.absolutePath} passed analysis."))
+    }
 }

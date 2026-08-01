@@ -7,8 +7,8 @@ Update this file when priorities shift or a phase is completed.
 
 ## Current Status
 
-**Phase:** Phase 2 — Layout & Composition `[completed]`
-**Next step:** Implement Phase 3 — Language Features (`Task 3-A: vireo-lexer extension`)
+**Phase:** Phase 3 — Language Features `[completed]`
+**Next step:** Implement Phase 4 — Figma Renderer
 
 ---
 
@@ -63,15 +63,15 @@ Update this file when priorities shift or a phase is completed.
 
 ---
 
-## Phase 3 — Language Features `[planned]`
+## Phase 3 — Language Features `[completed]`
 
 > Goal: variables, functions, basic conditionals — `.dac` becomes a real language.
 
 **Scope:**
-- Variables (`var primaryColor = #3B82F6`)
-- Functions (`fun spacing(n: Int): Int`)
-- Conditionals (`if $variant == "primary" then ... else ...`)
-- Expression evaluator (custom mini-evaluator)
+- [x] Variables (`var primaryColor = #3B82F6`)
+- [x] Functions (`fun spacing(n: Int): Int`)
+- [x] Conditionals (`if $variant == "primary" then ... else ...`)
+- [x] Expression evaluator (custom mini-evaluator)
 
 **Definition of done:** Examples 5 and 6 from `EXAMPLES.md` work correctly.
 

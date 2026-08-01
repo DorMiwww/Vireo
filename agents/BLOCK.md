@@ -63,6 +63,23 @@ Read before touching any file. These override general coding instincts.
 
 ---
 
+## Approved External Libraries
+
+Only these libraries may be added without asking. Any library not on this list requires explicit user approval before adding.
+
+| Library | Version | Module | Purpose |
+|---------|---------|--------|---------|
+| `kotlinx-serialization-json` | 1.6.3 | `vireo-renderer-json` | Correct JSON serialization — handles all Unicode escaping, replaces manual StringBuilder |
+| `clikt` | 4.2.2 | `vireo-cli` | Declarative CLI argument parsing — use when extending CLI commands (init wizard, new subcommands) |
+| `okhttp` | 4.x | `vireo-renderer-figma` | HTTP client for Figma REST API — add when Phase 4 transport is decided |
+
+Rules for approved libraries:
+- **Do not add** libraries outside this list without asking.
+- **Do not add** a library to solve a problem that 5 lines of Kotlin already solve cleanly.
+- When adding an approved library, record it in the Decision Log in `ARCHITECTURE.md`.
+
+---
+
 ## What You Must Not Do
 
 | Forbidden | Why |

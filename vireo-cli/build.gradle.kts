@@ -4,6 +4,7 @@ plugins {
 }
 
 dependencies {
+    implementation("com.github.ajalt.clikt:clikt:4.2.2")
     implementation(project(":vireo-core"))
     implementation(project(":vireo-lexer"))
     implementation(project(":vireo-parser"))

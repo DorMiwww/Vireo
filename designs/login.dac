@@ -25,7 +25,7 @@ block LoginForm {
         component EmailField {
             width: fill
             height: 44
-            radius: 8
+            radius: 99
             border: 1 #D1D5DB
             placeholder: "Email"
         }
@@ -33,7 +33,7 @@ block LoginForm {
         component PasswordField {
             width: fill
             height: 44
-            radius: 8
+            radius: 99
             border: 1 #D1D5DB
             placeholder: "Password"
         }

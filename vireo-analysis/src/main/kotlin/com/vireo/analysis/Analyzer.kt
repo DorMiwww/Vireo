@@ -30,10 +30,14 @@ private class FileAnalyzer(
         // Step 2: Validate references & properties across all loaded files
         validateAllFiles()
 
-        return if (errors.isNotEmpty()) {
-            VireoResult.Err(errors)
-        } else {
-            VireoResult.Ok(ResolvedFile(file = entryFile))
+        if (errors.isNotEmpty()) {
+            return VireoResult.Err(errors)
+        }
+
+        // Step 3: Evaluate expressions on the entry file
+        return when (val evalResult = ExprEvaluator.evaluate(entryFile)) {
+            is VireoResult.Err -> VireoResult.Err(evalResult.errors)
+            is VireoResult.Ok -> VireoResult.Ok(ResolvedFile(file = evalResult.value))
         }
     }
 
