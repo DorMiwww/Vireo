@@ -1,0 +1,31 @@
+block Primary {
+    component Default {
+        width: 200
+        height: 44
+        color: #3B82F6
+        radius: 8
+
+        component Label {
+            text: "Button"
+            fontSize: 14
+            fontWeight: bold
+            color: #FFFFFF
+        }
+    }
+}
+
+block Secondary {
+    component Default {
+        width: 200
+        height: 44
+        color: #F3F4F6
+        radius: 8
+
+        component Label {
+            text: "Button"
+            fontSize: 14
+            fontWeight: bold
+            color: #111827
+        }
+    }
+}

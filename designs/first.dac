@@ -1,0 +1,13 @@
+block LoginForm {
+  component Container {
+      layout: vertical
+      gap: 16
+      width: 360
+
+      component Title {
+          text: "Sign In"
+          fontSize: 24
+          color: #111827
+      }
+  }
+}

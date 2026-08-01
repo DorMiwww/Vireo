@@ -7,8 +7,8 @@ Update this file when priorities shift or a phase is completed.
 
 ## Current Status
 
-**Phase:** Pre-MVP — documentation and architecture design
-**Next step:** Finalize build tool, then scaffold the Gradle project
+**Phase:** Phase 2 — Layout & Composition `[completed]`
+**Next step:** Implement Phase 3 — Language Features (`Task 3-A: vireo-lexer extension`)
 
 ---
 
@@ -28,16 +28,16 @@ Update this file when priorities shift or a phase is completed.
 
 ---
 
-## Phase 1 — MVP `[planned]`
+## Phase 1 — MVP `[completed]`
 
 > Goal: render a simple `.dac` file to JSON.
 
 **Scope:**
-- `vireo-core` — AST nodes, `VireoResult<T>`, `SourceLocation`
-- `vireo-lexer` — tokenize basic `.dac` syntax
-- `vireo-parser` — parse blocks, components, explicit properties
-- `vireo-renderer-json` — emit JSON from AST
-- `vireo-cli` — `vireo render <file.dac> --to json`
+- [x] `vireo-core` — AST nodes, `VireoResult<T>`, `SourceLocation`
+- [x] `vireo-lexer` — tokenize basic `.dac` syntax
+- [x] `vireo-parser` — parse blocks, components, explicit properties
+- [x] `vireo-renderer-json` — emit JSON from AST
+- [x] `vireo-cli` — `vireo render <file.dac> --to json`
 
 **Definition of done:** Example 1 and 2 from `EXAMPLES.md` render correctly to JSON.
 
@@ -49,15 +49,15 @@ Update this file when priorities shift or a phase is completed.
 
 ---
 
-## Phase 2 — Layout & Composition `[planned]`
+## Phase 2 — Layout & Composition `[completed]`
 
 > Goal: auto layout, relational constraints, cross-file references.
 
 **Scope:**
-- Analyzer (`vireo-analysis`) — resolve `file.block.component` references, detect circular imports
-- Layout constraints — Auto Layout, relational (`50%parent`, `parent.x + 16`)
-- `vireo-renderer-html` — emit HTML/CSS from AST
-- `vireo-cli` — `vireo render <file.dac> --to html`
+- [x] Analyzer (`vireo-analysis`) — resolve `file.block.component` references, detect circular imports
+- [x] Layout constraints — Auto Layout, relational (`50%parent`, `parent.x + 16`)
+- [x] `vireo-renderer-html` — emit HTML/CSS from AST
+- [x] `vireo-cli` — `vireo render <file.dac> --to html`, `vireo check <file.dac>`
 
 **Definition of done:** Examples 3 and 4 from `EXAMPLES.md` render correctly to JSON and HTML.
 

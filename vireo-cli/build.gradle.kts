@@ -17,3 +17,7 @@ dependencies {
 application {
     mainClass.set("com.vireo.cli.MainKt")
 }
+
+tasks.named<JavaExec>("run") {
+    workingDir = rootProject.projectDir
+}

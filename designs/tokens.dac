@@ -1,0 +1,36 @@
+var primaryColor = #3B82F6
+var textPrimary = #111827
+var textMuted = #6B7280
+var radiusBase = 8
+var spacingUnit = 8
+
+block Tokens {
+    component Badge {
+        color: $primaryColor
+        radius: $radiusBase
+
+        component Text {
+            text: "New"
+            fontSize: 12
+            color: #FFFFFF
+        }
+    }
+
+    component SplitPanel {
+        layout: horizontal
+        width: 800
+        height: 400
+
+        component Left {
+            width: 50%parent
+            height: fill
+            color: #F9FAFB
+        }
+
+        component Right {
+            width: 50%parent
+            height: fill
+            color: #FFFFFF
+        }
+    }
+}

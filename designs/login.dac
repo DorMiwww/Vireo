@@ -1,0 +1,52 @@
+import buttons from "./button.dac"
+
+block LoginForm {
+    component Container {
+        layout: vertical
+        gap: 16
+        padding: 24
+        width: 360
+        color: #FFFFFF
+        radius: 16
+
+        component Title {
+            text: "Sign In"
+            fontSize: 24
+            fontWeight: bold
+            color: #111827
+        }
+
+        component Subtitle {
+            text: "Welcome back"
+            fontSize: 14
+            color: #6B7280
+        }
+
+        component EmailField {
+            width: fill
+            height: 44
+            radius: 8
+            border: 1 #D1D5DB
+            placeholder: "Email"
+        }
+
+        component PasswordField {
+            width: fill
+            height: 44
+            radius: 8
+            border: 1 #D1D5DB
+            placeholder: "Password"
+        }
+
+        component SubmitButton {
+            ref: buttons.Primary.Default
+            width: fill
+        }
+
+        component SignupLink {
+            text: "Don't have an account? Sign up"
+            fontSize: 13
+            color: #3B82F6
+        }
+    }
+}
