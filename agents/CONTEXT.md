@@ -60,7 +60,7 @@ Implemented `figma-plugin/` private development plugin (`manifest.json`, `ui.htm
 
 ## What Was Done Last Session
 
-- **Phase 4.5 — Figma Plugin**:
+- **Phase 4.5 — Figma Plugin & Showcase Verification**:
   - Implemented private Figma development plugin in `figma-plugin/`:
     - `manifest.json`: Figma development plugin manifest with `id`, `api: "1.0.0"`, `main: "code.js"`, `ui: "ui.html"`.
     - `ui.html`: Polished UI supporting drag-and-drop file upload, file browsing for `*.figma.json`, and direct JSON pasting.
@@ -68,13 +68,15 @@ Implemented `figma-plugin/` private development plugin (`manifest.json`, `ui.htm
     - `README.md`: Quick reference in `figma-plugin/`.
   - Created end-to-end guide in `DOCS/figma-plugin.md`.
   - Verified node mapping against `designs/login.figma.json` using sandbox simulation test.
-  - Committed Phase 4 and Phase 4.5 deliverables.
+  - Implemented comprehensive showcase designs in `showcase/`: `components/buttons.dac`, `components/badges.dac`, `card.dac`, `pricing.dac`, and a large multi-section SaaS `dashboard.dac` (261 KB, 3,428 lines of Figma nodes) with full `.html` and `.figma.json` rendering.
+  - Fixed compiler & renderer bugs: string interpolation with price literals (`$19`), Auto Layout `layoutGrow = 1f` / `flex: 1` in horizontal containers, and `justifyContent` / `alignItems` / `backgroundColor` properties.
 
 ---
 
 ## What Is Next
 
 1. Phase 5 — Init Wizard: implement `vireo init` interactive project scaffolding.
+2. Backlog Item: Figma Design Bundle & Canvas Orchestrator (`vireo bundle`) — package multiple `.dac` files into a single consolidated canvas bundle with automated grid layout and Figma Sections/Pages.
 
 ---
 

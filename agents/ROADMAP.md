@@ -137,11 +137,30 @@ The correct transport is a private Figma Development Plugin — no review or pub
 
 ---
 
+## Future Backlog & Proposals
+
+### 1. Figma Design Bundle & Canvas Orchestrator (`vireo bundle`)
+> Goal: Package an entire project / directory of `.dac` files into a single unified Figma bundle and organize them intelligently on the canvas.
+
+**Motivation:**
+When a project has dozens of `.dac` files (design systems, components, multiple screens), exporting and importing them one-by-one is tedious. A bundle enables 1-click import for the entire design workspace.
+
+**Scope:**
+- **CLI Command `vireo bundle <dir> -o <project.figma.json>`**:
+  - Recursively compiles all `.dac` files in a workspace.
+  - Resolves cross-file references globally.
+  - Emits a single consolidated Figma JSON document containing all screens and components.
+- **Canvas Auto-Layout & Placement Algorithm**:
+  - Intelligently positions imported frames on the canvas (Grid or Masonry layout with clean margins and column alignment, e.g., 100px–200px gap).
+- **Hierarchical Grouping (Figma Sections & Pages)**:
+  - Uses native Figma Sections (`figma.createSection()`) mapped to folder structures (e.g. `Section "Components"`, `Section "Marketing"`, `Section "App Screens"`).
+  - Optional multi-page support (`figma.createPage()`) for large enterprise design systems.
+- **Native Component & Instance Mapping**:
+  - Base reusable components (`buttons.Primary.Default`) become Figma `ComponentNode`s (`figma.createComponent()`).
+  - Usages with `ref:` become real Figma `InstanceNode`s (`component.createInstance()`), preserving master component linkage in Figma.
+
+---
+
 ## Decisions Blocking Progress
 
-| Decision | Blocks | Status |
-|----------|--------|--------|
-| Build tool | Phase 0 scaffold | undecided |
-| Parser strategy | Phase 1 lexer/parser | undecided |
-| Expression evaluator | Phase 3 | undecided |
-| Figma transport | Phase 4 | undecided |
+*None at this time. All core architectural decisions from Phase 0 to Phase 4.5 have been resolved.*
