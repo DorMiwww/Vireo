@@ -12,6 +12,7 @@ dependencies {
     implementation(project(":vireo-renderer-json"))
     implementation(project(":vireo-renderer-html"))
     implementation(project(":vireo-renderer-figma"))
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
     testImplementation(kotlin("test"))
 }
 

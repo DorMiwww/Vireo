@@ -310,7 +310,7 @@ Record decisions here when made.
 | **Figma REST API** | Full create/update, requires user auth token |
 | Figma Plugin | Runs inside Figma, no auth, limited sandbox |
 
-> **Status: undecided**
+> **Decision:** Figma REST API transport. **Status: decided (2026-08-01)**
 
 ---
 
@@ -327,3 +327,4 @@ Record decisions here when made.
 | 2026-07-29 | Build tool: Gradle with Kotlin DSL | Standard for Kotlin multi-module, best IDE support and type safety |
 | 2026-07-29 | Parser strategy: Hand-written recursive descent | Zero dependencies, precise control over error reporting (`VireoResult`) |
 | 2026-07-29 | Expression evaluator: Custom AST mini-evaluator | Lightweight, 100% sandboxed, tailored for `.dac` layout math |
+| 2026-08-01 | Figma transport: Figma REST API | Pure renderer maps AST to Figma document object; CLI uses OkHttp for API sync or exports JSON |

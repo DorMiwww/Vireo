@@ -7,8 +7,8 @@ This file captures the live state of the project: what is decided, what is in pr
 
 ## Current Phase
 
-**Phase 3 — Language Features `[completed]`**
-Completed `vireo-lexer` extension (`Task 3-A`), `vireo-parser` `var` declarations (`Task 3-B`), `vireo-parser` `fun` declarations (`Task 3-C`), `vireo-parser` conditionals (`Task 3-D`), expression evaluator `ExprEvaluator` (`Task 3-E`), and End-to-End tests for Examples 5 & 6 (`Task 3-F`). Next is Phase 4 — Figma Renderer.
+**Phase 4 — Figma Renderer `[completed]`**
+Recorded decision for Figma REST API transport, implemented `vireo-renderer-figma` pure renderer (`FigmaRenderer : Renderer<FigmaDocument>`), added `FigmaDocument` data model with JSON serialization, added `FigmaApiTransport` in `vireo-cli` using OkHttp, extended CLI `vireo render <file.dac> --to figma [--token <token>] [-o <file.json>]`, and added comprehensive unit and E2E integration tests. Next is Phase 5 — Init Wizard.
 
 ---
 
@@ -45,41 +45,35 @@ Completed `vireo-lexer` extension (`Task 3-A`), `vireo-parser` `var` declaration
 | Conditionals Parsing (3-D) | Added `PropertyValue.ConditionalExpr` AST node in `vireo-core` and `if ... then ... else` conditional parsing in `vireo-parser` with unit tests | 2026-08-01 |
 | Expression Evaluator (3-E) | Implemented `ExprEvaluator` in `vireo-analysis` for variable substitution, arithmetic, function calls, relational offset evaluation, conditionals, and string interpolation, with full unit test coverage | 2026-08-01 |
 | End-to-End Tests (3-F) | Added CLI end-to-end integration tests for Example 5 (Variables) and Example 6 (Relational Constraints) rendering to JSON & HTML | 2026-08-01 |
+| Figma Transport Decision | Recorded decision for Figma REST API transport in `ARCHITECTURE.md` | 2026-08-01 |
+| Figma Renderer Implementation | Implemented `FigmaRenderer` pure renderer in `vireo-renderer-figma` mapping `ResolvedFile` to Figma REST API `FigmaDocument` JSON nodes | 2026-08-01 |
+| CLI Figma Command | Extended `vireo-cli` with `vireo render <file.dac> --to figma [--token <token>] [-o <file.json>]` using OkHttp transport | 2026-08-01 |
 
 ---
 
 ## Open Decisions (blocking progress)
 
-| Decision | Recommendation | Blocks |
-|----------|----------------|--------|
-| Figma transport | Figma REST API | Phase 4 |
+*None at this time.*
 
 ---
 
 ## What Was Done Last Session
 
-- **Task 3-E (Implement Expression Evaluator)**:
-  - Created `ExprEvaluator` in `vireo-analysis/src/main/kotlin/com/vireo/analysis/ExprEvaluator.kt`.
-  - Implemented expression parsing and evaluation for:
-    - Variable substitution (`$primaryColor` -> `#3B82F6`)
-    - Arithmetic operations (`+`, `-`, `*`, `/`, `%`, parentheses `()`)
-    - Function invocations (`fun spacing(n: Int): Int { return 8 * n }`, `spacing(2)`)
-    - Relational constraints (`50%parent` preserved, `parent.x + spacing(2)` evaluated offset to `parent.x + 16`)
-    - Conditional expressions (`if $variant == "primary" then #3B82F6 else #6B7280`)
-    - String interpolation (`"Hello $name"`, `"Padding is ${spacing(2)}px"`)
-  - Integrated `ExprEvaluator` into `Analyzer.analyze(...)` so that `ResolvedFile` AST holds fully resolved values where possible.
-  - Added unit test suite in `ExprEvaluatorTest.kt` covering all evaluation scenarios and error conditions.
-- **Task 3-F (End-to-End Tests for Examples 5 & 6)**:
-  - Added end-to-end CLI integration tests in `EndToEndTest.kt` for **Example 5 (Variables)** and **Example 6 (Relational Constraints)**.
-  - Verified JSON rendering, HTML rendering, and `vireo check` command behavior via CLI.
+- **Phase 4 — Figma Renderer**:
+  - Recorded decision for **Option A — Figma REST API transport** in `ARCHITECTURE.md` Decision Log.
+  - Implemented `FigmaDocument`, `FigmaNode`, `Rect`, `TypeStyle`, `Paint`, `Color` data structures in `vireo-renderer-figma/src/main/kotlin/com/vireo/renderer/figma/FigmaDocument.kt`.
+  - Implemented pure, stateless `FigmaRenderer : Renderer<FigmaDocument>` in `vireo-renderer-figma/src/main/kotlin/com/vireo/renderer/figma/FigmaRenderer.kt` mapping `ResolvedFile` to Figma document nodes (handling Frames, Text nodes, Auto Layout parameters, fills, strokes, corner radius, and layout modes).
+  - Implemented `FigmaApiTransport` in `vireo-cli/src/main/kotlin/com/vireo/cli/FigmaApiTransport.kt` using approved `OkHttp` library for posting Figma API JSON payloads when token is provided.
+  - Extended `vireo-cli` `vireo render` command with `--to figma`, `--token <token>` (and `FIGMA_TOKEN` env var), and `-o <file.json>` flags.
+  - Added unit test suite in `FigmaRendererTest.kt` and E2E integration test in `EndToEndTest.kt` verifying Example 4 (Login Form) renders to Figma REST API JSON schema.
 - **Verification**:
-  - Ran `./gradlew test` across all modules — 100% of tests passed cleanly.
+  - Ran `./gradlew test` across all modules — 100% of unit and integration tests passed cleanly.
 
 ---
 
 ## What Is Next
 
-1. Phase 4 — Figma Renderer: decide transport (Figma REST API vs Plugin) and implement `vireo-renderer-figma`.
+1. Phase 5 — Init Wizard: implement `vireo init` interactive project scaffolding.
 
 ---
 

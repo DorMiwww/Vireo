@@ -4,6 +4,7 @@ import com.vireo.analysis.Analyzer
 import com.vireo.core.VireoError
 import com.vireo.core.VireoResult
 import com.vireo.parser.Parser
+import com.vireo.renderer.figma.FigmaRenderer
 import com.vireo.renderer.html.HtmlRenderer
 import com.vireo.renderer.json.JsonRenderer
 import java.io.File
@@ -52,8 +53,8 @@ private fun printUsage(out: PrintStream) {
     out.println("Usage: vireo <command> [options]")
     out.println()
     out.println("Commands:")
-    out.println("  render <file.dac> [--to json|html] [-o <file>]    Compile and render .dac file")
-    out.println("  check <file.dac>                                 Parse and analyze .dac file")
+    out.println("  render <file.dac> [--to json|html|figma] [--token <token>] [-o <file>]    Compile and render .dac file")
+    out.println("  check <file.dac>                                                        Parse and analyze .dac file")
 }
 
 private fun handleRender(
@@ -64,6 +65,7 @@ private fun handleRender(
     var inputFile: String? = null
     var format = "json"
     var outputFile: String? = null
+    var token: String? = System.getenv("FIGMA_TOKEN")
 
     var i = 0
     while (i < args.size) {
@@ -78,6 +80,16 @@ private fun handleRender(
             }
             arg.startsWith("--to=") -> {
                 format = arg.substringAfter("=")
+            }
+            arg == "--token" -> {
+                if (i + 1 >= args.size) {
+                    err.println("Error: Missing value for --token option.")
+                    return 1
+                }
+                token = args[++i]
+            }
+            arg.startsWith("--token=") -> {
+                token = arg.substringAfter("=")
             }
             arg == "-o" || arg == "--output" -> {
                 if (i + 1 >= args.size) {
@@ -106,13 +118,13 @@ private fun handleRender(
     }
 
     if (inputFile == null) {
-        err.println("Error: Missing input file. Usage: vireo render <file.dac> [--to json|html] [-o <file>]")
+        err.println("Error: Missing input file. Usage: vireo render <file.dac> [--to json|html|figma] [--token <token>] [-o <file>]")
         return 1
     }
 
     val normalizedFormat = format.lowercase()
-    if (normalizedFormat !in setOf("json", "html")) {
-        err.println("Error: Unsupported target format '$format'. Supported formats: json, html")
+    if (normalizedFormat !in setOf("json", "html", "figma")) {
+        err.println("Error: Unsupported target format '$format'. Supported formats: json, html, figma")
         return 1
     }
 
@@ -147,20 +159,38 @@ private fun handleRender(
         is VireoResult.Ok -> analysisResult.value
     }
 
-    val renderResult = when (normalizedFormat) {
-        "json" -> JsonRenderer.render(resolvedFile)
-        "html" -> HtmlRenderer.render(resolvedFile)
+    val outputText = when (normalizedFormat) {
+        "json" -> {
+            when (val r = JsonRenderer.render(resolvedFile)) {
+                is VireoResult.Err -> { printErrors(r.errors, err); return 1 }
+                is VireoResult.Ok -> r.value
+            }
+        }
+        "html" -> {
+            when (val r = HtmlRenderer.render(resolvedFile)) {
+                is VireoResult.Err -> { printErrors(r.errors, err); return 1 }
+                is VireoResult.Ok -> r.value
+            }
+        }
+        "figma" -> {
+            when (val r = FigmaRenderer.render(resolvedFile)) {
+                is VireoResult.Err -> { printErrors(r.errors, err); return 1 }
+                is VireoResult.Ok -> r.value.toJson(pretty = true)
+            }
+        }
         else -> {
-            err.println("Error: Unsupported target format '$format'. Supported formats: json, html")
+            err.println("Error: Unsupported target format '$format'. Supported formats: json, html, figma")
             return 1
         }
     }
-    val outputText = when (renderResult) {
-        is VireoResult.Err -> {
-            printErrors(renderResult.errors, err)
-            return 1
+
+    if (normalizedFormat == "figma" && token != null) {
+        val httpResult = FigmaApiTransport.postDocument(token, outputText)
+        httpResult.onSuccess { response ->
+            out.println("Figma API: Successfully posted design to Figma.")
+        }.onFailure { ex ->
+            err.println("Figma API Error: ${ex.message}")
         }
-        is VireoResult.Ok -> renderResult.value
     }
 
     if (outputFile != null) {
@@ -170,7 +200,7 @@ private fun handleRender(
             err.println("Error: Failed to write output file '$outputFile': ${e.message}")
             return 1
         }
-    } else {
+    } else if (normalizedFormat != "figma" || token == null) {
         out.println(outputText)
     }
 

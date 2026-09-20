@@ -438,4 +438,83 @@ class EndToEndTest {
         assertTrue(checkStderr.isEmpty(), "stderr should be empty for check, got: $checkStderr")
         assertTrue(checkStdout.contains("OK: ${dacFile.absolutePath} passed analysis."))
     }
+
+    @Test
+    fun `test Example 4 - Cross-file Reference login form renders to Figma JSON via CLI`() {
+        val tempDir = System.getProperty("java.io.tmpdir")
+        val buttonsFile = File(tempDir, "buttons_figma_${System.currentTimeMillis()}.dac")
+        buttonsFile.deleteOnExit()
+        buttonsFile.writeText(
+            """
+            block Primary {
+                component Default {
+                    width: 200
+                    height: 44
+                    color: #3B82F6
+                    radius: 8
+
+                    component Label {
+                        text: "Button"
+                        fontSize: 14
+                        fontWeight: bold
+                        color: #FFFFFF
+                    }
+                }
+            }
+            """.trimIndent()
+        )
+
+        val loginFile = File(tempDir, "login_figma_${System.currentTimeMillis()}.dac")
+        loginFile.deleteOnExit()
+        loginFile.writeText(
+            """
+            import buttons from "./${buttonsFile.name}"
+
+            block LoginForm {
+                component Container {
+                    layout: vertical
+                    gap: 16
+                    padding: 24
+                    width: 360
+
+                    component Title {
+                        text: "Sign In"
+                        fontSize: 24
+                        fontWeight: bold
+                        color: #111827
+                    }
+
+                    component EmailField {
+                        width: fill
+                        height: 44
+                        radius: 8
+                        border: 1 #D1D5DB
+                        placeholder: "Email"
+                    }
+
+                    component SubmitButton {
+                        ref: buttons.Primary.Default
+                        label: "Sign In"
+                        width: fill
+                    }
+                }
+            }
+            """.trimIndent()
+        )
+
+        val outputFile = File.createTempFile("figma_output", ".json")
+        outputFile.deleteOnExit()
+
+        val (exitCode, _, stderr) = runCli("render", loginFile.absolutePath, "--to", "figma", "-o", outputFile.absolutePath)
+
+        assertEquals(0, exitCode, "Figma render failed: $stderr")
+        assertTrue(stderr.isEmpty(), "stderr should be empty, got: $stderr")
+
+        val writtenContent = outputFile.readText()
+        assertTrue(writtenContent.contains("LoginForm"))
+        assertTrue(writtenContent.contains("Container"))
+        assertTrue(writtenContent.contains("VERTICAL"))
+        assertTrue(writtenContent.contains("Sign In"))
+    }
 }
+
