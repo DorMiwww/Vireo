@@ -11,17 +11,17 @@ Replace `[TASK]` with the specific task number from the task list below.
 You are working on Vireo — a Design as a Code (DaaC) tool written in Kotlin.
 
 Before doing anything:
-1. Read agents/AGENTS.md
+1. Read .agents/rules/AGENTS.md
 2. Follow every link in it and read all referenced files
-3. Check agents/CONTEXT.md for current project state and open decisions
+3. Check .agents/rules/CONTEXT.md for current project state and open decisions
 
-Then pick up task [TASK] from the task list in agents/START.md.
+Then pick up task [TASK] from the task list in .agents/rules/START.md.
 
 Rules:
 - Kotlin only, no other JVM languages
 - Follow the module dependency direction from BLOCK.md
 - Never pick a TBD decision silently — propose options and ask
-- Update agents/CONTEXT.md when your session ends
+- Update .agents/rules/CONTEXT.md when your session ends
 ```
 
 ---
