@@ -140,20 +140,24 @@ The correct transport is a private Figma Development Plugin — no review or pub
 - [ ] Release workflow — on a `vX.Y.Z` git tag: build, test, package a fat jar, publish a GitHub Release
 - [x] `schemaVersion` field in emitted `*.figma.json` + a version check in the Figma plugin's `code.js` that fails loudly (not silently) on a mismatch between CLI output and installed plugin
 - [ ] `CHANGELOG.md` — maintained per release
-- [ ] Distribution: start with GitHub Releases (fat jar + install script) as the bootstrap channel; add a Homebrew formula/tap once the release pipeline is proven — Homebrew is the target
+- [ ] Distribution:
+  - [x] One-line installer script (`curl -fsSL .../install.sh | bash`) for macOS & Linux
+  - [ ] GitHub Releases automated workflow on git tags (`v*`)
+  - [ ] Homebrew tap & formula: create `DorMiwww/homebrew-tap` for `brew install dormiwww/tap/vireo`
 - [ ] Decide (when it comes up): fat jar vs GraalVM native-image — verify native-image works with the OkHttp reflection config (already used in `vireo-renderer-figma`) before committing to it
 
 **Definition of done:** `vireo` `1.0.0` is tagged, built via CI, and installable via `brew install vireo` (or the interim GitHub-Releases script if Homebrew isn't wired up yet).
 
 ---
 
-## Phase 7 — IntelliJ IDEA Plugin `[proposed, pending approval]`
+## Phase 7 — IntelliJ IDEA Plugin `[proposed, pending SDK approval]`
 
 > Goal: first-class `.dac` editing support in IntelliJ IDEA — syntax highlighting and inline diagnostics, reusing `vireo-lexer`/`vireo-analysis` directly rather than reimplementing anything.
 
+**Sequencing (decided 2026-09-20):** runs in parallel with Phase 6, not gated on `1.0.0` — that's still far out, no reason to block editor tooling on the release gate. Only comment highlighting specifically waits on the `SYNTAX.md` comment-syntax question (`//` vs `#`), not on `1.0.0` itself.
+
 **Blocking, before any code is written:**
 - [ ] User approval to add the IntelliJ Platform Plugin SDK as a new external dependency (not on the `BLOCK.md` Approved External Libraries list)
-- [ ] User decision on sequencing: Tier 1+2 in parallel with Phase 6, or held until after `1.0.0`
 
 **Scope — Tier 1 (syntax highlighting):**
 - [ ] New Gradle module (own Kotlin toolchain — see feasibility note below), file type registration for `.dac`

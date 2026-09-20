@@ -124,14 +124,15 @@ Data compilation pipeline:
 
 ### Installing & Running the CLI
 
-You can install the `vireo` executable directly to your system (`~/.local/bin/vireo`):
-
+#### One-Line Installer (macOS & Linux)
 ```bash
-./gradlew installCli
+curl -fsSL https://raw.githubusercontent.com/DorMiwww/Vireo/main/install.sh | bash
 ```
 
-Or run the local repository wrapper directly:
+#### From Source / Repository
 ```bash
+./gradlew installCli
+# Or run the local repository wrapper directly:
 ./vireo --help
 ```
 
@@ -220,19 +221,6 @@ open showcase/dashboard.html
 
 ---
 
-## Versioning Strategy (Phase 6)
-
-Vireo adheres to **Semantic Versioning (SemVer)** in lockstep across all modules:
-
-- **Current Stage: Beta (`0.x`)**
-  - `0.x.PATCH` — Bug fixes, performance improvements, internal refactoring.
-  - `0.MINOR.x` — New features (syntax, renderers, CLI options) and breaking changes while in Beta.
-- **Road to `1.0.0`**:
-  - Version `1.0.0` marks the **Syntax Freeze** of the `.dac` language contract (all language proposals finalized in `SYNTAX.md`).
-  - Once `1.0.0` is released, strict backward compatibility guarantees will apply to `.dac` source files and CLI contracts.
-
----
-
 ## Roadmap
 
 - [x] **Phase 1**: Core AST, Stateless Lexer & Recursive Descent Parser
@@ -241,7 +229,7 @@ Vireo adheres to **Semantic Versioning (SemVer)** in lockstep across all modules
 - [x] **Phase 4**: Figma Schema Renderer (`vireo-renderer-figma`)
 - [x] **Phase 4.5**: Native Figma Canvas Plugin (`figma-plugin/`) with Auto Layout & Device Canvas Presets
 - [x] **Phase 5**: Interactive Project Scaffolding & CLI Ergonomics (`vireo init`, `kubectl`-style flags)
-- [ ] **Phase 6**: Release Engineering: 0.x → 1.0.0 (CI, Homebrew distribution, .dac syntax freeze)
+- [ ] **Homebrew Distribution**: `brew install dormiwww/tap/vireo`
 - [ ] **Backlog**: Figma Design Bundle & Canvas Orchestrator (`vireo bundle`)
 
 ---

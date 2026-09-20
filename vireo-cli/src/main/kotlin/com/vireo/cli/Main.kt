@@ -684,7 +684,8 @@ private fun handleInit(
 
                 component ActionButton {
                     ref: buttons.Primary.Default
-                    label: "Explore Docs"
+                    label: "Open Docs"
+                    href: "https://github.com/DorMiwww/Vireo"
                     width: fill
                 }
             }

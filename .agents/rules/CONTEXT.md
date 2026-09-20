@@ -56,6 +56,7 @@ Implemented `kubectl`-style CLI ergonomics, per-command `--help` (`vireo render 
 | CLI distribution channel | Homebrew is the target channel; bootstrap with GitHub Releases (fat jar) first, add a Homebrew tap once the release pipeline is proven | 2026-09-20 |
 | Figma wire-schema versioning | Added `schemaVersion` (default `1`) to `FigmaDocument`/`*.figma.json` (`vireo-renderer-figma`), plus a matching `SUPPORTED_SCHEMA_VERSION` check in the plugin's `code.js` that errors clearly instead of silently mis-rendering on a mismatch | 2026-09-20 |
 | Versioning playbook | Documented explicit PATCH/MINOR/MAJOR bump rules for the `0.x` beta stage and post-`1.0.0` in `ARCHITECTURE.md`, with the mandatory gate (`1.0.0` only on explicit user command) in `BLOCK.md` | 2026-09-20 |
+| Phase 7 sequencing (IntelliJ plugin) | Runs in parallel with Phase 6, not gated on `1.0.0` — the release gate is far out and shouldn't block editor tooling. Still pending: user approval to add the IntelliJ Platform Plugin SDK as an external dependency before any code is written | 2026-09-20 |
 
 ---
 

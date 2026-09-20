@@ -7,8 +7,12 @@ Starting in **Phase 5**, the CLI follows `kubectl`-inspired design principles: i
 
 ## Installation & Setup
 
-You can run `vireo` directly from anywhere in your terminal once installed:
+### One-Line Installer (macOS & Linux)
+```bash
+curl -fsSL https://raw.githubusercontent.com/DorMiwww/Vireo/main/install.sh | bash
+```
 
+### From Repository / Source
 ```bash
 # Build and install to ~/.local/bin/vireo
 ./gradlew installCli

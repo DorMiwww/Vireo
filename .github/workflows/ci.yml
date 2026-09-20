@@ -38,3 +38,9 @@ jobs:
           ./vireo-cli/build/install/vireo/bin/vireo render --help
           ./vireo-cli/build/install/vireo/bin/vireo check showcase/card.dac
           ./vireo-cli/build/install/vireo/bin/vireo render showcase/card.dac --html --snippet
+
+      - name: Test installer script
+        run: |
+          chmod +x ./install.sh
+          ./install.sh
+          ~/.local/bin/vireo --version

@@ -208,4 +208,39 @@ class HtmlRendererTest {
         assertTrue(html.endsWith("</div>"))
         assertTrue(html.contains("data-name=\"Box\""))
     }
+
+    @Test
+    fun `test HtmlRenderer renders clickable component with href as anchor tag`() {
+        val source = """
+            block Links {
+                component GitHubButton {
+                    layout: horizontal
+                    width: 160
+                    height: 40
+                    color: #24292F
+                    radius: 6
+                    href: "https://github.com/DorMiwww/Vireo"
+
+                    component Label {
+                        text: "View on GitHub"
+                        color: #FFFFFF
+                    }
+                }
+            }
+        """.trimIndent()
+        val parseResult = Parser.parse(source, "link.dac")
+        assertIs<VireoResult.Ok<VireoFile>>(parseResult)
+        val analyzeResult = Analyzer.analyze(parseResult.value)
+        assertIs<VireoResult.Ok<ResolvedFile>>(analyzeResult)
+
+        val renderResult = HtmlRenderer.render(analyzeResult.value)
+        assertIs<VireoResult.Ok<String>>(renderResult)
+
+        val html = renderResult.value
+        assertTrue(html.contains("<a class=\"vireo-component\" data-name=\"GitHubButton\" href=\"https://github.com/DorMiwww/Vireo\" target=\"_blank\" rel=\"noopener noreferrer\""))
+        assertTrue(html.contains("cursor: pointer;"))
+        assertTrue(html.contains("text-decoration: none;"))
+        assertTrue(html.contains("View on GitHub"))
+        assertTrue(html.contains("</a>"))
+    }
 }

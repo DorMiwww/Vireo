@@ -388,6 +388,8 @@ class MainTest {
         assertEquals(0, renderCode, "render on initialized project should pass: $renderErr")
         assertTrue(renderOut.startsWith("<!DOCTYPE html>"))
         assertTrue(renderOut.contains("Welcome to Vireo"))
+        assertTrue(renderOut.contains("Open Docs"))
+        assertTrue(renderOut.contains("href=\"https://github.com/DorMiwww/Vireo\""))
 
         // Cleanup
         tempDir.deleteRecursively()

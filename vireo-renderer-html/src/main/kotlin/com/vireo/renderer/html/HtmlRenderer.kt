@@ -38,6 +38,11 @@ object HtmlRenderer : Renderer<String> {
                     append("  <meta charset=\"UTF-8\">\n")
                     append("  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n")
                     append("  <title>${escapeHtml(pageTitle)}</title>\n")
+                    append("  <style>\n")
+                    append("    * { box-sizing: border-box; }\n")
+                    append("    a.vireo-component { text-decoration: none; }\n")
+                    append("    a.vireo-component:hover { opacity: 0.92; filter: brightness(1.05); }\n")
+                    append("  </style>\n")
                     append("</head>\n")
                     append("<body style=\"margin: 0; padding: 0;\">\n")
                     append("  <div class=\"vireo-file\" data-path=\"${escapeHtml(file.path)}\" style=\"font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: $bgColor; margin: 0; box-sizing: border-box;\">\n")
@@ -88,6 +93,7 @@ object HtmlRenderer : Renderer<String> {
         cssStyles.add("box-sizing: border-box;")
         var textContent: String? = null
         var placeholderText: String? = null
+        var linkUrl: String? = null
 
         // 1. Process constraints
         comp.constraints.forEach { constraint ->
@@ -270,6 +276,9 @@ object HtmlRenderer : Renderer<String> {
                         textContent = strVal
                     }
                 }
+                "href", "url", "link" -> {
+                    linkUrl = strVal.trim('"', '\'')
+                }
             }
         }
 
@@ -286,11 +295,24 @@ object HtmlRenderer : Renderer<String> {
             cssStyles.add("cursor: pointer;")
         }
 
+        if (linkUrl != null) {
+            cssStyles.add("text-decoration: none;")
+            cssStyles.add("cursor: pointer;")
+            if (cssStyles.none { it.startsWith("display:") }) {
+                cssStyles.add("display: inline-flex;")
+            }
+        }
+
         val styleAttr = if (cssStyles.isNotEmpty()) {
             " style=\"${cssStyles.joinToString(" ")}\""
         } else ""
 
-        builder.append("$indent<div class=\"vireo-component\" data-name=\"${escapeHtml(comp.name)}\"$styleAttr>")
+        val tagName = if (linkUrl != null) "a" else "div"
+        val hrefAttr = if (linkUrl != null) {
+            " href=\"${escapeHtml(linkUrl)}\" target=\"_blank\" rel=\"noopener noreferrer\""
+        } else ""
+
+        builder.append("$indent<$tagName class=\"vireo-component\" data-name=\"${escapeHtml(comp.name)}\"$hrefAttr$styleAttr>")
 
         if (textContent != null) {
             builder.append(escapeHtml(textContent))
@@ -313,7 +335,7 @@ object HtmlRenderer : Renderer<String> {
             builder.append(indent)
         }
 
-        builder.append("</div>\n")
+        builder.append("</$tagName>\n")
     }
 
     private fun resolveComponentRef(
