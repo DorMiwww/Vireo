@@ -150,27 +150,26 @@ The correct transport is a private Figma Development Plugin — no review or pub
 
 ---
 
-## Phase 7 — IntelliJ IDEA Plugin `[proposed, pending SDK approval]`
+## Phase 7 — IntelliJ IDEA Plugin `[in progress]`
 
-> Goal: first-class `.dac` editing support in IntelliJ IDEA — syntax highlighting and inline diagnostics, reusing `vireo-lexer`/`vireo-analysis` directly rather than reimplementing anything.
+> Goal: first-class `.dac` editing support in IntelliJ IDEA. Four concrete user-requested capabilities: (1) a file icon for `.dac`, (2) full-text syntax highlighting, (3) autocomplete (keywords + property keys), (4) inline diagnostics from the Analyzer.
 
 **Sequencing (decided 2026-09-20):** runs in parallel with Phase 6, not gated on `1.0.0` — that's still far out, no reason to block editor tooling on the release gate. Only comment highlighting specifically waits on the `SYNTAX.md` comment-syntax question (`//` vs `#`), not on `1.0.0` itself.
 
 **Blocking, before any code is written:**
-- [ ] User approval to add the IntelliJ Platform Plugin SDK as a new external dependency (not on the `BLOCK.md` Approved External Libraries list)
+- [x] User approval to add the IntelliJ Platform Plugin SDK as a new external dependency — granted 2026-09-20
 
-**Scope — Tier 1 (syntax highlighting):**
-- [ ] New Gradle module (own Kotlin toolchain — see feasibility note below), file type registration for `.dac`
-- [ ] `SyntaxHighlighter` wrapping `vireo-lexer`'s `Lexer.tokenize()` via a `LexerBase` adapter (whole-file batch re-lex per edit — fine at `.dac` file sizes, not true incremental lexing)
-- [ ] Comment highlighting deferred until `SYNTAX.md`'s open "comment syntax" question (`//` vs `#`) is resolved — `vireo-lexer` has no comment token yet
+**Scope:**
+- [ ] Standalone Gradle project `vireo-idea-plugin/` (own wrapper/toolchain — see feasibility note below), file type registration for `.dac` **+ icon**
+- [ ] **Syntax highlighting** — `SyntaxHighlighter` wrapping `vireo-lexer`'s `Lexer.tokenize()` via a `LexerBase` adapter (whole-file batch re-lex per edit — fine at `.dac` file sizes, not true incremental lexing). Comment highlighting deferred until `SYNTAX.md`'s open "comment syntax" question (`//` vs `#`) is resolved — `vireo-lexer` has no comment token yet.
+- [ ] **Diagnostics** — `ExternalAnnotator`/inspection calling `vireo-analysis`'s `Analyzer` in-process (pure Kotlin, no subprocess) — `VireoError.location` (`SourceLocation(file, line, column)`) maps directly onto IntelliJ's annotation ranges.
+- [ ] **Autocomplete** — `CompletionContributor` suggesting language keywords (`block`, `component`, `import`, `from`, `var`, `fun`, `if`/`then`/`else`, `ref`) and known property keys (`width`, `height`, `color`, `text`, `fontSize`, `radius`, `layout`, `gap`, `padding`, ...). Needs at least a lightweight `ParserDefinition`/PSI (not just the raw lexer) so suggestions are context-aware — property keys only inside a component body, block-level keywords only at top level. This is the standard IntelliJ "custom language" shape (JetBrains' own tutorial follows the same path), not a stretch goal. Note: `Property.key` is a plain `String` in the AST (no closed enum), so the suggestion list is hand-maintained in the plugin, separate from what the parser actually accepts.
 
-**Scope — Tier 2 (diagnostics, highest value/effort ratio):**
-- [ ] `ExternalAnnotator`/inspection calling `vireo-analysis`'s `Analyzer` in-process (pure Kotlin, no subprocess) — `VireoError.location` (`SourceLocation(file, line, column)`) maps directly onto IntelliJ's annotation ranges
+**Explicitly out of scope for this phase (not requested — park for later if ever wanted):**
+- Go-to-definition / find-usages on cross-file `file.block.component` references
+- Live HTML/Figma preview panel inside the IDE
 
-**Scope — Tier 3 (completion, go-to-definition on `file.block.component`, live preview panel) — `[not scoped, order-of-magnitude bigger]`:**
-- Needs a real PSI grammar/parser integration, not just the lexer — treat as its own future phase, not part of this one
-
-**Feasibility note (verified 2026-09-20):** IntelliJ Platform Gradle Plugin 2.x requires Kotlin 2.x for IDE versions 2025.1+ (current IDE releases). Root `build.gradle.kts` pins Kotlin `1.9.22` for all modules via `subprojects {}`. The plugin module needs an independent Kotlin 2.x toolchain outside that convention block — consuming `vireo-lexer`/`vireo-parser`/`vireo-analysis` as ordinary binary dependencies is safe (Kotlin's cross-version binary compatibility covers this), but the module can't just join `include(...)` in `settings.gradle.kts` under the existing convention as-is.
+**Feasibility note (verified 2026-09-20):** IntelliJ Platform Gradle Plugin 2.x requires **Kotlin 2.x and Gradle 9.0+** (root build is Kotlin `1.9.22` / Gradle `8.5`) — a bigger gap than first estimated, since a single Gradle invocation can't mix wrapper versions across modules. Resolved by making `vireo-idea-plugin/` a fully standalone Gradle project (own wrapper, own `settings.gradle.kts`) consuming `vireo-core`/`vireo-lexer`/`vireo-parser`/`vireo-analysis` as plain built jars rather than live `project(...)`/composite-build dependencies — see `BLOCK.md`. Root project untouched.
 
 ---
 

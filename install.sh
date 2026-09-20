@@ -77,6 +77,10 @@ INSTALLED_FROM_RELEASE=false
 
 info "Checking for latest release from GitHub..."
 RELEASE_JSON=$(curl -fsSL "https://api.github.com/repos/$REPO/releases/latest" 2>/dev/null || true)
+if [ -z "$RELEASE_JSON" ] || echo "$RELEASE_JSON" | grep -q "\"message\": \"Not Found\""; then
+    # Also check releases list (which includes prereleases / latest tags)
+    RELEASE_JSON=$(curl -fsSL "https://api.github.com/repos/$REPO/releases" 2>/dev/null || true)
+fi
 
 TAR_URL=$(echo "$RELEASE_JSON" | grep -o 'https://[^"]*vireo-[^"]*\.tar\.gz' | head -n 1 || true)
 if [ -z "$TAR_URL" ]; then

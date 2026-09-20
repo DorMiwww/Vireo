@@ -20,6 +20,7 @@ Read before touching any file. These override general coding instincts.
   vireo-cli → vireo-renderer-* → vireo-analysis → vireo-parser → vireo-lexer → vireo-core
   ```
 - **Never create a dependency from an inner module to an outer one.** `vireo-core` must not import from `vireo-parser`. `vireo-parser` must not import from `vireo-analysis`. Violations break the entire decoupling.
+- **`vireo-idea-plugin` is a standalone Gradle project, not part of this multi-module build.** It lives as a sibling directory (like `figma-plugin/`) with its own Gradle wrapper (IntelliJ Platform Gradle Plugin 2.x requires Gradle 9.0+ and Kotlin 2.x — incompatible with the root build's Gradle 8.5 / Kotlin 1.9.22, and composite-build (`includeBuild`) across that version gap was judged too risky). It consumes `vireo-core`/`vireo-lexer`/`vireo-parser`/`vireo-analysis` as plain jar files built from this repo (`./gradlew :vireo-lexer:jar` etc.), not as live `project(...)` dependencies — rebuild and re-copy those jars after changing any of the four modules.
 - **The AST is the stable contract.** All stages communicate through AST nodes defined in `vireo-core`. Do not bypass the AST by passing raw strings or ad-hoc structures between stages.
 - **Renderers are pure and stateless.** A renderer must not perform I/O (no file reads, no network calls). It receives a `ResolvedFile`, returns a `VireoResult<T>`. The CLI handles all I/O around it.
 - **The Analyzer is the only stage that performs I/O** (loading imported `.dac` files). Lexer, Parser, and Renderers must be pure functions.
@@ -83,6 +84,7 @@ Only these libraries may be added without asking. Any library not on this list r
 | `kotlinx-serialization-json` | 1.6.3 | `vireo-renderer-json` | Correct JSON serialization — handles all Unicode escaping, replaces manual StringBuilder |
 | `clikt` | 4.2.2 | `vireo-cli` | Declarative CLI argument parsing — use when extending CLI commands (init wizard, new subcommands) |
 | `okhttp` | 4.x | `vireo-renderer-figma` | HTTP client for Figma REST API — add when Phase 4 transport is decided |
+| IntelliJ Platform Plugin SDK (`org.jetbrains.intellij.platform` Gradle plugin) | 2.19.0+ | `vireo-idea-plugin` (standalone project, see below) | `.dac` file type/icon, syntax highlighting, diagnostics, autocomplete inside IntelliJ IDEA — approved 2026-09-20 |
 
 Rules for approved libraries:
 - **Do not add** libraries outside this list without asking.

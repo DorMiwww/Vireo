@@ -23,6 +23,11 @@ application {
     applicationName = "vireo"
 }
 
+tasks.named<Tar>("distTar") {
+    compression = Compression.GZIP
+    archiveExtension.set("tar.gz")
+}
+
 tasks.named<JavaExec>("run") {
     workingDir = rootProject.projectDir
 }

@@ -44,3 +44,70 @@ jobs:
           chmod +x ./install.sh
           ./install.sh
           ~/.local/bin/vireo --version
+
+  release:
+    name: Build & Publish Release
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'gradle'
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Determine Project Version
+        id: version
+        run: |
+          VERSION=$(grep -m 1 'version = "' build.gradle.kts | sed 's/.*version = "\(.*\)".*/\1/')
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Detected project version: $VERSION"
+          if [[ "$VERSION" == *"-SNAPSHOT" ]]; then
+            echo "is_prerelease=true" >> $GITHUB_OUTPUT
+            echo "tag=latest" >> $GITHUB_OUTPUT
+            echo "release_name=Vireo Development Build ($VERSION)" >> $GITHUB_OUTPUT
+          else
+            echo "is_prerelease=false" >> $GITHUB_OUTPUT
+            echo "tag=v$VERSION" >> $GITHUB_OUTPUT
+            echo "release_name=Vireo v$VERSION" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Build Distribution Archives
+        run: |
+          ./gradlew :vireo-cli:distTar :vireo-cli:distZip --no-daemon
+          cd vireo-cli/build/distributions
+          sha256sum * > checksums.sha256
+          ls -la
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.tag }}
+          name: ${{ steps.version.outputs.release_name }}
+          prerelease: ${{ steps.version.outputs.is_prerelease == 'true' }}
+          files: |
+            vireo-cli/build/distributions/vireo-*.tar.gz
+            vireo-cli/build/distributions/vireo-*.zip
+            vireo-cli/build/distributions/checksums.sha256
+          body: |
+            ## Vireo CLI Release ${{ steps.version.outputs.version }}
+
+            Compiled and verified automatically on GitHub Actions CI.
+
+            ### Quick Install (macOS & Linux)
+            ```bash
+            curl -fsSL https://raw.githubusercontent.com/DorMiwww/Vireo/main/install.sh | bash
+            ```
