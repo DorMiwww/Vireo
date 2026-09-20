@@ -131,7 +131,7 @@ None — phase fully closed in one session.
 
 ---
 
-## Phase 2 — `vireo-lexer` `[not started]`
+## Phase 2 — `vireo-lexer` `[complete]`
 
 **Risk:** low. **Current size:** `Lexer.kt` 232 lines (one `object Lexer` with a single public `tokenize()` and presumably private scanning helpers), `Token.kt` 52 lines. Test coverage is already strong relative to size (422 test lines vs 284 main) — this phase is mostly organizational, not test-writing.
 
@@ -151,12 +151,22 @@ First read `Lexer.kt` fully and list its private members before deciding the exa
 3. Full suite `./gradlew test`.
 
 ### Definition of Done
-- [ ] Baseline green
-- [ ] Split done (or explicitly declined with reason recorded here)
-- [ ] Full suite green after
-- [ ] Commit hash recorded below
+- [x] Baseline green
+- [x] Split done (or explicitly declined with reason recorded here)
+- [x] Full suite green after
+- [x] Commit hash recorded below
+
+### What actually happened
+Read `Lexer.kt` fresh: the real seam was exactly as anticipated — `object Lexer` held a 2-line public `tokenize()` plus a `KEYWORDS` map and a `private class Scanner` (~200 lines: the whole char-by-char scan loop and every `scanString`/`scanHexColor`/`scanNumber`/`scanIdentifierOrKeyword`/cursor helper). No forcing needed; this was a clean, already-cohesive internal class ready to lift out.
+
+Moved `Scanner` (now `internal class`, was `private`, since a different file in the same module needs to see it — still invisible outside `vireo-lexer`) and the `KEYWORDS` map into `vireo-lexer/src/main/kotlin/com/vireo/lexer/internal/Scanner.kt`, unchanged logic. `Lexer.kt` is now 10 lines: `object Lexer` with just `tokenize()` delegating to `Scanner`. Both files keep `package com.vireo.lexer` (no subpackage), same zero-import-change approach as Phase 1. `Token.kt` untouched — already small and cohesive.
+
+Note: this phase ran concurrently with an unrelated, uncommitted CLI/Init-Wizard session (own root `GATES.md`, touching `vireo-cli/**`, `vireo-renderer-html/**`, `CONTEXT.md`, `ROADMAP.md`, `DOCS/cli.md`). This phase's own `/unlazy` ledger was scoped to `.unlazy/refactor-phase2/GATES.md` to avoid clobbering theirs, and its commit only staged `vireo-lexer/**` + this doc — verified by an explicit gate (see below) rather than assumed.
+
+Verified with `/unlazy`: 7 gates (lint self-check, module test, full suite, canonical layout + old scan loop gone from Lexer.kt, thin entry point <20 lines, plan marked complete, commit stays scoped to this phase's own files), all green — see commit below.
 
 ### Handoff notes
+None — phase fully closed in one session.
 
 ---
 
@@ -375,7 +385,7 @@ Not yet a problem, but if the Phase 5 dedup of `findComponent`/`resolvePath`/`ex
 |-------|--------|--------|-----------|------|
 | 0 | — (baseline) | complete | 0872918 (pre-existing) | 2026-09-20 |
 | 1 | vireo-core | complete | this commit | 2026-09-20 |
-| 2 | vireo-lexer | not started | — | — |
+| 2 | vireo-lexer | complete | this commit | 2026-09-20 |
 | 3 | vireo-renderer-json | not started | — | — |
 | 4 | vireo-renderer-html | not started | — | — |
 | 5 | vireo-renderer-figma | not started | — | — |
