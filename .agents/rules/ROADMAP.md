@@ -147,6 +147,29 @@ The correct transport is a private Figma Development Plugin — no review or pub
 
 ---
 
+## Phase 7 — IntelliJ IDEA Plugin `[proposed, pending approval]`
+
+> Goal: first-class `.dac` editing support in IntelliJ IDEA — syntax highlighting and inline diagnostics, reusing `vireo-lexer`/`vireo-analysis` directly rather than reimplementing anything.
+
+**Blocking, before any code is written:**
+- [ ] User approval to add the IntelliJ Platform Plugin SDK as a new external dependency (not on the `BLOCK.md` Approved External Libraries list)
+- [ ] User decision on sequencing: Tier 1+2 in parallel with Phase 6, or held until after `1.0.0`
+
+**Scope — Tier 1 (syntax highlighting):**
+- [ ] New Gradle module (own Kotlin toolchain — see feasibility note below), file type registration for `.dac`
+- [ ] `SyntaxHighlighter` wrapping `vireo-lexer`'s `Lexer.tokenize()` via a `LexerBase` adapter (whole-file batch re-lex per edit — fine at `.dac` file sizes, not true incremental lexing)
+- [ ] Comment highlighting deferred until `SYNTAX.md`'s open "comment syntax" question (`//` vs `#`) is resolved — `vireo-lexer` has no comment token yet
+
+**Scope — Tier 2 (diagnostics, highest value/effort ratio):**
+- [ ] `ExternalAnnotator`/inspection calling `vireo-analysis`'s `Analyzer` in-process (pure Kotlin, no subprocess) — `VireoError.location` (`SourceLocation(file, line, column)`) maps directly onto IntelliJ's annotation ranges
+
+**Scope — Tier 3 (completion, go-to-definition on `file.block.component`, live preview panel) — `[not scoped, order-of-magnitude bigger]`:**
+- Needs a real PSI grammar/parser integration, not just the lexer — treat as its own future phase, not part of this one
+
+**Feasibility note (verified 2026-09-20):** IntelliJ Platform Gradle Plugin 2.x requires Kotlin 2.x for IDE versions 2025.1+ (current IDE releases). Root `build.gradle.kts` pins Kotlin `1.9.22` for all modules via `subprojects {}`. The plugin module needs an independent Kotlin 2.x toolchain outside that convention block — consuming `vireo-lexer`/`vireo-parser`/`vireo-analysis` as ordinary binary dependencies is safe (Kotlin's cross-version binary compatibility covers this), but the module can't just join `include(...)` in `settings.gradle.kts` under the existing convention as-is.
+
+---
+
 ## Future Backlog & Proposals
 
 ### 1. Figma Design Bundle & Canvas Orchestrator (`vireo bundle`)

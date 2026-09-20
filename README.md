@@ -2,7 +2,8 @@
 
 > **Design as Code (DaaC).** Write declarative design files (`.dac`) and compile them into HTML, JSON IR, and native Figma Auto Layout components.
 
-[![Build](https://img.shields.io/badge/build-passing-brightgreen)]()
+[![CI](https://github.com/DorMiwww/Vireo/actions/workflows/ci.yml/badge.svg)](https://github.com/DorMiwww/Vireo/actions)
+[![Version](https://img.shields.io/badge/version-0.1.0--SNAPSHOT-orange)]()
 [![Kotlin](https://img.shields.io/badge/Kotlin-2.0-blue.svg)]()
 [![Figma Plugin](https://img.shields.io/badge/Figma-Plugin%20Supported-purple)]()
 [![License](https://img.shields.io/badge/license-MIT-green)]()
@@ -98,7 +99,7 @@ Vireo
 ├── vireo-renderer-json     # Structured JSON IR emitter
 ├── vireo-renderer-html     # Standalone HTML5 + CSS Flexbox generator
 ├── vireo-renderer-figma    # AST-to-Figma schema transformer
-├── vireo-cli               # CLI interface (vireo check, vireo render)
+├── vireo-cli               # CLI interface (vireo init, vireo check, vireo render)
 └── figma-plugin            # Native Figma development plugin (JS/HTML) for canvas import
 ```
 
@@ -116,24 +117,75 @@ Data compilation pipeline:
 - Gradle (handled automatically via `./gradlew`)
 - Node.js (optional, for the Figma plugin)
 
-### Build & Run Tests
+### Build & Test
 ```bash
 ./gradlew test
 ```
 
-### CLI Usage
+### Installing & Running the CLI
 
-The CLI supports checking syntax and rendering designs into multiple formats:
+You can install the `vireo` executable directly to your system (`~/.local/bin/vireo`):
 
 ```bash
-# 1. Syntax analysis and import validation
-./gradlew :vireo-cli:run --args="check showcase/card.dac"
+./gradlew installCli
+```
 
-# 2. Render to standalone HTML
-./gradlew :vireo-cli:run --args="render showcase/card.dac --to html -o showcase/card.html"
+Or run the local repository wrapper directly:
+```bash
+./vireo --help
+```
 
-# 3. Render to Figma JSON
-./gradlew :vireo-cli:run --args="render showcase/card.dac --to figma -o showcase/card.figma.json"
+---
+
+## CLI Usage
+
+The Vireo CLI features a `kubectl`-style ergonomic interface with built-in help for each subcommand:
+
+### 1. Initialize a New Project (`vireo init`)
+Scaffold a complete ready-to-render design system in seconds:
+
+```bash
+# Initialize a new project in directory 'my-design'
+vireo init my-design
+
+# Or initialize in the current directory
+vireo init .
+```
+
+This creates:
+- `vireo.config.json` — project configuration
+- `designs/tokens.dac` — colors, spacing, and typography tokens
+- `designs/components/button.dac` — reusable component definitions
+- `designs/card.dac` — full composition showcasing token and component imports
+- `README.md` — project instructions
+
+### 2. Syntax & Import Validation (`vireo check`)
+Verify syntax, resolve cross-file imports, and catch semantic errors:
+
+```bash
+vireo check designs/card.dac
+```
+
+### 3. Compiling & Rendering (`vireo render`)
+Render `.dac` designs into HTML previews, JSON AST representations, or Figma-ready schema files.
+
+```bash
+# Render to standalone HTML5 preview (with default styling)
+vireo render designs/card.dac --html --out card.html
+
+# Render HTML snippet (without full HTML <html>/<head> wrapper, for embedding)
+vireo render designs/card.dac --html --snippet --out card-snippet.html
+
+# Render to Figma JSON for the Figma Canvas Plugin
+vireo render designs/card.dac -o figma -f card.figma.json
+
+# Render to structured JSON IR (AST representation)
+vireo render designs/card.dac -o json
+```
+
+For a full list of options, run:
+```bash
+vireo render --help
 ```
 
 ---
@@ -168,6 +220,19 @@ open showcase/dashboard.html
 
 ---
 
+## Versioning Strategy (Phase 6)
+
+Vireo adheres to **Semantic Versioning (SemVer)** in lockstep across all modules:
+
+- **Current Stage: Beta (`0.x`)**
+  - `0.x.PATCH` — Bug fixes, performance improvements, internal refactoring.
+  - `0.MINOR.x` — New features (syntax, renderers, CLI options) and breaking changes while in Beta.
+- **Road to `1.0.0`**:
+  - Version `1.0.0` marks the **Syntax Freeze** of the `.dac` language contract (all language proposals finalized in `SYNTAX.md`).
+  - Once `1.0.0` is released, strict backward compatibility guarantees will apply to `.dac` source files and CLI contracts.
+
+---
+
 ## Roadmap
 
 - [x] **Phase 1**: Core AST, Stateless Lexer & Recursive Descent Parser
@@ -175,7 +240,8 @@ open showcase/dashboard.html
 - [x] **Phase 3**: Variables, Function Definitions, Arithmetic Expressions, and Conditionals (`if ... then ... else`)
 - [x] **Phase 4**: Figma Schema Renderer (`vireo-renderer-figma`)
 - [x] **Phase 4.5**: Native Figma Canvas Plugin (`figma-plugin/`) with Auto Layout & Device Canvas Presets
-- [ ] **Phase 5**: Interactive Project Scaffolding (`vireo init`)
+- [x] **Phase 5**: Interactive Project Scaffolding & CLI Ergonomics (`vireo init`, `kubectl`-style flags)
+- [ ] **Phase 6**: Release Engineering: 0.x → 1.0.0 (CI, Homebrew distribution, .dac syntax freeze)
 - [ ] **Backlog**: Figma Design Bundle & Canvas Orchestrator (`vireo bundle`)
 
 ---

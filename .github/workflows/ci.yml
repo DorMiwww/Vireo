@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    name: Build & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'gradle'
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Run unit & integration tests
+        run: ./gradlew test --no-daemon
+
+      - name: Build CLI distribution
+        run: ./gradlew :vireo-cli:installDist --no-daemon
+
+      - name: Verify CLI executable
+        run: |
+          ./vireo-cli/build/install/vireo/bin/vireo --version
+          ./vireo-cli/build/install/vireo/bin/vireo --help
+          ./vireo-cli/build/install/vireo/bin/vireo render --help
+          ./vireo-cli/build/install/vireo/bin/vireo check showcase/card.dac
+          ./vireo-cli/build/install/vireo/bin/vireo render showcase/card.dac --html --snippet
