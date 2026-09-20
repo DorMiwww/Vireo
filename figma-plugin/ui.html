@@ -207,6 +207,35 @@
       border: 1px solid #a7f3d0;
       color: var(--success);
     }
+
+    .preset-group {
+      margin-top: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .preset-label {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--subtext);
+    }
+
+    .preset-select {
+      width: 100%;
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 12px;
+      background: var(--surface);
+      color: var(--text);
+      outline: none;
+      cursor: pointer;
+    }
+
+    .preset-select:focus {
+      border-color: var(--primary);
+    }
   </style>
 </head>
 <body>
@@ -238,6 +267,18 @@
 
   <div id="pasteView" class="paste-area">
     <textarea id="jsonPasteInput" placeholder="Paste generated *.figma.json content here..."></textarea>
+  </div>
+
+  <div class="preset-group">
+    <label class="preset-label" for="canvasPreset">Device / Canvas Frame:</label>
+    <select class="preset-select" id="canvasPreset">
+      <option value="none">None (Component Only)</option>
+      <option value="iphone16">iPhone 16 / 15 Pro (393 × 852)</option>
+      <option value="browser">Desktop Browser (1440 × 900)</option>
+      <option value="laptop">Laptop / Desktop (1280 × 800)</option>
+      <option value="android">Google Pixel 7 (412 × 915)</option>
+      <option value="ipad">iPad Air (820 × 1180)</option>
+    </select>
   </div>
 
   <button class="btn btn-primary" id="importBtn" onclick="handleImport()" disabled>Import to Canvas</button>
@@ -347,11 +388,13 @@
         return;
       }
 
+      const presetVal = document.getElementById('canvasPreset') ? document.getElementById('canvasPreset').value : 'none';
       showStatus('Rendering to Figma canvas...', 'info');
       parent.postMessage({
         pluginMessage: {
           type: 'IMPORT_JSON',
-          payload: dataToImport
+          payload: dataToImport,
+          preset: presetVal
         }
       }, '*');
     }

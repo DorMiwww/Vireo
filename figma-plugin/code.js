@@ -1,7 +1,7 @@
 // Vireo Importer - Figma Development Plugin
 // Converts Vireo *.figma.json AST into native Figma canvas layers.
 
-figma.showUI(__html__, { width: 380, height: 380, title: "Vireo Importer" });
+figma.showUI(__html__, { width: 380, height: 440, title: "Vireo Importer" });
 
 const loadedFonts = new Set();
 
@@ -52,6 +52,33 @@ function mapPaints(paintList) {
   });
 }
 
+function applyChildLayoutSizing(figmaElement, node, parent) {
+  if (node.layoutAlign) {
+    figmaElement.layoutAlign = node.layoutAlign;
+  }
+  if (node.layoutGrow !== undefined && node.layoutGrow !== null) {
+    figmaElement.layoutGrow = node.layoutGrow;
+  }
+
+  // Modern Figma API layout sizing
+  try {
+    if (node.layoutAlign === 'STRETCH') {
+      if (parent && parent.layoutMode === 'VERTICAL') {
+        figmaElement.layoutSizingHorizontal = 'FILL';
+      } else if (parent && parent.layoutMode === 'HORIZONTAL') {
+        figmaElement.layoutSizingVertical = 'FILL';
+      }
+    }
+    if (node.layoutGrow === 1) {
+      if (parent && parent.layoutMode === 'HORIZONTAL') {
+        figmaElement.layoutSizingHorizontal = 'FILL';
+      } else if (parent && parent.layoutMode === 'VERTICAL') {
+        figmaElement.layoutSizingVertical = 'FILL';
+      }
+    }
+  } catch (e) {}
+}
+
 async function renderNode(node, parent) {
   if (!node) return null;
 
@@ -79,9 +106,13 @@ async function renderNode(node, parent) {
 
     // Absolute dimensions / bounding box
     const bbox = node.absoluteBoundingBox;
-    const initialWidth = bbox && bbox.width > 0 ? bbox.width : 100;
-    const initialHeight = bbox && bbox.height > 0 ? bbox.height : 100;
-    frame.resize(initialWidth, initialHeight);
+    if (bbox && bbox.width > 0 && bbox.height > 0) {
+      frame.resize(bbox.width, bbox.height);
+    } else if (bbox && bbox.width > 0) {
+      frame.resize(bbox.width, Math.max(frame.height, 44));
+    } else if (bbox && bbox.height > 0) {
+      frame.resize(Math.max(frame.width, 100), bbox.height);
+    }
 
     // Auto Layout configuration
     if (node.layoutMode === "VERTICAL" || node.layoutMode === "HORIZONTAL") {
@@ -108,6 +139,12 @@ async function renderNode(node, parent) {
       if (node.counterAxisSizingMode) {
         frame.counterAxisSizingMode = node.counterAxisSizingMode;
       }
+      if (node.primaryAxisAlignItems) {
+        frame.primaryAxisAlignItems = node.primaryAxisAlignItems;
+      }
+      if (node.counterAxisAlignItems) {
+        frame.counterAxisAlignItems = node.counterAxisAlignItems;
+      }
     }
 
     // Corner Radius
@@ -131,6 +168,8 @@ async function renderNode(node, parent) {
     if (parent && parent.appendChild) {
       parent.appendChild(frame);
     }
+
+    applyChildLayoutSizing(frame, node, parent);
 
     // Recursively render children
     if (node.children) {
@@ -183,6 +222,8 @@ async function renderNode(node, parent) {
       parent.appendChild(text);
     }
 
+    applyChildLayoutSizing(text, node, parent);
+
     return text;
   }
 
@@ -214,16 +255,28 @@ async function renderNode(node, parent) {
       parent.appendChild(rect);
     }
 
+    applyChildLayoutSizing(rect, node, parent);
+
     return rect;
   }
 
   return null;
 }
 
+const PRESETS = {
+  iphone16: { name: "iPhone 16 / 15 Pro", width: 393, height: 852, radius: 50, bg: { r: 0.95, g: 0.96, b: 0.98 } },
+  browser: { name: "Desktop Browser", width: 1440, height: 900, radius: 0, bg: { r: 0.94, g: 0.95, b: 0.97 } },
+  laptop: { name: "Laptop (1280 × 800)", width: 1280, height: 800, radius: 0, bg: { r: 0.94, g: 0.95, b: 0.97 } },
+  android: { name: "Google Pixel 7", width: 412, height: 915, radius: 36, bg: { r: 0.95, g: 0.96, b: 0.98 } },
+  ipad: { name: "iPad Air", width: 820, height: 1180, radius: 24, bg: { r: 0.95, g: 0.96, b: 0.98 } }
+};
+
 figma.ui.onmessage = async (msg) => {
   if (msg.type === 'IMPORT_JSON') {
     try {
       const payload = msg.payload;
+      const preset = msg.preset || 'none';
+
       if (!payload) {
         figma.ui.postMessage({ type: 'ERROR', error: 'Empty JSON payload' });
         return;
@@ -252,12 +305,38 @@ figma.ui.onmessage = async (msg) => {
       }
 
       if (createdItems.length > 0) {
-        figma.currentPage.selection = createdItems;
-        figma.viewport.scrollAndZoomIntoView(createdItems);
-        figma.notify(`Vireo: Successfully imported ${createdItems.length} design(s)!`);
+        let finalSelection = createdItems;
+
+        // Wrap in Canvas/Device Preset if chosen
+        if (preset && preset !== 'none' && PRESETS[preset]) {
+          const p = PRESETS[preset];
+          const deviceFrame = figma.createFrame();
+          deviceFrame.name = p.name;
+          deviceFrame.resize(p.width, p.height);
+          if (p.radius) {
+            deviceFrame.cornerRadius = p.radius;
+            deviceFrame.clipsContent = true;
+          }
+          deviceFrame.fills = [{ type: 'SOLID', color: p.bg }];
+          deviceFrame.layoutMode = "VERTICAL";
+          deviceFrame.primaryAxisAlignItems = "CENTER";
+          deviceFrame.counterAxisAlignItems = "CENTER";
+          deviceFrame.primaryAxisSizingMode = "FIXED";
+          deviceFrame.counterAxisSizingMode = "FIXED";
+
+          for (const item of createdItems) {
+            deviceFrame.appendChild(item);
+          }
+          figma.currentPage.appendChild(deviceFrame);
+          finalSelection = [deviceFrame];
+        }
+
+        figma.currentPage.selection = finalSelection;
+        figma.viewport.scrollAndZoomIntoView(finalSelection);
+        figma.notify(`Vireo: Successfully imported ${finalSelection.length} design(s)!`);
         figma.ui.postMessage({
           type: 'SUCCESS',
-          message: `Successfully imported ${createdItems.length} design(s) to canvas!`
+          message: `Successfully imported to canvas!`
         });
       } else {
         figma.ui.postMessage({ type: 'ERROR', error: 'No renderable canvas nodes found in JSON.' });

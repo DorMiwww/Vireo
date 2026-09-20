@@ -5,14 +5,14 @@ import com.vireo.core.*
 object FigmaRenderer : Renderer<FigmaDocument> {
 
     override fun render(file: ResolvedFile): VireoResult<FigmaDocument> {
-        return render(file.file)
+        return render(file.file, file.loadedFiles)
     }
 
-    fun render(file: VireoFile): VireoResult<FigmaDocument> {
+    fun render(file: VireoFile, loadedFiles: Map<String, VireoFile> = emptyMap()): VireoResult<FigmaDocument> {
         return try {
             var blockCounter = 1
             val blockNodes = file.blocks.map { block ->
-                renderBlock(block, blockCounter++)
+                renderBlock(block, blockCounter++, file, loadedFiles)
             }
 
             val canvasNode = FigmaNode(
@@ -33,10 +33,15 @@ object FigmaRenderer : Renderer<FigmaDocument> {
         }
     }
 
-    private fun renderBlock(block: Block, blockId: Int): FigmaNode {
+    private fun renderBlock(
+        block: Block,
+        blockId: Int,
+        file: VireoFile,
+        loadedFiles: Map<String, VireoFile>
+    ): FigmaNode {
         var childCounter = 1
         val childrenNodes = block.components.map { comp ->
-            renderComponent(comp, "1:$blockId:${childCounter++}")
+            renderComponent(comp, "1:$blockId:${childCounter++}", file, loadedFiles)
         }
 
         return FigmaNode(
@@ -45,12 +50,22 @@ object FigmaRenderer : Renderer<FigmaDocument> {
             type = "FRAME",
             children = childrenNodes,
             layoutMode = "VERTICAL",
+            primaryAxisSizingMode = "AUTO",
+            counterAxisSizingMode = "AUTO",
             itemSpacing = 16f
         )
     }
 
-    private fun renderComponent(comp: ComponentNode, nodeId: String): FigmaNode {
+    private fun renderComponent(
+        rawComp: ComponentNode,
+        nodeId: String,
+        file: VireoFile,
+        loadedFiles: Map<String, VireoFile>
+    ): FigmaNode {
+        val comp = resolveComponentRef(rawComp, file, loadedFiles)
+
         var textContent: String? = null
+        var placeholderText: String? = null
         var colorHex: String? = null
         var fontSizeVal: Float? = null
         var fontWeightVal: Float? = null
@@ -167,7 +182,10 @@ object FigmaRenderer : Renderer<FigmaDocument> {
                         strokeHex = parts[1]
                     }
                 }
-                "text", "label", "placeholder" -> {
+                "placeholder" -> {
+                    placeholderText = strVal
+                }
+                "text", "label" -> {
                     if (textContent == null) {
                         textContent = strVal
                     }
@@ -175,8 +193,44 @@ object FigmaRenderer : Renderer<FigmaDocument> {
             }
         }
 
-        val isTextNode = textContent != null && comp.children.isEmpty()
-        val nodeType = if (isTextNode) "TEXT" else if (comp.children.isNotEmpty() || layoutDir != null) "FRAME" else "RECTANGLE"
+        // Sizing in Auto Layout
+        val isVertical = layoutDir == "VERTICAL"
+        val isHorizontal = layoutDir == "HORIZONTAL"
+
+        val primarySizing = when {
+            isVertical -> when {
+                isHugHeight || mainAxisSizing == "AUTO" -> "AUTO"
+                isFillHeight || mainAxisSizing == "FIXED" -> "FIXED"
+                heightVal != null -> "FIXED"
+                else -> "AUTO"
+            }
+            isHorizontal -> when {
+                isHugWidth || mainAxisSizing == "AUTO" -> "AUTO"
+                isFillWidth || mainAxisSizing == "FIXED" -> "FIXED"
+                widthVal != null -> "FIXED"
+                else -> "AUTO"
+            }
+            else -> null
+        }
+
+        val counterSizing = when {
+            isVertical -> when {
+                isHugWidth || crossAxisSizing == "AUTO" -> "AUTO"
+                isFillWidth || crossAxisSizing == "FIXED" -> "FIXED"
+                widthVal != null -> "FIXED"
+                else -> "AUTO"
+            }
+            isHorizontal -> when {
+                isHugHeight || crossAxisSizing == "AUTO" -> "AUTO"
+                isFillHeight || crossAxisSizing == "FIXED" -> "FIXED"
+                heightVal != null -> "FIXED"
+                else -> "AUTO"
+            }
+            else -> null
+        }
+
+        val layoutAlignVal = if (isFillWidth) "STRETCH" else null
+        val layoutGrowVal = if (isFillHeight) 1f else null
 
         val fillsList = colorHex?.let { listOf(Paint(type = "SOLID", color = Color.fromHex(it))) }
         val strokesList = strokeHex?.let { listOf(Paint(type = "SOLID", color = Color.fromHex(it))) }
@@ -185,22 +239,54 @@ object FigmaRenderer : Renderer<FigmaDocument> {
             TypeStyle(fontSize = fontSizeVal, fontWeight = fontWeightVal)
         } else null
 
-        val primarySizing = when {
-            isHugWidth || mainAxisSizing == "AUTO" -> "AUTO"
-            isFillWidth || mainAxisSizing == "FIXED" -> "FIXED"
-            else -> if (widthVal != null) "FIXED" else null
+        val isInputBox = placeholderText != null || (textContent != null && (radiusVal != null || strokeW != null || strokeHex != null))
+        val isButtonOrContainerWithChildren = comp.children.isNotEmpty() || layoutDir != null
+
+        val nodeType = if (isInputBox || isButtonOrContainerWithChildren) {
+            "FRAME"
+        } else if (textContent != null) {
+            "TEXT"
+        } else {
+            "RECTANGLE"
         }
 
-        val counterSizing = when {
-            isHugHeight || crossAxisSizing == "AUTO" -> "AUTO"
-            isFillHeight || crossAxisSizing == "FIXED" -> "FIXED"
-            else -> if (heightVal != null) "FIXED" else null
-        }
-
+        // Render children
         var childCounter = 1
-        val renderedChildren = comp.children.map { child ->
-            renderComponent(child, "$nodeId:${childCounter++}")
-        }.ifEmpty { null }
+        var renderedChildren: List<FigmaNode>? = if (isInputBox && placeholderText != null && comp.children.isEmpty()) {
+            listOf(
+                FigmaNode(
+                    id = "$nodeId:placeholder",
+                    name = "Placeholder",
+                    type = "TEXT",
+                    characters = placeholderText,
+                    style = TypeStyle(fontSize = fontSizeVal ?: 14f),
+                    fills = listOf(Paint(type = "SOLID", color = Color.fromHex("#9CA3AF")))
+                )
+            )
+        } else if (comp.children.isNotEmpty()) {
+            comp.children.map { child ->
+                renderComponent(child, "$nodeId:${childCounter++}", file, loadedFiles)
+            }
+        } else null
+
+        // Auto Layout defaults for containers
+        var effectiveLayoutDir = layoutDir
+        var effectivePrimaryAlign: String? = null
+        var effectiveCounterAlign: String? = null
+
+        if (isInputBox && effectiveLayoutDir == null) {
+            effectiveLayoutDir = "HORIZONTAL"
+            effectiveCounterAlign = "CENTER"
+            if (pLeft == null) pLeft = 16f
+            if (pRight == null) pRight = 16f
+            if (heightVal == null) heightVal = 44f
+        } else if (comp.children.isNotEmpty() && effectiveLayoutDir == null) {
+            // Button-like container centering its children
+            effectiveLayoutDir = "HORIZONTAL"
+            effectivePrimaryAlign = "CENTER"
+            effectiveCounterAlign = "CENTER"
+            if (heightVal == null) heightVal = 44f
+        }
 
         val boundingBox = if (xVal != null || yVal != null || widthVal != null || heightVal != null) {
             Rect(
@@ -216,15 +302,19 @@ object FigmaRenderer : Renderer<FigmaDocument> {
             name = comp.name,
             type = nodeType,
             children = renderedChildren,
-            characters = textContent,
+            characters = if (nodeType == "TEXT") textContent else null,
             style = typeStyle,
-            fills = fillsList,
+            fills = fillsList ?: (if (isInputBox) listOf(Paint(type = "SOLID", color = Color(1f, 1f, 1f))) else null),
             strokes = strokesList,
             strokeWeight = strokeW,
             cornerRadius = radiusVal,
-            layoutMode = layoutDir,
+            layoutMode = effectiveLayoutDir,
             primaryAxisSizingMode = primarySizing,
             counterAxisSizingMode = counterSizing,
+            primaryAxisAlignItems = effectivePrimaryAlign,
+            counterAxisAlignItems = effectiveCounterAlign,
+            layoutAlign = layoutAlignVal,
+            layoutGrow = layoutGrowVal,
             itemSpacing = itemGap,
             paddingLeft = pLeft,
             paddingRight = pRight,
@@ -232,6 +322,93 @@ object FigmaRenderer : Renderer<FigmaDocument> {
             paddingBottom = pBottom,
             absoluteBoundingBox = boundingBox
         )
+    }
+
+    private fun resolveComponentRef(
+        comp: ComponentNode,
+        sourceFile: VireoFile,
+        loadedFiles: Map<String, VireoFile>
+    ): ComponentNode {
+        val refProp = comp.properties.find { it.key == "ref" } ?: return comp
+        if (refProp.value !is PropertyValue.Ref) return comp
+
+        val ref = (refProp.value as PropertyValue.Ref).reference
+        val imp = sourceFile.imports.find { it.alias == ref.file } ?: return comp
+        val targetPath = resolvePath(sourceFile.path, imp.filePath)
+        val targetFile = loadedFiles[targetPath] ?: return comp
+        val targetBlock = targetFile.blocks.find { it.name == ref.block } ?: return comp
+        val baseComp = findComponent(targetBlock.components, ref.component) ?: return comp
+
+        // Inherit properties, with comp overriding
+        val overriddenKeys = comp.properties.map { it.key }.toSet()
+        val mergedProps = comp.properties.filter { it.key != "ref" } +
+            baseComp.properties.filter { it.key !in overriddenKeys && it.key != "ref" }
+
+        val overriddenAxes = comp.constraints.map {
+            when (it) {
+                is Constraint.Explicit -> it.axis
+                is Constraint.Relational -> it.axis
+                is Constraint.AutoLayout -> Axis.WIDTH
+            }
+        }.toSet()
+        val mergedConstraints = comp.constraints +
+            baseComp.constraints.filter {
+                val axis = when (it) {
+                    is Constraint.Explicit -> it.axis
+                    is Constraint.Relational -> it.axis
+                    is Constraint.AutoLayout -> Axis.WIDTH
+                }
+                axis !in overriddenAxes
+            }
+
+        // Label override
+        val customLabel = comp.properties.find { it.key == "label" }?.let { extractPropertyValueString(it.value) }
+        val mergedChildren = if (comp.children.isNotEmpty()) {
+            comp.children
+        } else if (customLabel != null && baseComp.children.isNotEmpty()) {
+            baseComp.children.map { child ->
+                if (child.name == "Label" || child.properties.any { it.key == "text" }) {
+                    val updatedProps = child.properties.filter { it.key != "text" } +
+                        Property("text", PropertyValue.Literal(customLabel, child.location), child.location)
+                    child.copy(properties = updatedProps)
+                } else {
+                    child
+                }
+            }
+        } else {
+            baseComp.children
+        }
+
+        return comp.copy(
+            constraints = mergedConstraints,
+            properties = mergedProps,
+            children = mergedChildren
+        )
+    }
+
+    private fun findComponent(components: List<ComponentNode>, name: String): ComponentNode? {
+        for (c in components) {
+            if (c.name == name) return c
+            val found = findComponent(c.children, name)
+            if (found != null) return found
+        }
+        return null
+    }
+
+    private fun resolvePath(basePath: String, relativePath: String): String {
+        val cleanRel = relativePath.trimStart('.', '/')
+        val baseDir = basePath.substringBeforeLast('/', "")
+        val combined = if (baseDir.isEmpty()) cleanRel else "$baseDir/$cleanRel"
+        val parts = combined.split('/')
+        val normalized = mutableListOf<String>()
+        for (part in parts) {
+            when (part) {
+                "", "." -> {}
+                ".." -> if (normalized.isNotEmpty()) normalized.removeAt(normalized.lastIndex)
+                else -> normalized.add(part)
+            }
+        }
+        return normalized.joinToString("/")
     }
 
     private fun extractPropertyValueString(rawVal: PropertyValue): String {

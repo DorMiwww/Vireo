@@ -56,8 +56,36 @@
                                 {
                                     "id": "1:1:1:3",
                                     "name": "EmailField",
-                                    "type": "TEXT",
-                                    "characters": "Email",
+                                    "type": "FRAME",
+                                    "children": [
+                                        {
+                                            "id": "1:1:1:3:placeholder",
+                                            "name": "Placeholder",
+                                            "type": "TEXT",
+                                            "characters": "Email",
+                                            "style": {
+                                                "fontSize": 14.0
+                                            },
+                                            "fills": [
+                                                {
+                                                    "color": {
+                                                        "r": 0.6117647,
+                                                        "g": 0.6392157,
+                                                        "b": 0.6862745
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "fills": [
+                                        {
+                                            "color": {
+                                                "r": 1.0,
+                                                "g": 1.0,
+                                                "b": 1.0
+                                            }
+                                        }
+                                    ],
                                     "strokes": [
                                         {
                                             "color": {
@@ -69,8 +97,11 @@
                                     ],
                                     "strokeWeight": 1.0,
                                     "cornerRadius": 99.0,
-                                    "primaryAxisSizingMode": "FIXED",
-                                    "counterAxisSizingMode": "FIXED",
+                                    "layoutMode": "HORIZONTAL",
+                                    "counterAxisAlignItems": "CENTER",
+                                    "layoutAlign": "STRETCH",
+                                    "paddingLeft": 16.0,
+                                    "paddingRight": 16.0,
                                     "absoluteBoundingBox": {
                                         "height": 44.0
                                     }
@@ -78,8 +109,36 @@
                                 {
                                     "id": "1:1:1:4",
                                     "name": "PasswordField",
-                                    "type": "TEXT",
-                                    "characters": "Password",
+                                    "type": "FRAME",
+                                    "children": [
+                                        {
+                                            "id": "1:1:1:4:placeholder",
+                                            "name": "Placeholder",
+                                            "type": "TEXT",
+                                            "characters": "Password",
+                                            "style": {
+                                                "fontSize": 14.0
+                                            },
+                                            "fills": [
+                                                {
+                                                    "color": {
+                                                        "r": 0.6117647,
+                                                        "g": 0.6392157,
+                                                        "b": 0.6862745
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "fills": [
+                                        {
+                                            "color": {
+                                                "r": 1.0,
+                                                "g": 1.0,
+                                                "b": 1.0
+                                            }
+                                        }
+                                    ],
                                     "strokes": [
                                         {
                                             "color": {
@@ -91,8 +150,11 @@
                                     ],
                                     "strokeWeight": 1.0,
                                     "cornerRadius": 99.0,
-                                    "primaryAxisSizingMode": "FIXED",
-                                    "counterAxisSizingMode": "FIXED",
+                                    "layoutMode": "HORIZONTAL",
+                                    "counterAxisAlignItems": "CENTER",
+                                    "layoutAlign": "STRETCH",
+                                    "paddingLeft": 16.0,
+                                    "paddingRight": 16.0,
                                     "absoluteBoundingBox": {
                                         "height": 44.0
                                     }
@@ -100,8 +162,47 @@
                                 {
                                     "id": "1:1:1:5",
                                     "name": "SubmitButton",
-                                    "type": "RECTANGLE",
-                                    "primaryAxisSizingMode": "FIXED"
+                                    "type": "FRAME",
+                                    "children": [
+                                        {
+                                            "id": "1:1:1:5:1",
+                                            "name": "Label",
+                                            "type": "TEXT",
+                                            "characters": "Sign In",
+                                            "style": {
+                                                "fontSize": 14.0,
+                                                "fontWeight": 700.0
+                                            },
+                                            "fills": [
+                                                {
+                                                    "color": {
+                                                        "r": 1.0,
+                                                        "g": 1.0,
+                                                        "b": 1.0
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "fills": [
+                                        {
+                                            "color": {
+                                                "r": 0.23137255,
+                                                "g": 0.50980395,
+                                                "b": 0.9647059
+                                            }
+                                        }
+                                    ],
+                                    "cornerRadius": 8.0,
+                                    "layoutMode": "HORIZONTAL",
+                                    "counterAxisAlignItems": "CENTER",
+                                    "layoutAlign": "STRETCH",
+                                    "paddingLeft": 16.0,
+                                    "paddingRight": 16.0,
+                                    "absoluteBoundingBox": {
+                                        "width": 200.0,
+                                        "height": 44.0
+                                    }
                                 },
                                 {
                                     "id": "1:1:1:6",
@@ -146,6 +247,8 @@
                         }
                     ],
                     "layoutMode": "VERTICAL",
+                    "primaryAxisSizingMode": "AUTO",
+                    "counterAxisSizingMode": "AUTO",
                     "itemSpacing": 16.0
                 }
             ]

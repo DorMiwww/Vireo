@@ -37,7 +37,7 @@ private class FileAnalyzer(
         // Step 3: Evaluate expressions on the entry file
         return when (val evalResult = ExprEvaluator.evaluate(entryFile)) {
             is VireoResult.Err -> VireoResult.Err(evalResult.errors)
-            is VireoResult.Ok -> VireoResult.Ok(ResolvedFile(file = evalResult.value))
+            is VireoResult.Ok -> VireoResult.Ok(ResolvedFile(file = evalResult.value, loadedFiles = loadedFiles))
         }
     }
 

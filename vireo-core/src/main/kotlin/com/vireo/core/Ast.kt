@@ -126,5 +126,6 @@ enum class Sizing {
 
 data class ResolvedFile(
     val file: VireoFile,
-    val location: SourceLocation = file.location
+    val location: SourceLocation = file.location,
+    val loadedFiles: Map<String, VireoFile> = emptyMap()
 )
