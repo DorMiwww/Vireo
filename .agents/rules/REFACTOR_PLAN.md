@@ -170,7 +170,7 @@ None — phase fully closed in one session.
 
 ---
 
-## Phase 3 — `vireo-renderer-json` `[not started]`
+## Phase 3 — `vireo-renderer-json` `[complete]`
 
 **Risk:** low. **Current size:** 104 main lines, 181 test lines — already the best-tested module relative to size, and small enough it may not need splitting at all. Treat this phase as a dry run for the golden-test technique before the harder HTML/Figma phases.
 
@@ -181,12 +181,24 @@ None — phase fully closed in one session.
 4. Full suite `./gradlew test`.
 
 ### Definition of Done
-- [ ] Baseline green
-- [ ] Golden test added (or existing coverage confirmed sufficient, with reasoning noted)
-- [ ] Full suite green after
-- [ ] Commit hash recorded below
+- [x] Baseline green
+- [x] Golden test added (or existing coverage confirmed sufficient, with reasoning noted)
+- [x] Full suite green after
+- [x] Commit hash recorded below
+
+### What actually happened
+Read `JsonRenderer.kt` fresh: confirmed it's one small, genuinely cohesive `object` (104 lines — `render()` entry points plus a straightforward `buildFileJson`/`buildBlockJson`/`buildComponentJson`/`propertyValueToJson` tree-walk). **No split done** — there's no real seam to force, matching the plan's own fallback. Recorded here rather than inventing structure.
+
+Used `designs/card.dac` (Example 3, Auto Layout Card) instead of the originally-proposed `login.dac`, since `card.dac` has no cross-file `import`, so the golden test only needs `Parser.parse()` (added `testImplementation(project(":vireo-parser"))`, matching the pattern already used by `renderer-html`/`renderer-figma` tests) rather than a full Analyzer pass. Source is embedded verbatim as a Kotlin string in the test, matching the existing convention in `HtmlRendererTest.kt`/`FigmaRendererTest.kt` — not read from disk.
+
+Captured the golden fixture honestly rather than hand-writing expected JSON: wrote a throwaway `GoldenBootstrap.kt` test that parsed+rendered `card.dac` and wrote the real output to `src/test/resources/golden/card.json`, inspected it (confirmed a real, non-obvious fact along the way: `layout`/`gap`/`padding`/`shadow`/etc. all currently serialize as plain `properties`, not `constraints` — `JsonRenderer.buildComponentJson` doesn't touch `constraints` at all; left as-is, this is existing behavior, not something this refactor changes), then deleted the bootstrap and added the real permanent assertion test to `JsonRendererTest.kt`. It passed green on its first real run — proof the fixture is accurate, not guessed.
+
+Note: this phase ran alongside the same concurrent, unrelated, uncommitted session as Phases 1-2 (own root `GATES.md`; by this point also touching `BLOCK.md`, `figma-plugin/code.js`, `vireo-renderer-figma/FigmaDocument.kt` in addition to its earlier files). Ledger scoped to `.unlazy/refactor-phase3/`; commit scoped to `vireo-renderer-json/**` + this doc only, verified by gate.
+
+Verified with `/unlazy`: 7 gates (lint self-check, module test, full suite, golden fixture+test present, no leftover bootstrap file, plan marked complete, commit stays scoped), all green — see commit below.
 
 ### Handoff notes
+None — phase fully closed in one session.
 
 ---
 
@@ -386,7 +398,7 @@ Not yet a problem, but if the Phase 5 dedup of `findComponent`/`resolvePath`/`ex
 | 0 | — (baseline) | complete | 0872918 (pre-existing) | 2026-09-20 |
 | 1 | vireo-core | complete | this commit | 2026-09-20 |
 | 2 | vireo-lexer | complete | this commit | 2026-09-20 |
-| 3 | vireo-renderer-json | not started | — | — |
+| 3 | vireo-renderer-json | complete | this commit | 2026-09-20 |
 | 4 | vireo-renderer-html | not started | — | — |
 | 5 | vireo-renderer-figma | not started | — | — |
 | 6 | vireo-analysis | not started | — | — |

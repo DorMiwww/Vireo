@@ -1,12 +1,78 @@
 package com.vireo.renderer.json
 
 import com.vireo.core.*
+import com.vireo.parser.Parser
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
 import kotlin.test.assertTrue
 
 class JsonRendererTest {
+
+    @Test
+    fun `test Example 3 - Auto Layout Card renders exactly to the golden JSON fixture`() {
+        // Mirrors designs/card.dac (Example 3 in EXAMPLES.md) verbatim.
+        val source = """
+            block Cards {
+                component Card {
+                    layout: vertical
+                    mainAxis: hug
+                    crossAxis: fill
+                    gap: 12
+                    padding: 16
+                    color: #FFFFFF
+                    radius: 12
+                    shadow: true
+
+                    component Title {
+                        text: "Card Title"
+                        fontSize: 18
+                        fontWeight: bold
+                        color: #111827
+                    }
+
+                    component Description {
+                        text: "Card description goes here."
+                        fontSize: 14
+                        color: #6B7280
+                    }
+
+                    component Footer {
+                        layout: horizontal
+                        mainAxis: fill
+                        crossAxis: hug
+                        gap: 8
+
+                        component Tag {
+                            color: #EFF6FF
+                            radius: 4
+                            padding: 4 8
+
+                            component TagText {
+                                text: "New"
+                                fontSize: 12
+                                color: #3B82F6
+                            }
+                        }
+                    }
+                }
+            }
+        """.trimIndent()
+
+        val parseResult = Parser.parse(source, "card.dac")
+        assertIs<VireoResult.Ok<VireoFile>>(parseResult)
+
+        val renderResult = JsonRenderer.render(parseResult.value)
+        assertIs<VireoResult.Ok<String>>(renderResult)
+
+        val goldenJson = checkNotNull(
+            JsonRendererTest::class.java.getResourceAsStream("/golden/card.json")
+        ) { "golden fixture golden/card.json missing from test resources" }
+            .bufferedReader()
+            .readText()
+
+        assertEquals(goldenJson, renderResult.value)
+    }
 
     @Test
     fun `test Example 1 - Hello Rectangle renders to expected JSON format`() {
