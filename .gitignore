@@ -25,3 +25,7 @@ out/
 # vireo-idea-plugin consumes these as plain jars (see BLOCK.md) — derived
 # artifacts, regenerate with vireo-idea-plugin/sync-libs.sh
 vireo-idea-plugin/libs/*.jar
+
+# IntelliJ plugin sandbox & temporary cache
+.intellijPlatform/
+**/.intellijPlatform/

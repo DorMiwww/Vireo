@@ -1,0 +1,33 @@
+<idea-plugin>
+    <id>com.vireo.idea-plugin</id>
+    <name>Vireo</name>
+    <vendor email="newacaunt31@gmail.com" url="https://github.com/">Vireo</vendor>
+
+    <description><![CDATA[
+        Editor support for Vireo <code>.dac</code> design-as-code files: file type &amp; icon,
+        syntax highlighting, inline diagnostics, and keyword/property autocomplete.
+        Reuses vireo-lexer and vireo-analysis directly rather than reimplementing them.
+    ]]></description>
+
+    <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <fileType name="Dac"
+                  implementationClass="com.vireo.ideaplugin.DacFileType"
+                  fieldName="INSTANCE"
+                  language="Dac"
+                  extensions="dac"/>
+
+        <lang.parserDefinition language="Dac"
+                                implementationClass="com.vireo.ideaplugin.DacParserDefinition"/>
+
+        <lang.syntaxHighlighterFactory language="Dac"
+                                        implementationClass="com.vireo.ideaplugin.DacSyntaxHighlighterFactory"/>
+
+        <externalAnnotator language="Dac"
+                            implementationClass="com.vireo.ideaplugin.DacAnnotator"/>
+
+        <completion.contributor language="Dac"
+                                 implementationClass="com.vireo.ideaplugin.DacCompletionContributor"/>
+    </extensions>
+</idea-plugin>

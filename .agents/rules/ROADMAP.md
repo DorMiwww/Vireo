@@ -178,20 +178,6 @@ The correct transport is a private Figma Development Plugin — no review or pub
 
 ---
 
-## Phase 8 — `.dac` Agent Skill + Docs Sync `[planned, gated on syntax freeze]`
-
-> Goal: a Claude Code Skill that gives any agent a complete, accurate picture of how to write `.dac` — kept in sync with real documentation instead of a hand-copied summary that drifts.
-
-**Sequencing (decided 2026-09-20):** waits for the `SYNTAX.md` freeze (Phase 6) — this skill's content *is* the syntax description, so building it against unfrozen `proposal` syntax means rewriting it later. Not parallel, unlike Phase 7.
-
-**Documentation source (decided 2026-09-20):** `DOCS/` in-repo for now. A published docs site is a future intent, not yet planned in detail — revisit the skill's sync mechanism once that site exists.
-
-**Scope:**
-- [ ] Skill package (`.claude/skills/dac/SKILL.md` + reference files) — language overview, syntax constructs, CLI commands (`render`/`check`/`init`), worked examples. Sourced from `SYNTAX.md`'s Decision Log (post-freeze) + `EXAMPLES.md`/`showcase/` + `DOCS/cli.md`.
-- [ ] Sync mechanism — some check (script or CI step) flagging when `SYNTAX.md`/`DOCS/` change but the skill wasn't updated.
-
----
-
 ## Future Backlog & Proposals
 
 ### 1. Figma Design Bundle & Canvas Orchestrator (`vireo bundle`)
@@ -223,6 +209,17 @@ When a project has dozens of `.dac` files (design systems, components, multiple 
 - New pipeline stage: `ResolvedFile → UI code`
 - Target frameworks: TBD (React, Compose, SwiftUI, ...)
 - Architecture and component structure preserved in output
+
+### 3. `.dac` Agent Skill + Docs Sync
+> Goal: a Claude Code Skill that gives any agent a complete, accurate picture of how to write `.dac` — kept in sync with real documentation instead of a hand-copied summary that drifts.
+
+**Status:** Gated on the `SYNTAX.md` freeze (Phase 6) — this skill's content *is* the syntax description, so building it against unfrozen `proposal` syntax means rewriting it later.
+
+**Documentation source (decided 2026-09-20):** `DOCS/` in-repo for now. A published docs site is a future intent, not yet planned in detail — revisit the skill's sync mechanism once that site exists.
+
+**Scope:**
+- Skill package (`.claude/skills/dac/SKILL.md` + reference files) — language overview, syntax constructs, CLI commands (`render`/`check`/`init`), worked examples. Sourced from `SYNTAX.md`'s Decision Log (post-freeze) + `EXAMPLES.md`/`showcase/` + `DOCS/cli.md`.
+- Sync mechanism — some check (script or CI step) flagging when `SYNTAX.md`/`DOCS/` change but the skill wasn't updated.
 
 ---
 
