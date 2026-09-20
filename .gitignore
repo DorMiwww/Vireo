@@ -10,6 +10,11 @@ Thumbs.db
 *.swo
 .claude/
 
+# /unlazy completion ledgers — per-session working state, not repo history
+GATES.md
+.unlazy/
+.unlazy-hook-state.json
+
 # Gradle build & cache outputs
 .gradle/
 build/
