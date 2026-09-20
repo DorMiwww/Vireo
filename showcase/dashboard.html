@@ -1,252 +1,262 @@
-<div class="vireo-file" data-path="showcase/dashboard.dac" style="font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: #F3F4F6; margin: 0; box-sizing: border-box;">
-  <div class="vireo-block" data-name="Dashboard">
-    <div class="vireo-component" data-name="Page" style="box-sizing: border-box; width: 1280px; display: flex; flex-direction: column; gap: 24px; height: fit-content; background-color: #F8FAFC; padding: 24px;">
-      <div class="vireo-component" data-name="Navbar" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; width: 100%; background-color: #FFFFFF; border-radius: 12px; padding: 14px 24px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); justify-content: space-between; align-items: center;">
-        <div class="vireo-component" data-name="LeftNav" style="box-sizing: border-box; display: flex; flex-direction: row; gap: 32px; width: fit-content; align-items: center;">
-          <div class="vireo-component" data-name="Brand" style="box-sizing: border-box; display: flex; flex-direction: row; gap: 10px; width: fit-content; align-items: center;">
-            <div class="vireo-component" data-name="Logo" style="box-sizing: border-box; width: 32px; height: 32px; border-radius: 8px; background-color: #2563EB; display: flex; align-items: center; justify-content: center; cursor: pointer;">
-              <div class="vireo-component" data-name="LogoChar" style="box-sizing: border-box; font-size: 18px; font-weight: bold; color: #FFFFFF;">V</div>
-            </div>
-            <div class="vireo-component" data-name="BrandName" style="box-sizing: border-box; font-size: 18px; font-weight: bold; color: #0F172A;">Vireo Cloud</div>
-          </div>
-          <div class="vireo-component" data-name="NavLinks" style="box-sizing: border-box; display: flex; flex-direction: row; gap: 20px; width: fit-content; align-items: center;">
-            <div class="vireo-component" data-name="LinkDashboard" style="box-sizing: border-box; font-size: 14px; font-weight: bold; color: #2563EB;">Overview</div>
-            <div class="vireo-component" data-name="LinkAnalytics" style="box-sizing: border-box; font-size: 14px; color: #64748B;">Analytics</div>
-            <div class="vireo-component" data-name="LinkInvoices" style="box-sizing: border-box; font-size: 14px; color: #64748B;">Invoices</div>
-            <div class="vireo-component" data-name="LinkCustomers" style="box-sizing: border-box; font-size: 14px; color: #64748B;">Customers</div>
-            <div class="vireo-component" data-name="LinkSettings" style="box-sizing: border-box; font-size: 14px; color: #64748B;">Settings</div>
-          </div>
-        </div>
-        <div class="vireo-component" data-name="RightNav" style="box-sizing: border-box; display: flex; flex-direction: row; gap: 16px; width: fit-content; align-items: center;">
-          <div class="vireo-component" data-name="SearchField" style="box-sizing: border-box; width: 200px; height: 36px; border-radius: 8px; border: 1px solid #E2E8F0; display: flex; align-items: center; padding: 0 16px;"><span style="color: #9CA3AF; font-size: 14px; user-select: none;">Search anything...</span></div>
-          <div class="vireo-component" data-name="NotificationBox" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; padding: 6px 10px; border-radius: 8px; background-color: #F1F5F9;">
-            <div class="vireo-component" data-name="NotifText" style="box-sizing: border-box; font-size: 13px; font-weight: bold; color: #334155;">3 Alerts</div>
-          </div>
-          <div class="vireo-component" data-name="UserMenu" style="box-sizing: border-box; display: flex; flex-direction: row; gap: 10px; width: fit-content; align-items: center;">
-            <div class="vireo-component" data-name="UserAvatar" style="box-sizing: border-box; width: 36px; height: 36px; border-radius: 99px; background-color: #3B82F6; display: flex; align-items: center; justify-content: center; cursor: pointer;">
-              <div class="vireo-component" data-name="Initials" style="box-sizing: border-box; font-size: 14px; font-weight: bold; color: #FFFFFF;">AK</div>
-            </div>
-            <div class="vireo-component" data-name="UserName" style="box-sizing: border-box; font-size: 14px; font-weight: bold; color: #0F172A;">Alex K.</div>
-          </div>
-        </div>
-      </div>
-      <div class="vireo-component" data-name="HeaderBanner" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; width: 100%; justify-content: space-between; align-items: center; padding: 8px 4px;">
-        <div class="vireo-component" data-name="GreetingBlock" style="box-sizing: border-box; display: flex; flex-direction: column; gap: 4px; height: fit-content;">
-          <div class="vireo-component" data-name="GreetingTitle" style="box-sizing: border-box; font-size: 24px; font-weight: bold; color: #0F172A;">Welcome back, Alex 👋</div>
-          <div class="vireo-component" data-name="GreetingSub" style="box-sizing: border-box; font-size: 14px; color: #64748B;">Here is your business performance summary for today, Sep 20, 2026.</div>
-        </div>
-        <div class="vireo-component" data-name="ActionButtons" style="box-sizing: border-box; display: flex; flex-direction: row; gap: 12px; width: fit-content;">
-          <div class="vireo-component" data-name="ExportBtn" style="box-sizing: border-box; height: 40px; padding: 0px 16px; background-color: #F3F4F6; border: 1px solid #E5E7EB; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
-            <div class="vireo-component" data-name="Label" style="box-sizing: border-box; font-size: 14px; font-weight: bold; color: #374151;">Export CSV</div>
-          </div>
-          <div class="vireo-component" data-name="CreateBtn" style="box-sizing: border-box; height: 40px; padding: 0px 16px; background-color: #2563EB; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
-            <div class="vireo-component" data-name="Label" style="box-sizing: border-box; font-size: 14px; font-weight: bold; color: #FFFFFF;">+ New Invoice</div>
-          </div>
-        </div>
-      </div>
-      <div class="vireo-component" data-name="MetricsGrid" style="box-sizing: border-box; display: flex; flex-direction: row; gap: 16px; width: fit-content; width: 100%;">
-        <div class="vireo-component" data-name="MetricCard1" style="box-sizing: border-box; display: flex; flex-direction: column; gap: 12px; height: fit-content; flex: 1; width: 100%; background-color: #FFFFFF; border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
-          <div class="vireo-component" data-name="CardTop1" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; width: 100%; justify-content: space-between; align-items: center;">
-            <div class="vireo-component" data-name="Title1" style="box-sizing: border-box; font-size: 13px; color: #64748B;">Total Revenue</div>
-            <div class="vireo-component" data-name="Badge1" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; padding: 4px 10px; border-radius: 99px; background-color: #ECFDF5;">
-              <div class="vireo-component" data-name="Text" style="box-sizing: border-box; font-size: 12px; font-weight: bold; color: #059669;">+18.2%</div>
-            </div>
-          </div>
-          <div class="vireo-component" data-name="Value1" style="box-sizing: border-box; font-size: 26px; font-weight: bold; color: #0F172A;">$128,430.00</div>
-          <div class="vireo-component" data-name="Subtext1" style="box-sizing: border-box; font-size: 12px; color: #94A3B8;">vs. $108,650 last month</div>
-        </div>
-        <div class="vireo-component" data-name="MetricCard2" style="box-sizing: border-box; display: flex; flex-direction: column; gap: 12px; height: fit-content; flex: 1; width: 100%; background-color: #FFFFFF; border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
-          <div class="vireo-component" data-name="CardTop2" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; width: 100%; justify-content: space-between; align-items: center;">
-            <div class="vireo-component" data-name="Title2" style="box-sizing: border-box; font-size: 13px; color: #64748B;">Active Subscriptions</div>
-            <div class="vireo-component" data-name="Badge2" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; padding: 4px 10px; border-radius: 99px; background-color: #ECFDF5;">
-              <div class="vireo-component" data-name="Text" style="box-sizing: border-box; font-size: 12px; font-weight: bold; color: #059669;">+12.4%</div>
-            </div>
-          </div>
-          <div class="vireo-component" data-name="Value2" style="box-sizing: border-box; font-size: 26px; font-weight: bold; color: #0F172A;">8,492</div>
-          <div class="vireo-component" data-name="Subtext2" style="box-sizing: border-box; font-size: 12px; color: #94A3B8;">+428 new subscribers this week</div>
-        </div>
-        <div class="vireo-component" data-name="MetricCard3" style="box-sizing: border-box; display: flex; flex-direction: column; gap: 12px; height: fit-content; flex: 1; width: 100%; background-color: #FFFFFF; border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
-          <div class="vireo-component" data-name="CardTop3" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; width: 100%; justify-content: space-between; align-items: center;">
-            <div class="vireo-component" data-name="Title3" style="box-sizing: border-box; font-size: 13px; color: #64748B;">Avg. Order Value</div>
-            <div class="vireo-component" data-name="Badge3" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; padding: 4px 10px; border-radius: 99px; background-color: #EFF6FF;">
-              <div class="vireo-component" data-name="Text" style="box-sizing: border-box; font-size: 12px; font-weight: bold; color: #2563EB;">+3.1%</div>
-            </div>
-          </div>
-          <div class="vireo-component" data-name="Value3" style="box-sizing: border-box; font-size: 26px; font-weight: bold; color: #0F172A;">$89.50</div>
-          <div class="vireo-component" data-name="Subtext3" style="box-sizing: border-box; font-size: 12px; color: #94A3B8;">Target: $85.00 exceeded</div>
-        </div>
-        <div class="vireo-component" data-name="MetricCard4" style="box-sizing: border-box; display: flex; flex-direction: column; gap: 12px; height: fit-content; flex: 1; width: 100%; background-color: #FFFFFF; border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
-          <div class="vireo-component" data-name="CardTop4" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; width: 100%; justify-content: space-between; align-items: center;">
-            <div class="vireo-component" data-name="Title4" style="box-sizing: border-box; font-size: 13px; color: #64748B;">Churn Rate</div>
-            <div class="vireo-component" data-name="Badge4" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; padding: 4px 10px; border-radius: 99px; background-color: #FFFBEB;">
-              <div class="vireo-component" data-name="Text" style="box-sizing: border-box; font-size: 12px; font-weight: bold; color: #D97706;">-0.4%</div>
-            </div>
-          </div>
-          <div class="vireo-component" data-name="Value4" style="box-sizing: border-box; font-size: 26px; font-weight: bold; color: #0F172A;">1.24%</div>
-          <div class="vireo-component" data-name="Subtext4" style="box-sizing: border-box; font-size: 12px; color: #94A3B8;">Industry benchmark: 2.1%</div>
-        </div>
-      </div>
-      <div class="vireo-component" data-name="ContentRow" style="box-sizing: border-box; display: flex; flex-direction: row; gap: 24px; width: fit-content; width: 100%;">
-        <div class="vireo-component" data-name="MainArea" style="box-sizing: border-box; display: flex; flex-direction: column; gap: 24px; height: fit-content; flex: 1; width: 100%;">
-          <div class="vireo-component" data-name="InvoicesCard" style="box-sizing: border-box; display: flex; flex-direction: column; gap: 16px; height: fit-content; width: 100%; background-color: #FFFFFF; border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
-            <div class="vireo-component" data-name="TableHeaderBlock" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; width: 100%; justify-content: space-between; align-items: center;">
-              <div class="vireo-component" data-name="TableTitleGroup" style="box-sizing: border-box; display: flex; flex-direction: column; gap: 2px; height: fit-content;">
-                <div class="vireo-component" data-name="TableTitle" style="box-sizing: border-box; font-size: 16px; font-weight: bold; color: #0F172A;">Recent Invoices</div>
-                <div class="vireo-component" data-name="TableSubtitle" style="box-sizing: border-box; font-size: 13px; color: #64748B;">Overview of your most recent transactions and settlement status.</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>showcase/dashboard.dac</title>
+</head>
+<body style="margin: 0; padding: 0;">
+  <div class="vireo-file" data-path="showcase/dashboard.dac" style="font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: #F3F4F6; margin: 0; box-sizing: border-box;">
+    <div class="vireo-block" data-name="Dashboard">
+      <div class="vireo-component" data-name="Page" style="box-sizing: border-box; width: 1280px; display: flex; flex-direction: column; gap: 24px; height: fit-content; background-color: #F8FAFC; padding: 24px;">
+        <div class="vireo-component" data-name="Navbar" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; width: 100%; background-color: #FFFFFF; border-radius: 12px; padding: 14px 24px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); justify-content: space-between; align-items: center;">
+          <div class="vireo-component" data-name="LeftNav" style="box-sizing: border-box; display: flex; flex-direction: row; gap: 32px; width: fit-content; align-items: center;">
+            <div class="vireo-component" data-name="Brand" style="box-sizing: border-box; display: flex; flex-direction: row; gap: 10px; width: fit-content; align-items: center;">
+              <div class="vireo-component" data-name="Logo" style="box-sizing: border-box; width: 32px; height: 32px; border-radius: 8px; background-color: #2563EB; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                <div class="vireo-component" data-name="LogoChar" style="box-sizing: border-box; font-size: 18px; font-weight: bold; color: #FFFFFF;">V</div>
               </div>
-              <div class="vireo-component" data-name="FilterBtn" style="box-sizing: border-box; height: 40px; padding: 0px 16px; background-color: #FFFFFF; border: 1px solid #D1D5DB; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
-                <div class="vireo-component" data-name="Label" style="box-sizing: border-box; font-size: 14px; font-weight: bold; color: #374151;">Filter (All)</div>
+              <div class="vireo-component" data-name="BrandName" style="box-sizing: border-box; font-size: 18px; font-weight: bold; color: #0F172A;">Vireo Cloud</div>
+            </div>
+            <div class="vireo-component" data-name="NavLinks" style="box-sizing: border-box; display: flex; flex-direction: row; gap: 20px; width: fit-content; align-items: center;">
+              <div class="vireo-component" data-name="LinkDashboard" style="box-sizing: border-box; font-size: 14px; font-weight: bold; color: #2563EB;">Overview</div>
+              <div class="vireo-component" data-name="LinkAnalytics" style="box-sizing: border-box; font-size: 14px; color: #64748B;">Analytics</div>
+              <div class="vireo-component" data-name="LinkInvoices" style="box-sizing: border-box; font-size: 14px; color: #64748B;">Invoices</div>
+              <div class="vireo-component" data-name="LinkCustomers" style="box-sizing: border-box; font-size: 14px; color: #64748B;">Customers</div>
+              <div class="vireo-component" data-name="LinkSettings" style="box-sizing: border-box; font-size: 14px; color: #64748B;">Settings</div>
+            </div>
+          </div>
+          <div class="vireo-component" data-name="RightNav" style="box-sizing: border-box; display: flex; flex-direction: row; gap: 16px; width: fit-content; align-items: center;">
+            <div class="vireo-component" data-name="SearchField" style="box-sizing: border-box; width: 200px; height: 36px; border-radius: 8px; border: 1px solid #E2E8F0; display: flex; align-items: center; padding: 0 16px;"><span style="color: #9CA3AF; font-size: 14px; user-select: none;">Search anything...</span></div>
+            <div class="vireo-component" data-name="NotificationBox" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; padding: 6px 10px; border-radius: 8px; background-color: #F1F5F9;">
+              <div class="vireo-component" data-name="NotifText" style="box-sizing: border-box; font-size: 13px; font-weight: bold; color: #334155;">3 Alerts</div>
+            </div>
+            <div class="vireo-component" data-name="UserMenu" style="box-sizing: border-box; display: flex; flex-direction: row; gap: 10px; width: fit-content; align-items: center;">
+              <div class="vireo-component" data-name="UserAvatar" style="box-sizing: border-box; width: 36px; height: 36px; border-radius: 99px; background-color: #3B82F6; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                <div class="vireo-component" data-name="Initials" style="box-sizing: border-box; font-size: 14px; font-weight: bold; color: #FFFFFF;">AK</div>
+              </div>
+              <div class="vireo-component" data-name="UserName" style="box-sizing: border-box; font-size: 14px; font-weight: bold; color: #0F172A;">Alex K.</div>
+            </div>
+          </div>
+        </div>
+        <div class="vireo-component" data-name="HeaderBanner" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; width: 100%; justify-content: space-between; align-items: center; padding: 8px 4px;">
+          <div class="vireo-component" data-name="GreetingBlock" style="box-sizing: border-box; display: flex; flex-direction: column; gap: 4px; height: fit-content;">
+            <div class="vireo-component" data-name="GreetingTitle" style="box-sizing: border-box; font-size: 24px; font-weight: bold; color: #0F172A;">Welcome back, Alex 👋</div>
+            <div class="vireo-component" data-name="GreetingSub" style="box-sizing: border-box; font-size: 14px; color: #64748B;">Here is your business performance summary for today, Sep 20, 2026.</div>
+          </div>
+          <div class="vireo-component" data-name="ActionButtons" style="box-sizing: border-box; display: flex; flex-direction: row; gap: 12px; width: fit-content;">
+            <div class="vireo-component" data-name="ExportBtn" style="box-sizing: border-box; height: 40px; padding: 0px 16px; background-color: #F3F4F6; border: 1px solid #E5E7EB; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+              <div class="vireo-component" data-name="Label" style="box-sizing: border-box; font-size: 14px; font-weight: bold; color: #374151;">Export CSV</div>
+            </div>
+            <div class="vireo-component" data-name="CreateBtn" style="box-sizing: border-box; height: 40px; padding: 0px 16px; background-color: #2563EB; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+              <div class="vireo-component" data-name="Label" style="box-sizing: border-box; font-size: 14px; font-weight: bold; color: #FFFFFF;">+ New Invoice</div>
+            </div>
+          </div>
+        </div>
+        <div class="vireo-component" data-name="MetricsGrid" style="box-sizing: border-box; display: flex; flex-direction: row; gap: 16px; width: fit-content; width: 100%;">
+          <div class="vireo-component" data-name="MetricCard1" style="box-sizing: border-box; display: flex; flex-direction: column; gap: 12px; height: fit-content; flex: 1; width: 100%; background-color: #FFFFFF; border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+            <div class="vireo-component" data-name="CardTop1" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; width: 100%; justify-content: space-between; align-items: center;">
+              <div class="vireo-component" data-name="Title1" style="box-sizing: border-box; font-size: 13px; color: #64748B;">Total Revenue</div>
+              <div class="vireo-component" data-name="Badge1" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; padding: 4px 10px; border-radius: 99px; background-color: #ECFDF5;">
+                <div class="vireo-component" data-name="Text" style="box-sizing: border-box; font-size: 12px; font-weight: bold; color: #059669;">+18.2%</div>
               </div>
             </div>
-            <div class="vireo-component" data-name="TableColumnsHeader" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; width: 100%; padding: 10px 12px; background-color: #F8FAFC; border-radius: 6px; align-items: center;">
-              <div class="vireo-component" data-name="Col1" style="box-sizing: border-box; flex: 1; width: 100%; font-size: 11px; font-weight: bold; color: #64748B;">INVOICE</div>
-              <div class="vireo-component" data-name="Col2" style="box-sizing: border-box; flex: 1; width: 100%; font-size: 11px; font-weight: bold; color: #64748B;">CLIENT</div>
-              <div class="vireo-component" data-name="Col3" style="box-sizing: border-box; flex: 1; width: 100%; font-size: 11px; font-weight: bold; color: #64748B;">DATE</div>
-              <div class="vireo-component" data-name="Col4" style="box-sizing: border-box; flex: 1; width: 100%; font-size: 11px; font-weight: bold; color: #64748B;">STATUS</div>
-              <div class="vireo-component" data-name="Col5" style="box-sizing: border-box; flex: 1; width: 100%; font-size: 11px; font-weight: bold; color: #64748B;">AMOUNT</div>
+            <div class="vireo-component" data-name="Value1" style="box-sizing: border-box; font-size: 26px; font-weight: bold; color: #0F172A;">$128,430.00</div>
+            <div class="vireo-component" data-name="Subtext1" style="box-sizing: border-box; font-size: 12px; color: #94A3B8;">vs. $108,650 last month</div>
+          </div>
+          <div class="vireo-component" data-name="MetricCard2" style="box-sizing: border-box; display: flex; flex-direction: column; gap: 12px; height: fit-content; flex: 1; width: 100%; background-color: #FFFFFF; border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+            <div class="vireo-component" data-name="CardTop2" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; width: 100%; justify-content: space-between; align-items: center;">
+              <div class="vireo-component" data-name="Title2" style="box-sizing: border-box; font-size: 13px; color: #64748B;">Active Subscriptions</div>
+              <div class="vireo-component" data-name="Badge2" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; padding: 4px 10px; border-radius: 99px; background-color: #ECFDF5;">
+                <div class="vireo-component" data-name="Text" style="box-sizing: border-box; font-size: 12px; font-weight: bold; color: #059669;">+12.4%</div>
+              </div>
             </div>
-            <div class="vireo-component" data-name="Row1" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; width: 100%; padding: 12px; border: 1px solid #F1F5F9; border-radius: 8px; align-items: center;">
-              <div class="vireo-component" data-name="Inv1" style="box-sizing: border-box; flex: 1; width: 100%; font-size: 13px; font-weight: bold; color: #2563EB;">#INV-2026-089</div>
-              <div class="vireo-component" data-name="Client1" style="box-sizing: border-box; flex: 1; width: 100%; font-size: 13px; color: #0F172A;">Acme Global Corp</div>
-              <div class="vireo-component" data-name="Date1" style="box-sizing: border-box; flex: 1; width: 100%; font-size: 13px; color: #64748B;">Sep 20, 2026</div>
-              <div class="vireo-component" data-name="Status1" style="box-sizing: border-box; flex: 1; width: 100%; display: flex; align-items: center; justify-content: center; cursor: pointer;">
-                <div class="vireo-component" data-name="Badge" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; padding: 4px 10px; border-radius: 99px; background-color: #ECFDF5;">
-                  <div class="vireo-component" data-name="Text" style="box-sizing: border-box; font-size: 12px; font-weight: bold; color: #059669;">Paid</div>
+            <div class="vireo-component" data-name="Value2" style="box-sizing: border-box; font-size: 26px; font-weight: bold; color: #0F172A;">8,492</div>
+            <div class="vireo-component" data-name="Subtext2" style="box-sizing: border-box; font-size: 12px; color: #94A3B8;">+428 new subscribers this week</div>
+          </div>
+          <div class="vireo-component" data-name="MetricCard3" style="box-sizing: border-box; display: flex; flex-direction: column; gap: 12px; height: fit-content; flex: 1; width: 100%; background-color: #FFFFFF; border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+            <div class="vireo-component" data-name="CardTop3" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; width: 100%; justify-content: space-between; align-items: center;">
+              <div class="vireo-component" data-name="Title3" style="box-sizing: border-box; font-size: 13px; color: #64748B;">Avg. Order Value</div>
+              <div class="vireo-component" data-name="Badge3" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; padding: 4px 10px; border-radius: 99px; background-color: #EFF6FF;">
+                <div class="vireo-component" data-name="Text" style="box-sizing: border-box; font-size: 12px; font-weight: bold; color: #2563EB;">+3.1%</div>
+              </div>
+            </div>
+            <div class="vireo-component" data-name="Value3" style="box-sizing: border-box; font-size: 26px; font-weight: bold; color: #0F172A;">$89.50</div>
+            <div class="vireo-component" data-name="Subtext3" style="box-sizing: border-box; font-size: 12px; color: #94A3B8;">Target: $85.00 exceeded</div>
+          </div>
+          <div class="vireo-component" data-name="MetricCard4" style="box-sizing: border-box; display: flex; flex-direction: column; gap: 12px; height: fit-content; flex: 1; width: 100%; background-color: #FFFFFF; border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+            <div class="vireo-component" data-name="CardTop4" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; width: 100%; justify-content: space-between; align-items: center;">
+              <div class="vireo-component" data-name="Title4" style="box-sizing: border-box; font-size: 13px; color: #64748B;">Churn Rate</div>
+              <div class="vireo-component" data-name="Badge4" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; padding: 4px 10px; border-radius: 99px; background-color: #FFFBEB;">
+                <div class="vireo-component" data-name="Text" style="box-sizing: border-box; font-size: 12px; font-weight: bold; color: #D97706;">-0.4%</div>
+              </div>
+            </div>
+            <div class="vireo-component" data-name="Value4" style="box-sizing: border-box; font-size: 26px; font-weight: bold; color: #0F172A;">1.24%</div>
+            <div class="vireo-component" data-name="Subtext4" style="box-sizing: border-box; font-size: 12px; color: #94A3B8;">Industry benchmark: 2.1%</div>
+          </div>
+        </div>
+        <div class="vireo-component" data-name="ContentRow" style="box-sizing: border-box; display: flex; flex-direction: row; gap: 24px; width: fit-content; width: 100%;">
+          <div class="vireo-component" data-name="MainArea" style="box-sizing: border-box; display: flex; flex-direction: column; gap: 24px; height: fit-content; flex: 1; width: 100%;">
+            <div class="vireo-component" data-name="InvoicesCard" style="box-sizing: border-box; display: flex; flex-direction: column; gap: 16px; height: fit-content; width: 100%; background-color: #FFFFFF; border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+              <div class="vireo-component" data-name="TableHeaderBlock" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; width: 100%; justify-content: space-between; align-items: center;">
+                <div class="vireo-component" data-name="TableTitleGroup" style="box-sizing: border-box; display: flex; flex-direction: column; gap: 2px; height: fit-content;">
+                  <div class="vireo-component" data-name="TableTitle" style="box-sizing: border-box; font-size: 16px; font-weight: bold; color: #0F172A;">Recent Invoices</div>
+                  <div class="vireo-component" data-name="TableSubtitle" style="box-sizing: border-box; font-size: 13px; color: #64748B;">Overview of your most recent transactions and settlement status.</div>
+                </div>
+                <div class="vireo-component" data-name="FilterBtn" style="box-sizing: border-box; height: 40px; padding: 0px 16px; background-color: #FFFFFF; border: 1px solid #D1D5DB; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                  <div class="vireo-component" data-name="Label" style="box-sizing: border-box; font-size: 14px; font-weight: bold; color: #374151;">Filter (All)</div>
                 </div>
               </div>
-              <div class="vireo-component" data-name="Amount1" style="box-sizing: border-box; flex: 1; width: 100%; font-size: 13px; font-weight: bold; color: #0F172A;">$4,500.00</div>
-            </div>
-            <div class="vireo-component" data-name="Row2" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; width: 100%; padding: 12px; border: 1px solid #F1F5F9; border-radius: 8px; align-items: center;">
-              <div class="vireo-component" data-name="Inv2" style="box-sizing: border-box; flex: 1; width: 100%; font-size: 13px; font-weight: bold; color: #2563EB;">#INV-2026-088</div>
-              <div class="vireo-component" data-name="Client2" style="box-sizing: border-box; flex: 1; width: 100%; font-size: 13px; color: #0F172A;">Cyberdyne Systems</div>
-              <div class="vireo-component" data-name="Date2" style="box-sizing: border-box; flex: 1; width: 100%; font-size: 13px; color: #64748B;">Sep 20, 2026</div>
-              <div class="vireo-component" data-name="Status2" style="box-sizing: border-box; flex: 1; width: 100%; display: flex; align-items: center; justify-content: center; cursor: pointer;">
-                <div class="vireo-component" data-name="Badge" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; padding: 4px 10px; border-radius: 99px; background-color: #FFFBEB;">
-                  <div class="vireo-component" data-name="Text" style="box-sizing: border-box; font-size: 12px; font-weight: bold; color: #D97706;">Pending</div>
+              <div class="vireo-component" data-name="TableColumnsHeader" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; width: 100%; padding: 10px 12px; background-color: #F8FAFC; border-radius: 6px; align-items: center;">
+                <div class="vireo-component" data-name="Col1" style="box-sizing: border-box; flex: 1; width: 100%; font-size: 11px; font-weight: bold; color: #64748B;">INVOICE</div>
+                <div class="vireo-component" data-name="Col2" style="box-sizing: border-box; flex: 1; width: 100%; font-size: 11px; font-weight: bold; color: #64748B;">CLIENT</div>
+                <div class="vireo-component" data-name="Col3" style="box-sizing: border-box; flex: 1; width: 100%; font-size: 11px; font-weight: bold; color: #64748B;">DATE</div>
+                <div class="vireo-component" data-name="Col4" style="box-sizing: border-box; flex: 1; width: 100%; font-size: 11px; font-weight: bold; color: #64748B;">STATUS</div>
+                <div class="vireo-component" data-name="Col5" style="box-sizing: border-box; flex: 1; width: 100%; font-size: 11px; font-weight: bold; color: #64748B;">AMOUNT</div>
+              </div>
+              <div class="vireo-component" data-name="Row1" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; width: 100%; padding: 12px; border: 1px solid #F1F5F9; border-radius: 8px; align-items: center;">
+                <div class="vireo-component" data-name="Inv1" style="box-sizing: border-box; flex: 1; width: 100%; font-size: 13px; font-weight: bold; color: #2563EB;">#INV-2026-089</div>
+                <div class="vireo-component" data-name="Client1" style="box-sizing: border-box; flex: 1; width: 100%; font-size: 13px; color: #0F172A;">Acme Global Corp</div>
+                <div class="vireo-component" data-name="Date1" style="box-sizing: border-box; flex: 1; width: 100%; font-size: 13px; color: #64748B;">Sep 20, 2026</div>
+                <div class="vireo-component" data-name="Status1" style="box-sizing: border-box; flex: 1; width: 100%; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                  <div class="vireo-component" data-name="Badge" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; padding: 4px 10px; border-radius: 99px; background-color: #ECFDF5;">
+                    <div class="vireo-component" data-name="Text" style="box-sizing: border-box; font-size: 12px; font-weight: bold; color: #059669;">Paid</div>
+                  </div>
+                </div>
+                <div class="vireo-component" data-name="Amount1" style="box-sizing: border-box; flex: 1; width: 100%; font-size: 13px; font-weight: bold; color: #0F172A;">$4,500.00</div>
+              </div>
+              <div class="vireo-component" data-name="Row2" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; width: 100%; padding: 12px; border: 1px solid #F1F5F9; border-radius: 8px; align-items: center;">
+                <div class="vireo-component" data-name="Inv2" style="box-sizing: border-box; flex: 1; width: 100%; font-size: 13px; font-weight: bold; color: #2563EB;">#INV-2026-088</div>
+                <div class="vireo-component" data-name="Client2" style="box-sizing: border-box; flex: 1; width: 100%; font-size: 13px; color: #0F172A;">Cyberdyne Systems</div>
+                <div class="vireo-component" data-name="Date2" style="box-sizing: border-box; flex: 1; width: 100%; font-size: 13px; color: #64748B;">Sep 20, 2026</div>
+                <div class="vireo-component" data-name="Status2" style="box-sizing: border-box; flex: 1; width: 100%; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                  <div class="vireo-component" data-name="Badge" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; padding: 4px 10px; border-radius: 99px; background-color: #FFFBEB;">
+                    <div class="vireo-component" data-name="Text" style="box-sizing: border-box; font-size: 12px; font-weight: bold; color: #D97706;">Pending</div>
+                  </div>
+                </div>
+                <div class="vireo-component" data-name="Amount2" style="box-sizing: border-box; flex: 1; width: 100%; font-size: 13px; font-weight: bold; color: #0F172A;">$1,280.00</div>
+              </div>
+              <div class="vireo-component" data-name="Row3" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; width: 100%; padding: 12px; border: 1px solid #F1F5F9; border-radius: 8px; align-items: center;">
+                <div class="vireo-component" data-name="Inv3" style="box-sizing: border-box; flex: 1; width: 100%; font-size: 13px; font-weight: bold; color: #2563EB;">#INV-2026-087</div>
+                <div class="vireo-component" data-name="Client3" style="box-sizing: border-box; flex: 1; width: 100%; font-size: 13px; color: #0F172A;">Weyland-Yutani Inc</div>
+                <div class="vireo-component" data-name="Date3" style="box-sizing: border-box; flex: 1; width: 100%; font-size: 13px; color: #64748B;">Sep 19, 2026</div>
+                <div class="vireo-component" data-name="Status3" style="box-sizing: border-box; flex: 1; width: 100%; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                  <div class="vireo-component" data-name="Badge" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; padding: 4px 10px; border-radius: 99px; background-color: #ECFDF5;">
+                    <div class="vireo-component" data-name="Text" style="box-sizing: border-box; font-size: 12px; font-weight: bold; color: #059669;">Paid</div>
+                  </div>
+                </div>
+                <div class="vireo-component" data-name="Amount3" style="box-sizing: border-box; flex: 1; width: 100%; font-size: 13px; font-weight: bold; color: #0F172A;">$8,920.00</div>
+              </div>
+              <div class="vireo-component" data-name="Row4" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; width: 100%; padding: 12px; border: 1px solid #F1F5F9; border-radius: 8px; align-items: center;">
+                <div class="vireo-component" data-name="Inv4" style="box-sizing: border-box; flex: 1; width: 100%; font-size: 13px; font-weight: bold; color: #2563EB;">#INV-2026-086</div>
+                <div class="vireo-component" data-name="Client4" style="box-sizing: border-box; flex: 1; width: 100%; font-size: 13px; color: #0F172A;">Stark Industries</div>
+                <div class="vireo-component" data-name="Date4" style="box-sizing: border-box; flex: 1; width: 100%; font-size: 13px; color: #64748B;">Sep 18, 2026</div>
+                <div class="vireo-component" data-name="Status4" style="box-sizing: border-box; flex: 1; width: 100%; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                  <div class="vireo-component" data-name="Badge" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; padding: 4px 10px; border-radius: 99px; background-color: #FEF2F2;">
+                    <div class="vireo-component" data-name="Text" style="box-sizing: border-box; font-size: 12px; font-weight: bold; color: #DC2626;">Refunded</div>
+                  </div>
+                </div>
+                <div class="vireo-component" data-name="Amount4" style="box-sizing: border-box; flex: 1; width: 100%; font-size: 13px; font-weight: bold; color: #0F172A;">$340.00</div>
+              </div>
+              <div class="vireo-component" data-name="Row5" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; width: 100%; padding: 12px; border: 1px solid #F1F5F9; border-radius: 8px; align-items: center;">
+                <div class="vireo-component" data-name="Inv5" style="box-sizing: border-box; flex: 1; width: 100%; font-size: 13px; font-weight: bold; color: #2563EB;">#INV-2026-085</div>
+                <div class="vireo-component" data-name="Client5" style="box-sizing: border-box; flex: 1; width: 100%; font-size: 13px; color: #0F172A;">Massive Dynamic</div>
+                <div class="vireo-component" data-name="Date5" style="box-sizing: border-box; flex: 1; width: 100%; font-size: 13px; color: #64748B;">Sep 17, 2026</div>
+                <div class="vireo-component" data-name="Status5" style="box-sizing: border-box; flex: 1; width: 100%; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                  <div class="vireo-component" data-name="Badge" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; padding: 4px 10px; border-radius: 99px; background-color: #ECFDF5;">
+                    <div class="vireo-component" data-name="Text" style="box-sizing: border-box; font-size: 12px; font-weight: bold; color: #059669;">Paid</div>
+                  </div>
+                </div>
+                <div class="vireo-component" data-name="Amount5" style="box-sizing: border-box; flex: 1; width: 100%; font-size: 13px; font-weight: bold; color: #0F172A;">$2,150.00</div>
+              </div>
+              <div class="vireo-component" data-name="TablePagination" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; width: 100%; justify-content: space-between; align-items: center; padding: 4px 0px;">
+                <div class="vireo-component" data-name="PaginationInfo" style="box-sizing: border-box; font-size: 13px; color: #64748B;">Showing 1 to 5 of 248 invoices</div>
+                <div class="vireo-component" data-name="NextPageBtn" style="box-sizing: border-box; height: 40px; padding: 0px 16px; background-color: #F3F4F6; border: 1px solid #E5E7EB; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                  <div class="vireo-component" data-name="Label" style="box-sizing: border-box; font-size: 14px; font-weight: bold; color: #374151;">Next Page →</div>
                 </div>
               </div>
-              <div class="vireo-component" data-name="Amount2" style="box-sizing: border-box; flex: 1; width: 100%; font-size: 13px; font-weight: bold; color: #0F172A;">$1,280.00</div>
             </div>
-            <div class="vireo-component" data-name="Row3" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; width: 100%; padding: 12px; border: 1px solid #F1F5F9; border-radius: 8px; align-items: center;">
-              <div class="vireo-component" data-name="Inv3" style="box-sizing: border-box; flex: 1; width: 100%; font-size: 13px; font-weight: bold; color: #2563EB;">#INV-2026-087</div>
-              <div class="vireo-component" data-name="Client3" style="box-sizing: border-box; flex: 1; width: 100%; font-size: 13px; color: #0F172A;">Weyland-Yutani Inc</div>
-              <div class="vireo-component" data-name="Date3" style="box-sizing: border-box; flex: 1; width: 100%; font-size: 13px; color: #64748B;">Sep 19, 2026</div>
-              <div class="vireo-component" data-name="Status3" style="box-sizing: border-box; flex: 1; width: 100%; display: flex; align-items: center; justify-content: center; cursor: pointer;">
-                <div class="vireo-component" data-name="Badge" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; padding: 4px 10px; border-radius: 99px; background-color: #ECFDF5;">
-                  <div class="vireo-component" data-name="Text" style="box-sizing: border-box; font-size: 12px; font-weight: bold; color: #059669;">Paid</div>
+            <div class="vireo-component" data-name="ServerHealthCard" style="box-sizing: border-box; display: flex; flex-direction: column; gap: 16px; height: fit-content; width: 100%; background-color: #FFFFFF; border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+              <div class="vireo-component" data-name="HealthHeader" style="box-sizing: border-box; font-size: 16px; font-weight: bold; color: #0F172A;">System Infrastructure &amp; Uptime</div>
+              <div class="vireo-component" data-name="HealthMetricsRow" style="box-sizing: border-box; display: flex; flex-direction: row; gap: 16px; width: fit-content; width: 100%;">
+                <div class="vireo-component" data-name="ServerBox1" style="box-sizing: border-box; display: flex; flex-direction: column; gap: 6px; height: fit-content; flex: 1; width: 100%; padding: 16px; background-color: #F8FAFC; border-radius: 8px;">
+                  <div class="vireo-component" data-name="ServerLabel1" style="box-sizing: border-box; font-size: 12px; color: #64748B;">Primary Gateway (us-east)</div>
+                  <div class="vireo-component" data-name="ServerVal1" style="box-sizing: border-box; font-size: 14px; font-weight: bold; color: #10B981;">28ms (99.99% uptime)</div>
                 </div>
-              </div>
-              <div class="vireo-component" data-name="Amount3" style="box-sizing: border-box; flex: 1; width: 100%; font-size: 13px; font-weight: bold; color: #0F172A;">$8,920.00</div>
-            </div>
-            <div class="vireo-component" data-name="Row4" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; width: 100%; padding: 12px; border: 1px solid #F1F5F9; border-radius: 8px; align-items: center;">
-              <div class="vireo-component" data-name="Inv4" style="box-sizing: border-box; flex: 1; width: 100%; font-size: 13px; font-weight: bold; color: #2563EB;">#INV-2026-086</div>
-              <div class="vireo-component" data-name="Client4" style="box-sizing: border-box; flex: 1; width: 100%; font-size: 13px; color: #0F172A;">Stark Industries</div>
-              <div class="vireo-component" data-name="Date4" style="box-sizing: border-box; flex: 1; width: 100%; font-size: 13px; color: #64748B;">Sep 18, 2026</div>
-              <div class="vireo-component" data-name="Status4" style="box-sizing: border-box; flex: 1; width: 100%; display: flex; align-items: center; justify-content: center; cursor: pointer;">
-                <div class="vireo-component" data-name="Badge" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; padding: 4px 10px; border-radius: 99px; background-color: #FEF2F2;">
-                  <div class="vireo-component" data-name="Text" style="box-sizing: border-box; font-size: 12px; font-weight: bold; color: #DC2626;">Refunded</div>
+                <div class="vireo-component" data-name="ServerBox2" style="box-sizing: border-box; display: flex; flex-direction: column; gap: 6px; height: fit-content; flex: 1; width: 100%; padding: 16px; background-color: #F8FAFC; border-radius: 8px;">
+                  <div class="vireo-component" data-name="ServerLabel2" style="box-sizing: border-box; font-size: 12px; color: #64748B;">Database Cluster</div>
+                  <div class="vireo-component" data-name="ServerVal2" style="box-sizing: border-box; font-size: 14px; font-weight: bold; color: #10B981;">Healthy (Lag: 2ms)</div>
                 </div>
-              </div>
-              <div class="vireo-component" data-name="Amount4" style="box-sizing: border-box; flex: 1; width: 100%; font-size: 13px; font-weight: bold; color: #0F172A;">$340.00</div>
-            </div>
-            <div class="vireo-component" data-name="Row5" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; width: 100%; padding: 12px; border: 1px solid #F1F5F9; border-radius: 8px; align-items: center;">
-              <div class="vireo-component" data-name="Inv5" style="box-sizing: border-box; flex: 1; width: 100%; font-size: 13px; font-weight: bold; color: #2563EB;">#INV-2026-085</div>
-              <div class="vireo-component" data-name="Client5" style="box-sizing: border-box; flex: 1; width: 100%; font-size: 13px; color: #0F172A;">Massive Dynamic</div>
-              <div class="vireo-component" data-name="Date5" style="box-sizing: border-box; flex: 1; width: 100%; font-size: 13px; color: #64748B;">Sep 17, 2026</div>
-              <div class="vireo-component" data-name="Status5" style="box-sizing: border-box; flex: 1; width: 100%; display: flex; align-items: center; justify-content: center; cursor: pointer;">
-                <div class="vireo-component" data-name="Badge" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; padding: 4px 10px; border-radius: 99px; background-color: #ECFDF5;">
-                  <div class="vireo-component" data-name="Text" style="box-sizing: border-box; font-size: 12px; font-weight: bold; color: #059669;">Paid</div>
+                <div class="vireo-component" data-name="ServerBox3" style="box-sizing: border-box; display: flex; flex-direction: column; gap: 6px; height: fit-content; flex: 1; width: 100%; padding: 16px; background-color: #F8FAFC; border-radius: 8px;">
+                  <div class="vireo-component" data-name="ServerLabel3" style="box-sizing: border-box; font-size: 12px; color: #64748B;">Edge Cache Hit Ratio</div>
+                  <div class="vireo-component" data-name="ServerVal3" style="box-sizing: border-box; font-size: 14px; font-weight: bold; color: #2563EB;">97.2% (Redis Cluster)</div>
                 </div>
-              </div>
-              <div class="vireo-component" data-name="Amount5" style="box-sizing: border-box; flex: 1; width: 100%; font-size: 13px; font-weight: bold; color: #0F172A;">$2,150.00</div>
-            </div>
-            <div class="vireo-component" data-name="TablePagination" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; width: 100%; justify-content: space-between; align-items: center; padding: 4px 0px;">
-              <div class="vireo-component" data-name="PaginationInfo" style="box-sizing: border-box; font-size: 13px; color: #64748B;">Showing 1 to 5 of 248 invoices</div>
-              <div class="vireo-component" data-name="NextPageBtn" style="box-sizing: border-box; height: 40px; padding: 0px 16px; background-color: #F3F4F6; border: 1px solid #E5E7EB; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
-                <div class="vireo-component" data-name="Label" style="box-sizing: border-box; font-size: 14px; font-weight: bold; color: #374151;">Next Page →</div>
               </div>
             </div>
           </div>
-          <div class="vireo-component" data-name="ServerHealthCard" style="box-sizing: border-box; display: flex; flex-direction: column; gap: 16px; height: fit-content; width: 100%; background-color: #FFFFFF; border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
-            <div class="vireo-component" data-name="HealthHeader" style="box-sizing: border-box; font-size: 16px; font-weight: bold; color: #0F172A;">System Infrastructure &amp; Uptime</div>
-            <div class="vireo-component" data-name="HealthMetricsRow" style="box-sizing: border-box; display: flex; flex-direction: row; gap: 16px; width: fit-content; width: 100%;">
-              <div class="vireo-component" data-name="ServerBox1" style="box-sizing: border-box; display: flex; flex-direction: column; gap: 6px; height: fit-content; flex: 1; width: 100%; padding: 16px; background-color: #F8FAFC; border-radius: 8px;">
-                <div class="vireo-component" data-name="ServerLabel1" style="box-sizing: border-box; font-size: 12px; color: #64748B;">Primary Gateway (us-east)</div>
-                <div class="vireo-component" data-name="ServerVal1" style="box-sizing: border-box; font-size: 14px; font-weight: bold; color: #10B981;">28ms (99.99% uptime)</div>
+          <div class="vireo-component" data-name="Sidebar" style="box-sizing: border-box; width: 360px; display: flex; flex-direction: column; gap: 24px; height: fit-content;">
+            <div class="vireo-component" data-name="ActivityCard" style="box-sizing: border-box; display: flex; flex-direction: column; gap: 16px; height: fit-content; width: 100%; background-color: #FFFFFF; border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+              <div class="vireo-component" data-name="ActivityTitle" style="box-sizing: border-box; font-size: 16px; font-weight: bold; color: #0F172A;">Team Activity</div>
+              <div class="vireo-component" data-name="ActivityItem1" style="box-sizing: border-box; display: flex; flex-direction: row; gap: 12px; width: fit-content; align-items: center;">
+                <div class="vireo-component" data-name="ActivityDot1" style="box-sizing: border-box; width: 10px; height: 10px; border-radius: 99px; background-color: #10B981;"></div>
+                <div class="vireo-component" data-name="ActivityBody1" style="box-sizing: border-box; display: flex; flex-direction: column; gap: 2px; height: fit-content;">
+                  <div class="vireo-component" data-name="ActivityText1" style="box-sizing: border-box; font-size: 13px; font-weight: bold; color: #0F172A;">Sophia merged design tokens</div>
+                  <div class="vireo-component" data-name="ActivityTime1" style="box-sizing: border-box; font-size: 11px; color: #94A3B8;">12 minutes ago</div>
+                </div>
               </div>
-              <div class="vireo-component" data-name="ServerBox2" style="box-sizing: border-box; display: flex; flex-direction: column; gap: 6px; height: fit-content; flex: 1; width: 100%; padding: 16px; background-color: #F8FAFC; border-radius: 8px;">
-                <div class="vireo-component" data-name="ServerLabel2" style="box-sizing: border-box; font-size: 12px; color: #64748B;">Database Cluster</div>
-                <div class="vireo-component" data-name="ServerVal2" style="box-sizing: border-box; font-size: 14px; font-weight: bold; color: #10B981;">Healthy (Lag: 2ms)</div>
+              <div class="vireo-component" data-name="ActivityItem2" style="box-sizing: border-box; display: flex; flex-direction: row; gap: 12px; width: fit-content; align-items: center;">
+                <div class="vireo-component" data-name="ActivityDot2" style="box-sizing: border-box; width: 10px; height: 10px; border-radius: 99px; background-color: #2563EB;"></div>
+                <div class="vireo-component" data-name="ActivityBody2" style="box-sizing: border-box; display: flex; flex-direction: column; gap: 2px; height: fit-content;">
+                  <div class="vireo-component" data-name="ActivityText2" style="box-sizing: border-box; font-size: 13px; font-weight: bold; color: #0F172A;">Michael added 4 team seats</div>
+                  <div class="vireo-component" data-name="ActivityTime2" style="box-sizing: border-box; font-size: 11px; color: #94A3B8;">45 minutes ago</div>
+                </div>
               </div>
-              <div class="vireo-component" data-name="ServerBox3" style="box-sizing: border-box; display: flex; flex-direction: column; gap: 6px; height: fit-content; flex: 1; width: 100%; padding: 16px; background-color: #F8FAFC; border-radius: 8px;">
-                <div class="vireo-component" data-name="ServerLabel3" style="box-sizing: border-box; font-size: 12px; color: #64748B;">Edge Cache Hit Ratio</div>
-                <div class="vireo-component" data-name="ServerVal3" style="box-sizing: border-box; font-size: 14px; font-weight: bold; color: #2563EB;">97.2% (Redis Cluster)</div>
+              <div class="vireo-component" data-name="ActivityItem3" style="box-sizing: border-box; display: flex; flex-direction: row; gap: 12px; width: fit-content; align-items: center;">
+                <div class="vireo-component" data-name="ActivityDot3" style="box-sizing: border-box; width: 10px; height: 10px; border-radius: 99px; background-color: #F59E0B;"></div>
+                <div class="vireo-component" data-name="ActivityBody3" style="box-sizing: border-box; display: flex; flex-direction: column; gap: 2px; height: fit-content;">
+                  <div class="vireo-component" data-name="ActivityText3" style="box-sizing: border-box; font-size: 13px; font-weight: bold; color: #0F172A;">Stripe payout batch prepared</div>
+                  <div class="vireo-component" data-name="ActivityTime3" style="box-sizing: border-box; font-size: 11px; color: #94A3B8;">2 hours ago</div>
+                </div>
+              </div>
+              <div class="vireo-component" data-name="ActivityItem4" style="box-sizing: border-box; display: flex; flex-direction: row; gap: 12px; width: fit-content; align-items: center;">
+                <div class="vireo-component" data-name="ActivityDot4" style="box-sizing: border-box; width: 10px; height: 10px; border-radius: 99px; background-color: #64748B;"></div>
+                <div class="vireo-component" data-name="ActivityBody4" style="box-sizing: border-box; display: flex; flex-direction: column; gap: 2px; height: fit-content;">
+                  <div class="vireo-component" data-name="ActivityText4" style="box-sizing: border-box; font-size: 13px; font-weight: bold; color: #0F172A;">System snapshot backed up</div>
+                  <div class="vireo-component" data-name="ActivityTime4" style="box-sizing: border-box; font-size: 11px; color: #94A3B8;">5 hours ago</div>
+                </div>
+              </div>
+            </div>
+            <div class="vireo-component" data-name="StorageCard" style="box-sizing: border-box; display: flex; flex-direction: column; gap: 16px; height: fit-content; width: 100%; background-color: #FFFFFF; border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+              <div class="vireo-component" data-name="StorageHeader" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; width: 100%; justify-content: space-between; align-items: center;">
+                <div class="vireo-component" data-name="StorageTitle" style="box-sizing: border-box; font-size: 16px; font-weight: bold; color: #0F172A;">Storage Quota</div>
+                <div class="vireo-component" data-name="StoragePct" style="box-sizing: border-box; font-size: 13px; font-weight: bold; color: #2563EB;">78% Used</div>
+              </div>
+              <div class="vireo-component" data-name="ProgressBarTrack" style="box-sizing: border-box; height: 8px; width: 100%; border-radius: 99px; background-color: #E2E8F0; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                <div class="vireo-component" data-name="ProgressBarFill" style="box-sizing: border-box; width: 240px; height: 8px; border-radius: 99px; background-color: #2563EB;"></div>
+              </div>
+              <div class="vireo-component" data-name="StorageDesc" style="box-sizing: border-box; font-size: 12px; color: #64748B;">390 GB of 500 GB used. Upgrading will prevent service throttling.</div>
+              <div class="vireo-component" data-name="UpgradePlanBtn" style="box-sizing: border-box; height: 40px; width: 100%; padding: 0px 16px; background-color: #2563EB; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                <div class="vireo-component" data-name="Label" style="box-sizing: border-box; font-size: 14px; font-weight: bold; color: #FFFFFF;">Upgrade Storage</div>
+              </div>
+            </div>
+            <div class="vireo-component" data-name="SupportWidget" style="box-sizing: border-box; display: flex; flex-direction: column; gap: 12px; height: fit-content; width: 100%; background-color: #EFF6FF; border-radius: 12px; padding: 20px;">
+              <div class="vireo-component" data-name="SupportHeading" style="box-sizing: border-box; font-size: 15px; font-weight: bold; color: #1E40AF;">Dedicated Support</div>
+              <div class="vireo-component" data-name="SupportCopy" style="box-sizing: border-box; font-size: 12px; color: #3B82F6;">Have a question about API integration or Figma sync? Talk to an engineer.</div>
+              <div class="vireo-component" data-name="ContactSupportBtn" style="box-sizing: border-box; height: 40px; width: 100%; padding: 0px 16px; background-color: #F3F4F6; border: 1px solid #E5E7EB; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                <div class="vireo-component" data-name="Label" style="box-sizing: border-box; font-size: 14px; font-weight: bold; color: #374151;">Open Support Ticket</div>
               </div>
             </div>
           </div>
         </div>
-        <div class="vireo-component" data-name="Sidebar" style="box-sizing: border-box; width: 360px; display: flex; flex-direction: column; gap: 24px; height: fit-content;">
-          <div class="vireo-component" data-name="ActivityCard" style="box-sizing: border-box; display: flex; flex-direction: column; gap: 16px; height: fit-content; width: 100%; background-color: #FFFFFF; border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
-            <div class="vireo-component" data-name="ActivityTitle" style="box-sizing: border-box; font-size: 16px; font-weight: bold; color: #0F172A;">Team Activity</div>
-            <div class="vireo-component" data-name="ActivityItem1" style="box-sizing: border-box; display: flex; flex-direction: row; gap: 12px; width: fit-content; align-items: center;">
-              <div class="vireo-component" data-name="ActivityDot1" style="box-sizing: border-box; width: 10px; height: 10px; border-radius: 99px; background-color: #10B981;"></div>
-              <div class="vireo-component" data-name="ActivityBody1" style="box-sizing: border-box; display: flex; flex-direction: column; gap: 2px; height: fit-content;">
-                <div class="vireo-component" data-name="ActivityText1" style="box-sizing: border-box; font-size: 13px; font-weight: bold; color: #0F172A;">Sophia merged design tokens</div>
-                <div class="vireo-component" data-name="ActivityTime1" style="box-sizing: border-box; font-size: 11px; color: #94A3B8;">12 minutes ago</div>
-              </div>
-            </div>
-            <div class="vireo-component" data-name="ActivityItem2" style="box-sizing: border-box; display: flex; flex-direction: row; gap: 12px; width: fit-content; align-items: center;">
-              <div class="vireo-component" data-name="ActivityDot2" style="box-sizing: border-box; width: 10px; height: 10px; border-radius: 99px; background-color: #2563EB;"></div>
-              <div class="vireo-component" data-name="ActivityBody2" style="box-sizing: border-box; display: flex; flex-direction: column; gap: 2px; height: fit-content;">
-                <div class="vireo-component" data-name="ActivityText2" style="box-sizing: border-box; font-size: 13px; font-weight: bold; color: #0F172A;">Michael added 4 team seats</div>
-                <div class="vireo-component" data-name="ActivityTime2" style="box-sizing: border-box; font-size: 11px; color: #94A3B8;">45 minutes ago</div>
-              </div>
-            </div>
-            <div class="vireo-component" data-name="ActivityItem3" style="box-sizing: border-box; display: flex; flex-direction: row; gap: 12px; width: fit-content; align-items: center;">
-              <div class="vireo-component" data-name="ActivityDot3" style="box-sizing: border-box; width: 10px; height: 10px; border-radius: 99px; background-color: #F59E0B;"></div>
-              <div class="vireo-component" data-name="ActivityBody3" style="box-sizing: border-box; display: flex; flex-direction: column; gap: 2px; height: fit-content;">
-                <div class="vireo-component" data-name="ActivityText3" style="box-sizing: border-box; font-size: 13px; font-weight: bold; color: #0F172A;">Stripe payout batch prepared</div>
-                <div class="vireo-component" data-name="ActivityTime3" style="box-sizing: border-box; font-size: 11px; color: #94A3B8;">2 hours ago</div>
-              </div>
-            </div>
-            <div class="vireo-component" data-name="ActivityItem4" style="box-sizing: border-box; display: flex; flex-direction: row; gap: 12px; width: fit-content; align-items: center;">
-              <div class="vireo-component" data-name="ActivityDot4" style="box-sizing: border-box; width: 10px; height: 10px; border-radius: 99px; background-color: #64748B;"></div>
-              <div class="vireo-component" data-name="ActivityBody4" style="box-sizing: border-box; display: flex; flex-direction: column; gap: 2px; height: fit-content;">
-                <div class="vireo-component" data-name="ActivityText4" style="box-sizing: border-box; font-size: 13px; font-weight: bold; color: #0F172A;">System snapshot backed up</div>
-                <div class="vireo-component" data-name="ActivityTime4" style="box-sizing: border-box; font-size: 11px; color: #94A3B8;">5 hours ago</div>
-              </div>
-            </div>
+        <div class="vireo-component" data-name="Footer" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; width: 100%; justify-content: space-between; align-items: center; padding: 16px 8px;">
+          <div class="vireo-component" data-name="Copyright" style="box-sizing: border-box; font-size: 13px; color: #94A3B8;">© 2026 Vireo Design Systems Inc. All rights reserved.</div>
+          <div class="vireo-component" data-name="FooterLinks" style="box-sizing: border-box; display: flex; flex-direction: row; gap: 20px; width: fit-content; align-items: center;">
+            <div class="vireo-component" data-name="DocLink" style="box-sizing: border-box; font-size: 13px; color: #64748B;">Documentation</div>
+            <div class="vireo-component" data-name="ApiLink" style="box-sizing: border-box; font-size: 13px; color: #64748B;">API Docs</div>
+            <div class="vireo-component" data-name="StatusLink" style="box-sizing: border-box; font-size: 13px; font-weight: bold; color: #10B981;">● All Systems Operational</div>
           </div>
-          <div class="vireo-component" data-name="StorageCard" style="box-sizing: border-box; display: flex; flex-direction: column; gap: 16px; height: fit-content; width: 100%; background-color: #FFFFFF; border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
-            <div class="vireo-component" data-name="StorageHeader" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; width: 100%; justify-content: space-between; align-items: center;">
-              <div class="vireo-component" data-name="StorageTitle" style="box-sizing: border-box; font-size: 16px; font-weight: bold; color: #0F172A;">Storage Quota</div>
-              <div class="vireo-component" data-name="StoragePct" style="box-sizing: border-box; font-size: 13px; font-weight: bold; color: #2563EB;">78% Used</div>
-            </div>
-            <div class="vireo-component" data-name="ProgressBarTrack" style="box-sizing: border-box; height: 8px; width: 100%; border-radius: 99px; background-color: #E2E8F0; display: flex; align-items: center; justify-content: center; cursor: pointer;">
-              <div class="vireo-component" data-name="ProgressBarFill" style="box-sizing: border-box; width: 240px; height: 8px; border-radius: 99px; background-color: #2563EB;"></div>
-            </div>
-            <div class="vireo-component" data-name="StorageDesc" style="box-sizing: border-box; font-size: 12px; color: #64748B;">390 GB of 500 GB used. Upgrading will prevent service throttling.</div>
-            <div class="vireo-component" data-name="UpgradePlanBtn" style="box-sizing: border-box; height: 40px; width: 100%; padding: 0px 16px; background-color: #2563EB; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
-              <div class="vireo-component" data-name="Label" style="box-sizing: border-box; font-size: 14px; font-weight: bold; color: #FFFFFF;">Upgrade Storage</div>
-            </div>
-          </div>
-          <div class="vireo-component" data-name="SupportWidget" style="box-sizing: border-box; display: flex; flex-direction: column; gap: 12px; height: fit-content; width: 100%; background-color: #EFF6FF; border-radius: 12px; padding: 20px;">
-            <div class="vireo-component" data-name="SupportHeading" style="box-sizing: border-box; font-size: 15px; font-weight: bold; color: #1E40AF;">Dedicated Support</div>
-            <div class="vireo-component" data-name="SupportCopy" style="box-sizing: border-box; font-size: 12px; color: #3B82F6;">Have a question about API integration or Figma sync? Talk to an engineer.</div>
-            <div class="vireo-component" data-name="ContactSupportBtn" style="box-sizing: border-box; height: 40px; width: 100%; padding: 0px 16px; background-color: #F3F4F6; border: 1px solid #E5E7EB; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
-              <div class="vireo-component" data-name="Label" style="box-sizing: border-box; font-size: 14px; font-weight: bold; color: #374151;">Open Support Ticket</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="vireo-component" data-name="Footer" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; width: 100%; justify-content: space-between; align-items: center; padding: 16px 8px;">
-        <div class="vireo-component" data-name="Copyright" style="box-sizing: border-box; font-size: 13px; color: #94A3B8;">© 2026 Vireo Design Systems Inc. All rights reserved.</div>
-        <div class="vireo-component" data-name="FooterLinks" style="box-sizing: border-box; display: flex; flex-direction: row; gap: 20px; width: fit-content; align-items: center;">
-          <div class="vireo-component" data-name="DocLink" style="box-sizing: border-box; font-size: 13px; color: #64748B;">Documentation</div>
-          <div class="vireo-component" data-name="ApiLink" style="box-sizing: border-box; font-size: 13px; color: #64748B;">API Docs</div>
-          <div class="vireo-component" data-name="StatusLink" style="box-sizing: border-box; font-size: 13px; font-weight: bold; color: #10B981;">● All Systems Operational</div>
         </div>
       </div>
     </div>
   </div>
-</div>
+</body>
+</html>

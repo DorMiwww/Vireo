@@ -11,11 +11,21 @@ object HtmlRenderer : Renderer<String> {
     fun render(file: VireoFile, loadedFiles: Map<String, VireoFile> = emptyMap()): VireoResult<String> {
         return try {
             val html = buildString {
-                append("<div class=\"vireo-file\" data-path=\"${escapeHtml(file.path)}\" style=\"font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: #F3F4F6; margin: 0; box-sizing: border-box;\">\n")
+                append("<!DOCTYPE html>\n")
+                append("<html lang=\"en\">\n")
+                append("<head>\n")
+                append("  <meta charset=\"UTF-8\">\n")
+                append("  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n")
+                append("  <title>${escapeHtml(file.path)}</title>\n")
+                append("</head>\n")
+                append("<body style=\"margin: 0; padding: 0;\">\n")
+                append("  <div class=\"vireo-file\" data-path=\"${escapeHtml(file.path)}\" style=\"font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: #F3F4F6; margin: 0; box-sizing: border-box;\">\n")
                 file.blocks.forEach { block ->
-                    renderBlock(this, block, "  ", file, loadedFiles)
+                    renderBlock(this, block, "    ", file, loadedFiles)
                 }
-                append("</div>")
+                append("  </div>\n")
+                append("</body>\n")
+                append("</html>")
             }
             VireoResult.Ok(html)
         } catch (e: Exception) {

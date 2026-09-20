@@ -135,7 +135,7 @@ private fun handleRender(
     }
 
     val sourceText = try {
-        file.readText()
+        file.readText(Charsets.UTF_8)
     } catch (e: Exception) {
         err.println("Error: Failed to read file '$inputFile': ${e.message}")
         return 1
@@ -195,7 +195,7 @@ private fun handleRender(
 
     if (outputFile != null) {
         try {
-            File(outputFile).writeText(outputText)
+            File(outputFile).writeText(outputText, Charsets.UTF_8)
         } catch (e: Exception) {
             err.println("Error: Failed to write output file '$outputFile': ${e.message}")
             return 1
