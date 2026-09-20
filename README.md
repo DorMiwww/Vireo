@@ -1,116 +1,194 @@
 # Vireo
 
-> Design as code. `.dac` → HTML · JSON · Figma.
+> **Design as Code (DaaC).** Write declarative design files (`.dac`) and compile them into HTML, JSON IR, and native Figma Auto Layout components.
 
-🚧 **Status: early stage / proof of concept.** The syntax, architecture, and API described below are a working plan, not a finalized standard.
+[![Build](https://img.shields.io/badge/build-passing-brightgreen)]()
+[![Kotlin](https://img.shields.io/badge/Kotlin-2.0-blue.svg)]()
+[![Figma Plugin](https://img.shields.io/badge/Figma-Plugin%20Supported-purple)]()
+[![License](https://img.shields.io/badge/license-MIT-green)]()
 
----
+Vireo bridges the gap between codebases and design systems. Instead of manually drawing components in Figma and re-implementing them in code, you define your design system in a clean, declarative `.dac` syntax that compiles into:
 
-## The Idea
-
-Vireo is a custom declarative syntax (`.dac`) for describing UI components as code — where elements live, what layout they use, what variants and properties they expose. One description, three outputs:
-
-- **HTML** — static render for preview and documentation
-- **JSON** — machine-readable intermediate representation (IR) for integrations
-- **Figma** — real nodes, components, and variants pushed into a design file
-
-The goal: eliminate the manual duplication of work between code and design files, and make the design system a versioned artifact just like the code.
+- **HTML** — Standalone HTML5 previews with native CSS Flexbox styling.
+- **JSON IR** — Structured intermediate representation for AST inspection and tooling integrations.
+- **Figma** — Real frames, shapes, typography, and Auto Layout structures imported directly into your Figma canvas via the bundled **Vireo Importer** development plugin.
 
 ---
 
-## Syntax (draft)
+## Example Syntax (`.dac`)
 
-```
-component Button {
-  variant size: sm, md, lg
-  variant style: primary, secondary
+```dac
+import buttons from "./components/buttons.dac"
+import badges from "./components/badges.dac"
 
-  layout: horizontal
-  padding: 12 16
-  align: center
+block Profile {
+    component Card {
+        width: 380
+        color: #FFFFFF
+        radius: 16
+        shadow: true
+        padding: 24
+        layout: vertical
+        gap: 16
 
-  prop showIcon: boolean = false
-  prop label: text = "Button"
+        component Header {
+            layout: horizontal
+            gap: 16
+            alignItems: center
+
+            component Avatar {
+                width: 56
+                height: 56
+                radius: 99
+                color: #2563EB
+
+                component Initials {
+                    text: "JD"
+                    fontSize: 20
+                    fontWeight: bold
+                    color: #FFFFFF
+                }
+            }
+
+            component UserInfo {
+                layout: vertical
+                gap: 4
+
+                component Name {
+                    text: "Jane Doe"
+                    fontSize: 18
+                    fontWeight: bold
+                    color: #111827
+                }
+
+                component Handle {
+                    text: "@janedoe • Design Systems"
+                    fontSize: 13
+                    color: #6B7280
+                }
+            }
+        }
+
+        component Bio {
+            text: "Design systems architect and UI engineer."
+            fontSize: 14
+            color: #4B5563
+        }
+
+        component ActionBtn {
+            ref: buttons.Primary.Default
+            label: "Connect"
+        }
+    }
 }
 ```
 
-The syntax is not finalized — it evolves alongside renderer capabilities.
-
 ---
 
-## Architecture
+## Architecture & Modules
 
-Kotlin Multiplatform, split into a compiler and renderers:
+Vireo is built as a pure Kotlin (JVM) multi-module project with strict dependency isolation:
 
 ```
-:core          (commonMain) — lexer / parser .dac → AST → IR
-:render-json   (commonMain) — IR → JSON       via kotlinx.serialization
-:render-html   (commonMain) — IR → HTML       via kotlinx.html
-:render-figma  (jsMain)     — IR → Figma nodes via Kotlin/JS + Figma Plugin API
+Vireo
+├── vireo-core              # AST model, SourceLocation, Visitor pattern, VireoResult
+├── vireo-lexer             # Stateless lexical scanner with token classification
+├── vireo-parser            # Recursive descent parser producing unresolved AST
+├── vireo-analysis          # Semantic analyzer, symbol table, cross-file imports, expression evaluator
+├── vireo-renderer-json     # Structured JSON IR emitter
+├── vireo-renderer-html     # Standalone HTML5 + CSS Flexbox generator
+├── vireo-renderer-figma    # AST-to-Figma schema transformer
+├── vireo-cli               # CLI interface (vireo check, vireo render)
+└── figma-plugin            # Native Figma development plugin (JS/HTML) for canvas import
 ```
 
-`:core` has zero platform dependencies — tested with plain `kotlin.test`, no Figma or browser required.
-
-Data flow:
-
+Data compilation pipeline:
 ```
-.dac file → [Compiler: parser + validator] → IR (JSON) → [Renderer] → HTML / JSON / Figma
+.dac source ──▶ [ Lexer ] ──▶ [ Parser ] ──▶ [ Analyzer ] ──▶ [ Renderer ] ──▶ HTML / JSON / Figma
 ```
 
 ---
 
-## Stack
+## Getting Started
 
-| Layer             | Technology                                                                                                    |
-|-------------------|---------------------------------------------------------------------------------------------------------------|
-| Shared core       | Kotlin Multiplatform                                                                                          |
-| Serialization     | kotlinx.serialization                                                                                         |
-| HTML rendering    | kotlinx.html                                                                                                  |
-| Figma integration | Kotlin/JS + Figma Plugin API (`external` declarations written by hand — no ready-made Kotlin bindings exist)  |
+### Prerequisites
+- JDK 17+ (JDK 21 recommended)
+- Gradle (handled automatically via `./gradlew`)
+- Node.js (optional, for the Figma plugin)
 
----
+### Build & Run Tests
+```bash
+./gradlew test
+```
 
-## Known Technical Risk
+### CLI Usage
 
-Figma plugins run not in a standard browser JS engine but in **QuickJS compiled to WebAssembly** — and by developer reports this version lags behind the current QuickJS release and doesn't support some of its features. Whether a compiled Kotlin/JS runtime will load and run in this sandbox without issues has no confirmed precedent.
+The CLI supports checking syntax and rendering designs into multiple formats:
 
-**Mitigation:** before building the full `:render-figma`, run a one-day spike — a minimal Kotlin/JS plugin with a single `external` declaration (`figma.createRectangle()`), and verify it loads and executes inside Figma without QuickJS errors.
+```bash
+# 1. Syntax analysis and import validation
+./gradlew :vireo-cli:run --args="check showcase/card.dac"
 
-**Plan B**, if the spike fails: `:core`, `:render-json`, and `:render-html` stay in Kotlin unchanged; `:render-figma` is rewritten as a thin TypeScript layer that only interprets the JSON IR and calls `figma.*` — no business logic.
+# 2. Render to standalone HTML
+./gradlew :vireo-cli:run --args="render showcase/card.dac --to html -o showcase/card.html"
 
----
-
-## Figma Renderer Notes
-
-- `figma.createComponentSet()` does not exist — Figma does not support empty component sets
-- Variant components are created via `figma.combineAsVariants(components, parent)` on an array of already-created `ComponentNode`s
-- Variant axes are encoded in each component's `.name` string (`"size=md, style=primary"`) before combining
-- Component properties (boolean / text / instance-swap) are added to each variant **before** `combineAsVariants`, then linked to child layers via `componentPropertyReferences`
-
----
-
-## MVP Roadmap
-
-- [ ] Spike: Kotlin/JS plugin inside the Figma sandbox (validates the risk above)
-- [ ] IR domain model: `ComponentDef`, `VariantAxis`, `PropertyDef`, `LayoutProps`
-- [ ] `.dac` parser → AST → IR (`:core`), unit tests without Figma
-- [ ] `:render-json` — trivial, kotlinx.serialization
-- [ ] `:render-html` — basic renderer via kotlinx.html
-- [ ] `:render-figma` — IR → node interpreter, component and variant support
-- [ ] End-to-end test: one component (Button, variants `size` × `style`) through the full pipeline
+# 3. Render to Figma JSON
+./gradlew :vireo-cli:run --args="render showcase/card.dac --to figma -o showcase/card.figma.json"
+```
 
 ---
 
-## Project Goals
+## Figma Integration
 
-A pet project and open-source tool simultaneously, with a possible shift to a commercial product later. Priority right now: MVP.
+Vireo includes a private development plugin located in [`figma-plugin/`](figma-plugin/):
+
+1. Open **Figma Desktop**.
+2. Navigate to **Plugins** → **Development** → **Import plugin from manifest...**
+3. Select [`figma-plugin/manifest.json`](figma-plugin/manifest.json).
+4. Run **Vireo Importer** on your canvas.
+5. Choose an optional device canvas preset (*Desktop Browser*, *Laptop*, *iPhone 16*, *iPad*, or *None*).
+6. Drag & drop or paste your generated `*.figma.json` file.
+7. Click **Import to Canvas** — native Auto Layout frames, text layers, colors, and paddings are rendered directly onto your Figma canvas.
+
+---
+
+## Showcase Designs
+
+A suite of ready-to-test design components is available in the [`showcase/`](showcase/) directory:
+
+- **Buttons & Badges**: [`showcase/components/buttons.dac`](showcase/components/buttons.dac), [`showcase/components/badges.dac`](showcase/components/badges.dac)
+- **Profile Card**: [`showcase/card.dac`](showcase/card.dac)
+- **SaaS Pricing Table**: [`showcase/pricing.dac`](showcase/pricing.dac)
+- **Large SaaS Dashboard**: [`showcase/dashboard.dac`](showcase/dashboard.dac) — Complete responsive analytics dashboard with navigation, hero banner, metrics grid, data tables, and sidebar widgets.
+
+You can preview the pre-rendered HTML files directly:
+```bash
+open showcase/dashboard.html
+```
+
+---
+
+## Roadmap
+
+- [x] **Phase 1**: Core AST, Stateless Lexer & Recursive Descent Parser
+- [x] **Phase 2**: Cross-file Imports (`import ... from`), Layout Constraints & HTML5/CSS Flexbox Renderer
+- [x] **Phase 3**: Variables, Function Definitions, Arithmetic Expressions, and Conditionals (`if ... then ... else`)
+- [x] **Phase 4**: Figma Schema Renderer (`vireo-renderer-figma`)
+- [x] **Phase 4.5**: Native Figma Canvas Plugin (`figma-plugin/`) with Auto Layout & Device Canvas Presets
+- [ ] **Phase 5**: Interactive Project Scaffolding (`vireo init`)
+- [ ] **Backlog**: Figma Design Bundle & Canvas Orchestrator (`vireo bundle`)
+
+---
+
+## Contributing & Agent Rules
+
+Project guidelines, syntax references, architecture decision records, and agent skills are organized under [`.agents/`](.agents/):
+- **Rules & Architecture**: [`.agents/rules/AGENTS.md`](.agents/rules/AGENTS.md)
+- **Roadmap & Context**: [`.agents/rules/ROADMAP.md`](.agents/rules/ROADMAP.md), [`.agents/rules/CONTEXT.md`](.agents/rules/CONTEXT.md)
+- **Agent Skills**: [`.agents/skills/`](.agents/skills/)
 
 ---
 
 ## License
 
-Not yet decided.
-
-## Contributing
-
-The project is at an early stage — issues and architecture discussions are welcome once a public repository is available.
+[MIT License](LICENSE)
