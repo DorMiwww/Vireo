@@ -114,8 +114,10 @@ private fun printRenderUsage(out: PrintStream) {
     out.println("  --json                       Shorthand for --output json")
     out.println()
     out.println("Output Destination:")
-    out.println("  --out, --output-file <file>  File path to write output to (defaults to stdout)")
-    out.println("  -o <file>                    File path to write output to (when path or extension provided)")
+    out.println("  --out, --output-file <file>  Explicit file path to write output to")
+    out.println("  -o <file>                    Explicit file path to write output to")
+    out.println("  --stdout, -o -               Print output directly to terminal stdout (without creating a file)")
+    out.println("  (default)                    Automatically creates <file>.<ext> (.html, .figma.json, .json)")
     out.println()
     out.println("HTML Output Parameters:")
     out.println("  --standard-html, --full-page Complete HTML5 document with <!DOCTYPE html>, head, title (default: true)")
@@ -129,20 +131,24 @@ private fun printRenderUsage(out: PrintStream) {
     out.println("  --compact                    Output compact/minified Figma JSON")
     out.println()
     out.println("Examples:")
-    out.println("  # Render design to JSON (kubectl style output format)")
-    out.println("  vireo render design.dac -o json")
+    out.println("  # Render design to card.html automatically")
+    out.println("  vireo render designs/card.dac --html")
     out.println()
-    out.println("  # Render to standard HTML document to stdout")
-    out.println("  vireo render design.dac --html")
+    out.println("  # Render design to card.figma.json automatically")
+    out.println("  vireo render designs/card.dac --figma")
+    out.println()
+    out.println("  # Render design to card.json automatically")
+    out.println("  vireo render designs/card.dac -o json")
+    out.println()
+    out.println("  # Output directly to terminal stdout")
+    out.println("  vireo render designs/card.dac --html --stdout")
+    out.println("  vireo render designs/card.dac -o -")
     out.println()
     out.println("  # Render standard HTML with custom title and output file")
-    out.println("  vireo render design.dac --html --title \"Dashboard\" --out dashboard.html")
+    out.println("  vireo render designs/card.dac --html --title \"Dashboard\" --out dashboard.html")
     out.println()
-    out.println("  # Render HTML component fragment/snippet for web embedding")
-    out.println("  vireo render design.dac --html --snippet")
-    out.println()
-    out.println("  # Render design to Figma AST JSON")
-    out.println("  vireo render design.dac --figma -o design.figma.json")
+    out.println("  # Render HTML component fragment/snippet")
+    out.println("  vireo render designs/card.dac --html --snippet")
 }
 
 private fun printCheckUsage(out: PrintStream) {
@@ -208,6 +214,7 @@ private fun handleRender(
     var format = "json"
     var formatSpecifiedExplicitly = false
     var outputFile: String? = null
+    var printToStdout = false
     var token: String? = System.getenv("FIGMA_TOKEN")
     var standardHtml = true
     var htmlTitle: String? = null
@@ -220,6 +227,9 @@ private fun handleRender(
     while (i < args.size) {
         val arg = args[i]
         when {
+            arg == "--stdout" || arg == "--console" || arg == "--terminal" -> {
+                printToStdout = true
+            }
             arg == "--to" -> {
                 if (i + 1 >= args.size) {
                     err.println("Error: Missing value for --to option.")
@@ -239,7 +249,9 @@ private fun handleRender(
                 }
                 val nextVal = args[++i]
                 val lower = nextVal.lowercase()
-                if (lower in recognizedFormats) {
+                if (nextVal == "-") {
+                    printToStdout = true
+                } else if (lower in recognizedFormats) {
                     format = lower
                     formatSpecifiedExplicitly = true
                 } else {
@@ -249,7 +261,9 @@ private fun handleRender(
             arg.startsWith("--output=") -> {
                 val value = arg.substringAfter("=")
                 val lower = value.lowercase()
-                if (lower in recognizedFormats) {
+                if (value == "-") {
+                    printToStdout = true
+                } else if (lower in recognizedFormats) {
                     format = lower
                     formatSpecifiedExplicitly = true
                 } else {
@@ -263,7 +277,9 @@ private fun handleRender(
                 }
                 val nextVal = args[++i]
                 val lower = nextVal.lowercase()
-                if (lower in recognizedFormats && !formatSpecifiedExplicitly) {
+                if (nextVal == "-") {
+                    printToStdout = true
+                } else if (lower in recognizedFormats && !formatSpecifiedExplicitly) {
                     format = lower
                     formatSpecifiedExplicitly = true
                 } else {
@@ -273,7 +289,9 @@ private fun handleRender(
             arg.startsWith("-o=") -> {
                 val value = arg.substringAfter("=")
                 val lower = value.lowercase()
-                if (lower in recognizedFormats && !formatSpecifiedExplicitly) {
+                if (value == "-") {
+                    printToStdout = true
+                } else if (lower in recognizedFormats && !formatSpecifiedExplicitly) {
                     format = lower
                     formatSpecifiedExplicitly = true
                 } else {
@@ -285,13 +303,28 @@ private fun handleRender(
                     err.println("Error: Missing value for $arg option.")
                     return 1
                 }
-                outputFile = args[++i]
+                val nextVal = args[++i]
+                if (nextVal == "-") {
+                    printToStdout = true
+                } else {
+                    outputFile = nextVal
+                }
             }
             arg.startsWith("--out=") -> {
-                outputFile = arg.substringAfter("=")
+                val value = arg.substringAfter("=")
+                if (value == "-") {
+                    printToStdout = true
+                } else {
+                    outputFile = value
+                }
             }
             arg.startsWith("--output-file=") -> {
-                outputFile = arg.substringAfter("=")
+                val value = arg.substringAfter("=")
+                if (value == "-") {
+                    printToStdout = true
+                } else {
+                    outputFile = value
+                }
             }
             arg == "--html" -> {
                 format = "html"
@@ -451,18 +484,39 @@ private fun handleRender(
         }
     }
 
-    if (outputFile != null) {
-        try {
-            val destFile = File(outputFile)
-            destFile.parentFile?.mkdirs()
-            destFile.writeText(outputText, Charsets.UTF_8)
-        } catch (e: Exception) {
-            err.println("Error: Failed to write output file '$outputFile': ${e.message}")
-            return 1
-        }
-    } else if (normalizedFormat != "figma" || token == null) {
+    if (printToStdout || outputFile == "-") {
         out.println(outputText)
+        return 0
     }
+
+    val targetFile = if (outputFile != null) {
+        outputFile
+    } else {
+        val baseName = File(inputFile).nameWithoutExtension
+        when (normalizedFormat) {
+            "html" -> "$baseName.html"
+            "figma" -> "$baseName.figma.json"
+            "json" -> "$baseName.json"
+            else -> "$baseName.$normalizedFormat"
+        }
+    }
+
+    try {
+        val destFile = File(targetFile)
+        destFile.parentFile?.mkdirs()
+        destFile.writeText(outputText, Charsets.UTF_8)
+    } catch (e: Exception) {
+        err.println("Error: Failed to write output file '$targetFile': ${e.message}")
+        return 1
+    }
+
+    val formatDisplay = when (normalizedFormat) {
+        "html" -> "HTML"
+        "figma" -> "Figma"
+        "json" -> "JSON"
+        else -> normalizedFormat.uppercase()
+    }
+    out.println("✨ Rendered $formatDisplay to $targetFile")
 
     return 0
 }
@@ -710,11 +764,11 @@ private fun handleInit(
         # Validate syntax and references
         vireo check designs/card.dac
 
-        # Render to standard HTML5 document
-        vireo render designs/card.dac --html --out card.html
+        # Render to standard HTML5 document (creates card.html)
+        vireo render designs/card.dac --html
 
-        # Render to Figma AST JSON
-        vireo render designs/card.dac --figma -o card.figma.json
+        # Render to Figma AST JSON (creates card.figma.json)
+        vireo render designs/card.dac --figma
         ```
     """.trimIndent()
 
@@ -758,10 +812,10 @@ private fun handleInit(
     if (targetDir.path != "." && targetDir.path != "./") {
         out.println("  1. cd ${targetDir.path}")
         out.println("  2. vireo check designs/card.dac")
-        out.println("  3. vireo render designs/card.dac --html --out card.html")
+        out.println("  3. vireo render designs/card.dac --html")
     } else {
         out.println("  1. vireo check designs/card.dac")
-        out.println("  2. vireo render designs/card.dac --html --out card.html")
+        out.println("  2. vireo render designs/card.dac --html")
     }
 
     return 0

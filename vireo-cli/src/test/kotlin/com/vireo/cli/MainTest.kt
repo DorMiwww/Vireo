@@ -40,7 +40,7 @@ class MainTest {
             """.trimIndent()
         )
 
-        val (exitCode, stdout, stderr) = runCliTest("render", tempFile.absolutePath, "--to", "json")
+        val (exitCode, stdout, stderr) = runCliTest("render", tempFile.absolutePath, "--to", "json", "--stdout")
 
         assertEquals(0, exitCode)
         assertTrue(stderr.isEmpty())
@@ -71,7 +71,7 @@ class MainTest {
         val (exitCode, stdout, stderr) = runCliTest("render", inputFile.absolutePath, "--to=json", "-o", outputFile.absolutePath)
 
         assertEquals(0, exitCode)
-        assertTrue(stdout.isEmpty())
+        assertTrue(stdout.contains("✨ Rendered JSON to ${outputFile.absolutePath}"))
         assertTrue(stderr.isEmpty())
 
         val writtenJson = outputFile.readText()
@@ -139,7 +139,7 @@ class MainTest {
             """.trimIndent()
         )
 
-        val (exitCode, stdout, stderr) = runCliTest("render", tempFile.absolutePath, "--to", "html")
+        val (exitCode, stdout, stderr) = runCliTest("render", tempFile.absolutePath, "--to", "html", "--stdout")
 
         assertEquals(0, exitCode)
         assertTrue(stderr.isEmpty())
@@ -263,7 +263,7 @@ class MainTest {
             """.trimIndent()
         )
 
-        val (exitCode, stdout, stderr) = runCliTest("render", tempFile.absolutePath, "-o", "html")
+        val (exitCode, stdout, stderr) = runCliTest("render", tempFile.absolutePath, "-o", "html", "--stdout")
         assertEquals(0, exitCode)
         assertTrue(stderr.isEmpty())
         assertTrue(stdout.startsWith("<!DOCTYPE html>"))
@@ -288,6 +288,7 @@ class MainTest {
         val (exitCode, stdout, stderr) = runCliTest(
             "render", tempFile.absolutePath,
             "--html",
+            "--stdout",
             "--title=Dark Dashboard",
             "--theme=dark"
         )
@@ -316,6 +317,7 @@ class MainTest {
         val (exitCode, stdout, stderr) = runCliTest(
             "render", tempFile.absolutePath,
             "--html",
+            "--stdout",
             "--snippet"
         )
         assertEquals(0, exitCode)
@@ -345,6 +347,7 @@ class MainTest {
         val (exitCode, stdout, stderr) = runCliTest(
             "render", tempFile.absolutePath,
             "--figma",
+            "--stdout",
             "--compact"
         )
         assertEquals(0, exitCode)
@@ -353,6 +356,113 @@ class MainTest {
         assertTrue(stdout.contains("\"name\":\"Main\""))
         // Compact JSON has no multiline indentation
         assertTrue(!stdout.contains("{\n  "))
+    }
+
+    @Test
+    fun `test render command without flags automatically writes json file`() {
+        val tempFile = File.createTempFile("test_auto_json", ".dac")
+        tempFile.deleteOnExit()
+        tempFile.writeText(
+            """
+            block Main {
+                component Box {
+                    width: 100
+                    height: 50
+                }
+            }
+            """.trimIndent()
+        )
+
+        val expectedOutputFile = File("${tempFile.nameWithoutExtension}.json")
+        expectedOutputFile.deleteOnExit()
+
+        val (exitCode, stdout, stderr) = runCliTest("render", tempFile.absolutePath)
+        assertEquals(0, exitCode)
+        assertTrue(stderr.isEmpty())
+        assertTrue(stdout.contains("✨ Rendered JSON to ${expectedOutputFile.name}"))
+        assertTrue(expectedOutputFile.exists())
+        assertTrue(expectedOutputFile.readText().contains("\"name\": \"Main\""))
+        expectedOutputFile.delete()
+    }
+
+    @Test
+    fun `test render command automatically creates html file without --out flag`() {
+        val tempFile = File.createTempFile("my_component", ".dac")
+        tempFile.deleteOnExit()
+        tempFile.writeText(
+            """
+            block Demo {
+                component Box {
+                    width: 150
+                    height: 80
+                    color: "#10B981"
+                }
+            }
+            """.trimIndent()
+        )
+
+        val expectedOutputFile = File("${tempFile.nameWithoutExtension}.html")
+        expectedOutputFile.deleteOnExit()
+
+        val (exitCode, stdout, stderr) = runCliTest("render", tempFile.absolutePath, "--html")
+        assertEquals(0, exitCode)
+        assertTrue(stderr.isEmpty())
+        assertTrue(stdout.contains("✨ Rendered HTML to ${expectedOutputFile.name}"))
+        assertTrue(expectedOutputFile.exists())
+        val html = expectedOutputFile.readText()
+        assertTrue(html.contains("<!DOCTYPE html>"))
+        assertTrue(html.contains("width: 150px;"))
+        expectedOutputFile.delete()
+    }
+
+    @Test
+    fun `test render command automatically creates figma json file without --out flag`() {
+        val tempFile = File.createTempFile("figma_auto", ".dac")
+        tempFile.deleteOnExit()
+        tempFile.writeText(
+            """
+            block Demo {
+                component Button {
+                    width: 100
+                    height: 40
+                }
+            }
+            """.trimIndent()
+        )
+
+        val expectedOutputFile = File("${tempFile.nameWithoutExtension}.figma.json")
+        expectedOutputFile.deleteOnExit()
+
+        val (exitCode, stdout, stderr) = runCliTest("render", tempFile.absolutePath, "--figma")
+        assertEquals(0, exitCode)
+        assertTrue(stderr.isEmpty())
+        assertTrue(stdout.contains("✨ Rendered Figma to ${expectedOutputFile.name}"))
+        assertTrue(expectedOutputFile.exists())
+        val json = expectedOutputFile.readText()
+        assertTrue(json.contains("\"type\": \"CANVAS\""))
+        expectedOutputFile.delete()
+    }
+
+    @Test
+    fun `test render command with kubectl dash prints to stdout`() {
+        val tempFile = File.createTempFile("dash_stdout", ".dac")
+        tempFile.deleteOnExit()
+        tempFile.writeText(
+            """
+            block Demo {
+                component Box {
+                    width: 50
+                    height: 50
+                }
+            }
+            """.trimIndent()
+        )
+
+        val (exitCode, stdout, stderr) = runCliTest("render", tempFile.absolutePath, "--html", "-o", "-")
+        assertEquals(0, exitCode)
+        assertTrue(stderr.isEmpty())
+        assertTrue(stdout.startsWith("<!DOCTYPE html>"))
+        assertTrue(!File("${tempFile.nameWithoutExtension}.html").exists())
     }
 
     @Test
@@ -383,13 +493,18 @@ class MainTest {
         assertEquals(0, checkCode, "check on initialized project should pass: $checkErr")
         assertTrue(checkOut.contains("passed analysis."))
 
-        // Verify that card.dac renders to standard HTML
+        // Verify that card.dac renders to standard HTML automatically creating card.html
         val (renderCode, renderOut, renderErr) = runCliTest("render", cardFile.absolutePath, "--html")
         assertEquals(0, renderCode, "render on initialized project should pass: $renderErr")
-        assertTrue(renderOut.startsWith("<!DOCTYPE html>"))
-        assertTrue(renderOut.contains("Welcome to Vireo"))
-        assertTrue(renderOut.contains("Open Docs"))
-        assertTrue(renderOut.contains("href=\"https://github.com/DorMiwww/Vireo\""))
+        assertTrue(renderOut.contains("✨ Rendered HTML to card.html"))
+        val generatedHtml = File("card.html")
+        assertTrue(generatedHtml.exists(), "card.html should be created automatically")
+        val content = generatedHtml.readText()
+        assertTrue(content.startsWith("<!DOCTYPE html>"))
+        assertTrue(content.contains("Welcome to Vireo"))
+        assertTrue(content.contains("Open Docs"))
+        assertTrue(content.contains("href=\"https://github.com/DorMiwww/Vireo\""))
+        generatedHtml.delete()
 
         // Cleanup
         tempDir.deleteRecursively()

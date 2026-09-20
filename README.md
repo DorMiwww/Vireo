@@ -168,17 +168,21 @@ vireo check designs/card.dac
 ```
 
 ### 3. Compiling & Rendering (`vireo render`)
-Render `.dac` designs into HTML previews, JSON AST representations, or Figma-ready schema files.
+Render `.dac` designs into HTML previews, JSON AST representations, or Figma-ready schema files. By default, output files are created automatically based on input file names:
 
 ```bash
-# Render to standalone HTML5 preview (with default styling)
-vireo render designs/card.dac --html --out card.html
+# Render to standalone HTML5 preview (automatically creates card.html)
+vireo render designs/card.dac --html
 
-# Render HTML snippet (without full HTML <html>/<head> wrapper, for embedding)
+# Render to Figma JSON for the Figma Canvas Plugin (automatically creates card.figma.json)
+vireo render designs/card.dac --figma
+
+# Stream output directly to terminal stdout (or pipe to other tools)
+vireo render designs/card.dac --html --stdout
+vireo render designs/card.dac -o -
+
+# Render HTML snippet to custom file (without full HTML wrapper)
 vireo render designs/card.dac --html --snippet --out card-snippet.html
-
-# Render to Figma JSON for the Figma Canvas Plugin
-vireo render designs/card.dac -o figma -f card.figma.json
 
 # Render to structured JSON IR (AST representation)
 vireo render designs/card.dac -o json

@@ -41,7 +41,7 @@ class EndToEndTest {
             """.trimIndent()
         )
 
-        val (exitCode, stdout, stderr) = runCli("render", dacFile.absolutePath, "--to", "json")
+        val (exitCode, stdout, stderr) = runCli("render", dacFile.absolutePath, "--to", "json", "--stdout")
 
         assertEquals(0, exitCode)
         assertTrue(stderr.isEmpty(), "stderr should be empty, got: $stderr")
@@ -94,7 +94,7 @@ class EndToEndTest {
             """.trimIndent()
         )
 
-        val (exitCode, stdout, stderr) = runCli("render", dacFile.absolutePath, "--to", "json")
+        val (exitCode, stdout, stderr) = runCli("render", dacFile.absolutePath, "--to", "json", "--stdout")
 
         assertEquals(0, exitCode)
         assertTrue(stderr.isEmpty(), "stderr should be empty, got: $stderr")
@@ -157,7 +157,7 @@ class EndToEndTest {
         val (exitCode, stdout, stderr) = runCli("render", example1File.absolutePath, "--to", "json", "-o", outputFile.absolutePath)
 
         assertEquals(0, exitCode)
-        assertTrue(stdout.isEmpty())
+        assertTrue(stdout.contains("✨ Rendered JSON to ${outputFile.absolutePath}"))
         assertTrue(stderr.isEmpty())
 
         val writtenContent = outputFile.readText()
@@ -201,7 +201,7 @@ class EndToEndTest {
         )
 
         // 1. JSON render via CLI
-        val (jsonExitCode, jsonStdout, jsonStderr) = runCli("render", dacFile.absolutePath, "--to", "json")
+        val (jsonExitCode, jsonStdout, jsonStderr) = runCli("render", dacFile.absolutePath, "--to", "json", "--stdout")
         assertEquals(0, jsonExitCode, "JSON render CLI failed: $jsonStderr")
         assertTrue(jsonStderr.isEmpty(), "stderr should be empty for JSON render, got: $jsonStderr")
         assertTrue(jsonStdout.contains("\"name\": \"Cards\""))
@@ -220,7 +220,7 @@ class EndToEndTest {
         assertTrue(jsonStdout.contains("\"text\": \"Card description goes here.\""))
 
         // 2. HTML render via CLI
-        val (htmlExitCode, htmlStdout, htmlStderr) = runCli("render", dacFile.absolutePath, "--to", "html")
+        val (htmlExitCode, htmlStdout, htmlStderr) = runCli("render", dacFile.absolutePath, "--to", "html", "--stdout")
         assertEquals(0, htmlExitCode, "HTML render CLI failed: $htmlStderr")
         assertTrue(htmlStderr.isEmpty(), "stderr should be empty for HTML render, got: $htmlStderr")
         assertTrue(htmlStdout.contains("class=\"vireo-file\""))
@@ -313,7 +313,7 @@ class EndToEndTest {
         )
 
         // 1. JSON render via CLI
-        val (jsonExitCode, jsonStdout, jsonStderr) = runCli("render", loginFile.absolutePath, "--to", "json")
+        val (jsonExitCode, jsonStdout, jsonStderr) = runCli("render", loginFile.absolutePath, "--to", "json", "--stdout")
         assertEquals(0, jsonExitCode, "JSON render CLI failed: $jsonStderr")
         assertTrue(jsonStderr.isEmpty(), "stderr should be empty for JSON render, got: $jsonStderr")
         assertTrue(jsonStdout.contains("\"alias\": \"buttons\""))
@@ -324,7 +324,7 @@ class EndToEndTest {
         assertTrue(jsonStdout.contains("\"label\": \"Sign In\""))
 
         // 2. HTML render via CLI
-        val (htmlExitCode, htmlStdout, htmlStderr) = runCli("render", loginFile.absolutePath, "--to", "html")
+        val (htmlExitCode, htmlStdout, htmlStderr) = runCli("render", loginFile.absolutePath, "--to", "html", "--stdout")
         assertEquals(0, htmlExitCode, "HTML render CLI failed: $htmlStderr")
         assertTrue(htmlStderr.isEmpty(), "stderr should be empty for HTML render, got: $htmlStderr")
         assertTrue(htmlStdout.contains("class=\"vireo-file\""))
@@ -372,7 +372,7 @@ class EndToEndTest {
         )
 
         // 1. JSON render via CLI
-        val (jsonExitCode, jsonStdout, jsonStderr) = runCli("render", dacFile.absolutePath, "--to", "json")
+        val (jsonExitCode, jsonStdout, jsonStderr) = runCli("render", dacFile.absolutePath, "--to", "json", "--stdout")
         assertEquals(0, jsonExitCode, "JSON render CLI failed: $jsonStderr")
         assertTrue(jsonStderr.isEmpty(), "stderr should be empty for JSON render, got: $jsonStderr")
         assertTrue(jsonStdout.contains("\"name\": \"primaryColor\""))
@@ -416,7 +416,7 @@ class EndToEndTest {
         )
 
         // 1. JSON render via CLI
-        val (jsonExitCode, jsonStdout, jsonStderr) = runCli("render", dacFile.absolutePath, "--to", "json")
+        val (jsonExitCode, jsonStdout, jsonStderr) = runCli("render", dacFile.absolutePath, "--to", "json", "--stdout")
         assertEquals(0, jsonExitCode, "JSON render CLI failed: $jsonStderr")
         assertTrue(jsonStderr.isEmpty(), "stderr should be empty for JSON render, got: $jsonStderr")
         assertTrue(jsonStdout.contains("\"name\": \"SplitPanel\""))
@@ -425,7 +425,7 @@ class EndToEndTest {
         assertTrue(jsonStdout.contains("\"name\": \"Right\""))
 
         // 2. HTML render via CLI
-        val (htmlExitCode, htmlStdout, htmlStderr) = runCli("render", dacFile.absolutePath, "--to", "html")
+        val (htmlExitCode, htmlStdout, htmlStderr) = runCli("render", dacFile.absolutePath, "--to", "html", "--stdout")
         assertEquals(0, htmlExitCode, "HTML render CLI failed: $htmlStderr")
         assertTrue(htmlStderr.isEmpty(), "stderr should be empty for HTML render, got: $htmlStderr")
         assertTrue(htmlStdout.contains("class=\"vireo-file\""))

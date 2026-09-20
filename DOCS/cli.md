@@ -75,13 +75,20 @@ Vireo supports standard `kubectl`-style `-o <format>` flags, as well as dedicate
 
 ### Output Destination
 
-| Flag | Description |
-| :--- | :--- |
-| `--out, --output-file <file>` | File path to write output to (defaults to `stdout`) |
-| `-o <file>` | File path to write output to (when argument contains `/`, `\`, or file extension) |
+By default, `vireo render` automatically creates an output file named after the input file (`<name>.<ext>`) in the current directory:
+- `--html` creates `<name>.html`
+- `--figma` creates `<name>.figma.json`
+- `-o json` or `--json` creates `<name>.json`
+
+| Flag | Description | Default |
+| :--- | :--- | :--- |
+| `<none>` | Automatically writes to `<name>.<ext>` (`.html`, `.figma.json`, `.json`) | Yes |
+| `--out, --output-file <file>` | Custom file path to write output to | — |
+| `-o <file>` | Custom file path to write output to | — |
+| `--stdout, -o -` | Print output directly to terminal `stdout` without writing a file | — |
 
 > [!NOTE]
-> When using `-o <val>`, if `<val>` matches a format name (`json`, `html`, `figma`), it sets the output format. If it is a file path or extension (e.g. `login.html`), it sets the output destination file. For unambiguous scripts, use `--html --out <file>`.
+> When using `-o <val>`, if `<val>` matches a format name (`json`, `html`, `figma`), it sets the output format. If it is `-` or `--stdout`, it streams to terminal stdout. If it is a file path or extension (e.g. `login.html`), it sets the output destination file.
 
 ### HTML Output Parameters
 
@@ -107,28 +114,32 @@ When rendering to Figma AST JSON (`-o figma` or `--figma`):
 ### `vireo render` Examples
 
 ```bash
-# 1. Render design to JSON (kubectl style output flag to stdout)
-vireo render designs/card.dac -o json
-
-# 2. Render standard HTML document to stdout
+# 1. Render directly to card.html (automatic file creation)
 vireo render designs/card.dac --html
 
-# 3. Render standard HTML with custom page title and output to file
+# 2. Render directly to card.figma.json (automatic file creation)
+vireo render designs/card.dac --figma
+
+# 3. Render directly to card.json
+vireo render designs/card.dac -o json
+
+# 4. Stream rendered output directly to terminal stdout
+vireo render designs/card.dac --html --stdout
+vireo render designs/card.dac -o -
+
+# 5. Render standard HTML with custom page title and explicit output file
 vireo render designs/card.dac --html --title "SaaS Dashboard" --out dashboard.html
 
-# 4. Render dark-themed HTML preview
+# 6. Render dark-themed HTML preview
 vireo render designs/card.dac --html --theme dark --out card-dark.html
 
-# 5. Render embeddable HTML snippet/fragment (no DOCTYPE wrapper)
-vireo render designs/card.dac --html --snippet
+# 7. Render embeddable HTML snippet/fragment (no DOCTYPE wrapper)
+vireo render designs/card.dac --html --snippet --stdout
 
-# 6. Render to Figma AST JSON for Figma Development Plugin
-vireo render designs/card.dac --figma -o designs/card.figma.json
+# 8. Render compact Figma JSON
+vireo render designs/card.dac --figma --compact
 
-# 7. Render compact Figma JSON
-vireo render designs/card.dac --figma --compact --out card.figma.json
-
-# 8. View render command options
+# 9. View render command options
 vireo render --help
 ```
 
