@@ -77,7 +77,7 @@ Implemented `figma-plugin/` private development plugin (`manifest.json`, `ui.htm
 
 1. Phase 5 — Init Wizard: implement `vireo init` interactive project scaffolding.
 2. Backlog Item: Figma Design Bundle & Canvas Orchestrator (`vireo bundle`) — package multiple `.dac` files into a single consolidated canvas bundle with automated grid layout and Figma Sections/Pages.
-3. Internal refactor (temporary, side track — not a roadmap phase): `.agents/rules/REFACTOR_PLAN.md` — module-by-module file-splitting and dedup plan, test-first per phase, 8 phases not yet started. Pick up the first `[not started]` phase in that file when resuming this work.
+3. Internal refactor (temporary, side track — not a roadmap phase): `.agents/rules/REFACTOR_PLAN.md` — module-by-module file-splitting and dedup plan, test-first per phase. Phase 0 (baseline) and Phase 1 (`vireo-core` AST split into `ast/`) are `[complete]`. Phase 2 (`vireo-lexer`) is next. Pick up the first `[not started]` phase in that file when resuming this work.
 
 ---
 

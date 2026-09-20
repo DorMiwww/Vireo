@@ -49,7 +49,7 @@ Ordered by ascending blast radius, not by module list order in `settings.gradle.
 
 ---
 
-## Phase 0 — Baseline & Safety Net `[not started]`
+## Phase 0 — Baseline & Safety Net `[complete]`
 
 **Applies to:** whole repo. Must be done once, before Phase 1.
 
@@ -63,20 +63,25 @@ Ordered by ascending blast radius, not by module list order in `settings.gradle.
 4. Note the current commit hash as the refactor's starting point.
 
 ### Definition of Done
-- [ ] Working tree clean at phase start
-- [ ] `./gradlew test` → BUILD SUCCESSFUL, logged below
-- [ ] `./gradlew build` → BUILD SUCCESSFUL
-- [ ] Starting commit hash recorded
+- [x] Working tree clean at phase start
+- [x] `./gradlew test` → BUILD SUCCESSFUL, logged below
+- [x] `./gradlew build` → BUILD SUCCESSFUL
+- [x] Starting commit hash recorded
 
 ### Baseline log
 ```
 Recorded 2026-09-20: ./gradlew test → BUILD SUCCESSFUL (39 actionable tasks: 8 executed, 31 up-to-date)
 Working tree: clean, HEAD = ca99e39
+
+Re-verified 2026-09-20 (rules/skills migrated to .agents/, unrelated commits landed
+in between — 6227c12..0872918): ./gradlew test → BUILD SUCCESSFUL, working tree
+clean, HEAD = 0872918. ./gradlew build → BUILD SUCCESSFUL. This is the actual
+starting point for Phase 1.
 ```
 
 ---
 
-## Phase 1 — `vireo-core` `[not started]`
+## Phase 1 — `vireo-core` `[complete]`
 
 **Risk:** lowest. **Current size:** `Ast.kt` 131 lines, `AstVisitor.kt` 11 lines, `Renderer.kt` 5 lines, `VireoResult.kt` 17 lines — 164 lines total, already fairly small, but `Ast.kt` mixes five unrelated concerns in one file: file/block/component nodes, the `Reference`/`Import` addressing types, `PropertyValue`, layout `Constraint`s + `Axis`/`Direction`/`Sizing` enums, and `ResolvedFile`.
 
@@ -101,14 +106,28 @@ Read `Ast.kt` first and confirm the exact set of declarations before splitting �
 3. When all moves are done: full suite `./gradlew test`.
 
 ### Definition of Done
-- [ ] All `vireo-core` tests green before first move
-- [ ] Each moved file compiles (`./gradlew build`) immediately after its own move — no batching multiple type-moves before checking
-- [ ] Full suite green after last move
-- [ ] No `java.io`/`java.net` introduced (grep confirms none — this was already true before the phase)
-- [ ] Commit hash recorded below
+- [x] All `vireo-core` tests green before first move
+- [x] Each moved file compiles (`./gradlew build`) immediately after its own move — no batching multiple type-moves before checking
+- [x] Full suite green after last move
+- [x] No `java.io`/`java.net` introduced (grep confirms none — this was already true before the phase)
+- [x] Commit hash recorded below
+
+### What actually happened
+Read `Ast.kt` fresh (it had grown since this plan was drafted — now also holds `VarDeclaration`/`Parameter`/`FunDeclaration` from Phase 3-B/3-C and `PropertyValue.ConditionalExpr` from 3-D). Split into 5 files exactly as planned, all keeping `package com.vireo.core` (not a `com.vireo.core.ast` subpackage) so the physical folder move required zero import changes in any of the other 7 modules — Kotlin doesn't tie package name to directory. `AstVisitor.kt`, `Renderer.kt`, `VireoResult.kt` left untouched as planned (no real seam to split, already small and cohesive). Original `Ast.kt` deleted after the split, not left as a duplicate.
+
+```
+vireo-core/src/main/kotlin/com/vireo/core/ast/
+  Declarations.kt   21 lines  — VarDeclaration, Parameter, FunDeclaration
+  VireoFile.kt       36 lines  — VireoFile, Import, Block, ComponentNode, ResolvedFile
+  Reference.kt        9 lines  — Reference
+  Property.kt        33 lines  — PropertyValue (sealed, incl. ConditionalExpr), Property
+  Constraint.kt      37 lines  — Constraint (sealed), Axis, Direction, Sizing
+```
+
+Verified with `/unlazy`: `GATES.md` at repo root, 7 gates (lint self-check, module test, full suite, layout exists, old file removed, no JVM I/O, this doc marked complete), all runnable gates green — see commit below.
 
 ### Handoff notes
-_(fill in if left `[in progress]`)_
+None — phase fully closed in one session.
 
 ---
 
@@ -354,8 +373,8 @@ Not yet a problem, but if the Phase 5 dedup of `findComponent`/`resolvePath`/`ex
 
 | Phase | Module | Status | Commit(s) | Date |
 |-------|--------|--------|-----------|------|
-| 0 | — (baseline) | not started | — | — |
-| 1 | vireo-core | not started | — | — |
+| 0 | — (baseline) | complete | 0872918 (pre-existing) | 2026-09-20 |
+| 1 | vireo-core | complete | this commit | 2026-09-20 |
 | 2 | vireo-lexer | not started | — | — |
 | 3 | vireo-renderer-json | not started | — | — |
 | 4 | vireo-renderer-html | not started | — | — |
