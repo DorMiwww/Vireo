@@ -1,0 +1,94 @@
+---
+title: Known Issues
+description: 16 documented TanStack Router issues with fixes covering build/setup, routing, search params, loaders, SSR, deployment, and anti-patterns to avoid
+tags:
+  [
+    issues,
+    troubleshooting,
+    devtools,
+    vite-plugin,
+    type-registration,
+    search-params,
+    SSR,
+    deployment,
+    anti-patterns,
+  ]
+---
+
+# Known Issues
+
+## Build and Setup
+
+**#1: Devtools dependency resolution** — Build fails with `@tanstack/router-devtools-core` not found. Fix: `npm install @tanstack/router-devtools`.
+
+**#2: Vite plugin order** (CRITICAL) — Routes not auto-generated, `routeTree.gen.ts` missing. Fix: TanStackRouterVite MUST come before `react()` in plugins array. The plugin processes route files before React compilation.
+
+**#3: Type registration missing** — `<Link to="...">` not typed, no autocomplete. Fix: Add `declare module '@tanstack/react-router'` with `Register` interface in main.tsx.
+
+**#4: Loader not running** — Loader function not called on navigation. Fix: Ensure route exports `Route` constant from `createFileRoute`.
+
+## Routing and Navigation
+
+**#6: Virtual routes index/layout conflict** — `route.tsx` and `index.tsx` conflict when using `physical()`. Fix: Use pathless route `_layout.tsx` + `_layout.index.tsx`.
+
+**#11: Pathless route notFoundComponent not rendering** — `notFoundComponent` on pathless layout routes (e.g., `/(authenticated)`) ignored. Fix: Define `notFoundComponent` on child routes instead.
+
+**#18: Virtual routes don't support manual lazy loading** — `createLazyFileRoute` silently replaced with `createFileRoute`. Use `autoCodeSplitting: true` instead.
+
+**#20: Missing leading slash** — Routes fail to match when path defined without leading slash. Always use `'/about'` not `'about'`.
+
+## Search Params and Validation
+
+**#7: Search params type inference** — `zodSearchValidator` broken since v1.81.5. Fix: Use `zodValidator` from `@tanstack/zod-adapter`.
+
+**#10: useParams({ strict: false }) returns unparsed values** — After navigation, params are strings instead of parsed types. Fix: Use strict mode (default) or manually parse:
+
+```ts
+export const Route = createFileRoute('/posts/$postId')({
+  params: {
+    parse: (params) => ({
+      postId: z.coerce.number().parse(params.postId),
+    }),
+  },
+});
+
+function Component() {
+  const { postId } = Route.useParams(); // Parsed as number
+  // const { postId } = useParams({ strict: false }) // String — avoid
+}
+```
+
+**#19: NavigateOptions type inconsistency** — `NavigateOptions` type doesn't enforce required params like `useNavigate()` does. Use `useNavigate()` return type for safety.
+
+## Loaders and Data Loading
+
+**#12: Aborted loader renders errorComponent with undefined error** — Rapid navigation aborts previous loader, renders errorComponent with `undefined`. Fix:
+
+```tsx
+errorComponent: ({ error, reset }) => {
+  if (!error) return null;
+  return <div>Error: {error.message}</div>;
+},
+```
+
+**#17: Route head() executes before loader finishes** — Meta tags generated with incomplete data. Workaround: guard against undefined loaderData in `head()` function.
+
+## SSR and Deployment
+
+**#14: Streaming SSR loader crash** — Unawaited promise rejections crash dev server. Fix: Always `await` or `try/catch` in loaders. Never use `void` with promise chains that may throw.
+
+**#15: Prerender hangs on empty filter** — Build hangs when `prerender.filter` returns zero routes. Ensure at least one route matches or disable prerender.
+
+**#16: Docker prerender failure** — Preview server not accessible in Docker. Fix: Add `preview: { host: true }` to vite config to bind to `0.0.0.0`.
+
+## Anti-Patterns
+
+- **Fetching in useEffect** instead of route loaders — creates waterfalls, no preloading
+- **Using `prefetchQuery` in loaders** instead of `ensureQueryData` — swallows errors, no return value
+- **Missing router type registration** — no autocomplete, no type checking on routes
+- **Using `useParams()` without `from`** — returns union of all route params instead of exact types
+- **Using `useNavigate()` for links** — loses right-click, accessibility, SEO, preloading
+- **Sequential fetches in loaders** — use `Promise.all` for parallel requests
+- **Importing globals instead of using route context** — harder to test, couples to implementation
+- **Creating empty main route files** — use virtual routes when only a `.lazy.tsx` is needed
+- **Using `createLazyFileRoute` in virtual file routes** — silently replaced, use `autoCodeSplitting` instead
