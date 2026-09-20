@@ -342,6 +342,11 @@ figma.ui.onmessage = async (msg) => {
           deviceFrame.counterAxisAlignItems = "CENTER";
           deviceFrame.counterAxisSizingMode = "FIXED";
 
+          try {
+            deviceFrame.minWidth = p.width;
+            deviceFrame.minHeight = p.height;
+          } catch (e) {}
+
           if (isTall) {
             // Tall/multi-element layout: top-align and stretch canvas vertically
             deviceFrame.primaryAxisAlignItems = "MIN";
@@ -350,16 +355,18 @@ figma.ui.onmessage = async (msg) => {
             deviceFrame.paddingBottom = 60;
             deviceFrame.clipsContent = p.radius ? true : false;
           } else if (isPage) {
-            // Page layout that fits within preset viewport: top-align with standard padding
+            // Page layout that fits within preset viewport: top-align with standard padding and full preset height
             deviceFrame.primaryAxisAlignItems = "MIN";
             deviceFrame.primaryAxisSizingMode = "FIXED";
+            deviceFrame.resize(p.width, p.height);
             deviceFrame.paddingTop = 40;
             deviceFrame.paddingBottom = 40;
             deviceFrame.clipsContent = p.radius ? true : false;
           } else {
-            // Standalone component/widget: centered in device canvas
+            // Standalone component/widget: centered in full preset device canvas
             deviceFrame.primaryAxisAlignItems = "CENTER";
             deviceFrame.primaryAxisSizingMode = "FIXED";
+            deviceFrame.resize(p.width, p.height);
             deviceFrame.clipsContent = p.radius ? true : false;
           }
 
