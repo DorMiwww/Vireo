@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Vireo Importer</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #111827;
+      --subtext: #6b7280;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --border: #e5e7eb;
+      --surface: #f9fafb;
+      --surface-hover: #f3f4f6;
+      --danger: #ef4444;
+      --success: #10b981;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      padding: 16px;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tag {
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: #eff6ff;
+      color: var(--primary);
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+    }
+
+    .tab-btn {
+      background: none;
+      border: none;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--subtext);
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 4px;
+    }
+
+    .tab-btn.active {
+      color: var(--primary);
+      background: #eff6ff;
+    }
+
+    .dropzone {
+      border: 2px dashed var(--border);
+      border-radius: 8px;
+      padding: 24px 16px;
+      text-align: center;
+      background: var(--surface);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .dropzone.dragover {
+      border-color: var(--primary);
+      background: #eff6ff;
+    }
+
+    .dropzone-icon {
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+
+    .dropzone-text {
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .dropzone-hint {
+      color: var(--subtext);
+      font-size: 11px;
+    }
+
+    #fileInput {
+      display: none;
+    }
+
+    .paste-area {
+      display: none;
+      margin-bottom: 12px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 140px;
+      padding: 8px;
+      font-family: monospace;
+      font-size: 11px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      resize: none;
+      background: var(--surface);
+      color: var(--text);
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .file-badge {
+      display: none;
+      margin-top: 10px;
+      padding: 8px 12px;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 6px;
+      font-size: 11px;
+      color: #1e40af;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .file-name {
+      font-weight: 500;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 250px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 12px;
+      cursor: pointer;
+      transition: background 0.15s;
+      margin-top: 12px;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #ffffff;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: var(--primary-hover);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .status-box {
+      margin-top: 10px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 11px;
+      display: none;
+    }
+
+    .status-box.error {
+      display: block;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      color: var(--danger);
+    }
+
+    .status-box.success {
+      display: block;
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      color: var(--success);
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="title">
+      <span>Vireo Importer</span>
+      <span class="tag">DaaC</span>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" id="tabUpload" onclick="switchTab('upload')">File Upload</button>
+    <button class="tab-btn" id="tabPaste" onclick="switchTab('paste')">Paste JSON</button>
+  </div>
+
+  <div id="uploadView">
+    <div class="dropzone" id="dropzone" onclick="document.getElementById('fileInput').click()">
+      <div class="dropzone-icon">📄</div>
+      <div class="dropzone-text">Click to browse or drop file</div>
+      <div class="dropzone-hint">Accepts .json or .figma.json from Vireo CLI</div>
+      <input type="file" id="fileInput" accept=".json">
+    </div>
+
+    <div class="file-badge" id="fileBadge">
+      <span class="file-name" id="fileName">selected.json</span>
+      <span style="cursor: pointer;" onclick="clearFile(event)">✕</span>
+    </div>
+  </div>
+
+  <div id="pasteView" class="paste-area">
+    <textarea id="jsonPasteInput" placeholder="Paste generated *.figma.json content here..."></textarea>
+  </div>
+
+  <button class="btn btn-primary" id="importBtn" onclick="handleImport()" disabled>Import to Canvas</button>
+
+  <div class="status-box" id="statusBox"></div>
+
+  <script>
+    let activeTab = 'upload';
+    let loadedJsonData = null;
+
+    function switchTab(tab) {
+      activeTab = tab;
+      document.getElementById('tabUpload').classList.toggle('active', tab === 'upload');
+      document.getElementById('tabPaste').classList.toggle('active', tab === 'paste');
+      document.getElementById('uploadView').style.display = (tab === 'upload') ? 'block' : 'none';
+      document.getElementById('pasteView').style.display = (tab === 'paste') ? 'block' : 'none';
+      validateState();
+    }
+
+    const dropzone = document.getElementById('dropzone');
+    const fileInput = document.getElementById('fileInput');
+    const jsonPasteInput = document.getElementById('jsonPasteInput');
+
+    ['dragenter', 'dragover'].forEach(eventName => {
+      dropzone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        dropzone.classList.add('dragover');
+      }, false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+      dropzone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        dropzone.classList.remove('dragover');
+      }, false);
+    });
+
+    dropzone.addEventListener('drop', (e) => {
+      const dt = e.dataTransfer;
+      const files = dt.files;
+      if (files.length > 0) {
+        processFile(files[0]);
+      }
+    });
+
+    fileInput.addEventListener('change', (e) => {
+      if (e.target.files.length > 0) {
+        processFile(e.target.files[0]);
+      }
+    });
+
+    jsonPasteInput.addEventListener('input', () => {
+      validateState();
+    });
+
+    function processFile(file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          loadedJsonData = JSON.parse(e.target.result);
+          document.getElementById('fileName').textContent = file.name;
+          document.getElementById('fileBadge').style.display = 'flex';
+          hideStatus();
+          validateState();
+        } catch (err) {
+          showError('Invalid JSON file: ' + err.message);
+          loadedJsonData = null;
+          validateState();
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function clearFile(e) {
+      if (e) e.stopPropagation();
+      loadedJsonData = null;
+      fileInput.value = '';
+      document.getElementById('fileBadge').style.display = 'none';
+      validateState();
+    }
+
+    function validateState() {
+      const importBtn = document.getElementById('importBtn');
+      if (activeTab === 'upload') {
+        importBtn.disabled = !loadedJsonData;
+      } else {
+        const text = jsonPasteInput.value.trim();
+        importBtn.disabled = text.length === 0;
+      }
+    }
+
+    function handleImport() {
+      let dataToImport = null;
+      if (activeTab === 'upload') {
+        dataToImport = loadedJsonData;
+      } else {
+        try {
+          dataToImport = JSON.parse(jsonPasteInput.value.trim());
+        } catch (err) {
+          showError('Invalid JSON: ' + err.message);
+          return;
+        }
+      }
+
+      if (!dataToImport) {
+        showError('No design data to import.');
+        return;
+      }
+
+      showStatus('Rendering to Figma canvas...', 'info');
+      parent.postMessage({
+        pluginMessage: {
+          type: 'IMPORT_JSON',
+          payload: dataToImport
+        }
+      }, '*');
+    }
+
+    function showStatus(text, type) {
+      const box = document.getElementById('statusBox');
+      box.textContent = text;
+      box.className = 'status-box ' + (type === 'error' ? 'error' : (type === 'success' ? 'success' : ''));
+      box.style.display = 'block';
+    }
+
+    function showError(text) {
+      showStatus(text, 'error');
+    }
+
+    function hideStatus() {
+      const box = document.getElementById('statusBox');
+      box.style.display = 'none';
+    }
+
+    window.onmessage = (event) => {
+      const msg = event.data.pluginMessage;
+      if (!msg) return;
+
+      if (msg.type === 'SUCCESS') {
+        showStatus(msg.message, 'success');
+      } else if (msg.type === 'ERROR') {
+        showError(msg.error);
+      }
+    };
+  </script>
+</body>
+</html>

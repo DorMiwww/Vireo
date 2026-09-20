@@ -7,8 +7,8 @@ This file captures the live state of the project: what is decided, what is in pr
 
 ## Current Phase
 
-**Phase 4 — Figma Renderer `[completed]`**
-Recorded decision for Figma REST API transport, implemented `vireo-renderer-figma` pure renderer (`FigmaRenderer : Renderer<FigmaDocument>`), added `FigmaDocument` data model with JSON serialization, added `FigmaApiTransport` in `vireo-cli` using OkHttp, extended CLI `vireo render <file.dac> --to figma [--token <token>] [-o <file.json>]`, and added comprehensive unit and E2E integration tests. Next is Phase 5 — Init Wizard.
+**Phase 4.5 — Figma Plugin `[completed]`**
+Implemented `figma-plugin/` private development plugin (`manifest.json`, `ui.html`, `code.js`, `README.md`, and guide in `DOCS/figma-plugin.md`). Automatically imports `*.figma.json` and renders native Figma canvas frames, auto-layout constraints, fonts, text layers, shapes, fills, and strokes. Next is Phase 5 — Init Wizard.
 
 ---
 
@@ -48,6 +48,7 @@ Recorded decision for Figma REST API transport, implemented `vireo-renderer-figm
 | Figma Transport Decision | Recorded decision for Figma REST API transport in `ARCHITECTURE.md` | 2026-08-01 |
 | Figma Renderer Implementation | Implemented `FigmaRenderer` pure renderer in `vireo-renderer-figma` mapping `ResolvedFile` to Figma REST API `FigmaDocument` JSON nodes | 2026-08-01 |
 | CLI Figma Command | Extended `vireo-cli` with `vireo render <file.dac> --to figma [--token <token>] [-o <file.json>]` using OkHttp transport | 2026-08-01 |
+| Figma Development Plugin (4.5) | Private development plugin (JS/HTML) reading `*.figma.json` to draw designs natively on Figma canvas | 2026-09-20 |
 
 ---
 
@@ -59,15 +60,15 @@ Recorded decision for Figma REST API transport, implemented `vireo-renderer-figm
 
 ## What Was Done Last Session
 
-- **Phase 4 — Figma Renderer**:
-  - Recorded decision for **Option A — Figma REST API transport** in `ARCHITECTURE.md` Decision Log.
-  - Implemented `FigmaDocument`, `FigmaNode`, `Rect`, `TypeStyle`, `Paint`, `Color` data structures in `vireo-renderer-figma/src/main/kotlin/com/vireo/renderer/figma/FigmaDocument.kt`.
-  - Implemented pure, stateless `FigmaRenderer : Renderer<FigmaDocument>` in `vireo-renderer-figma/src/main/kotlin/com/vireo/renderer/figma/FigmaRenderer.kt` mapping `ResolvedFile` to Figma document nodes (handling Frames, Text nodes, Auto Layout parameters, fills, strokes, corner radius, and layout modes).
-  - Implemented `FigmaApiTransport` in `vireo-cli/src/main/kotlin/com/vireo/cli/FigmaApiTransport.kt` using approved `OkHttp` library for posting Figma API JSON payloads when token is provided.
-  - Extended `vireo-cli` `vireo render` command with `--to figma`, `--token <token>` (and `FIGMA_TOKEN` env var), and `-o <file.json>` flags.
-  - Added unit test suite in `FigmaRendererTest.kt` and E2E integration test in `EndToEndTest.kt` verifying Example 4 (Login Form) renders to Figma REST API JSON schema.
-- **Verification**:
-  - Ran `./gradlew test` across all modules — 100% of unit and integration tests passed cleanly.
+- **Phase 4.5 — Figma Plugin**:
+  - Implemented private Figma development plugin in `figma-plugin/`:
+    - `manifest.json`: Figma development plugin manifest with `id`, `api: "1.0.0"`, `main: "code.js"`, `ui: "ui.html"`.
+    - `ui.html`: Polished UI supporting drag-and-drop file upload, file browsing for `*.figma.json`, and direct JSON pasting.
+    - `code.js`: Sandbox engine converting AST nodes (`CANVAS`, `FRAME`, `TEXT`, `RECTANGLE`) to native Figma nodes via `figma.createFrame`, `figma.createText`, font loading (`Inter` Regular/Bold), Auto Layout parameters (`layoutMode`, gaps, padding, axis sizing), fills, strokes, and corner radiuses.
+    - `README.md`: Quick reference in `figma-plugin/`.
+  - Created end-to-end guide in `DOCS/figma-plugin.md`.
+  - Verified node mapping against `designs/login.figma.json` using sandbox simulation test.
+  - Committed Phase 4 and Phase 4.5 deliverables.
 
 ---
 
