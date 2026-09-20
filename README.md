@@ -205,18 +205,38 @@ Vireo includes a private development plugin located in [`figma-plugin/`](figma-p
 
 ---
 
-## Showcase Designs
+## Showcase Designs & HTML Previews
 
-A suite of ready-to-test design components is available in the [`showcase/`](showcase/) directory:
+Vireo compiles declarative `.dac` files directly into pixel-perfect standalone HTML5/CSS Flexbox previews. Below are previews of ready-to-test components available in the [`showcase/`](showcase/) directory:
 
-- **Buttons & Badges**: [`showcase/components/buttons.dac`](showcase/components/buttons.dac), [`showcase/components/badges.dac`](showcase/components/badges.dac)
-- **Profile Card**: [`showcase/card.dac`](showcase/card.dac)
-- **SaaS Pricing Table**: [`showcase/pricing.dac`](showcase/pricing.dac)
-- **Large SaaS Dashboard**: [`showcase/dashboard.dac`](showcase/dashboard.dac) — Complete responsive analytics dashboard with navigation, hero banner, metrics grid, data tables, and sidebar widgets.
+### 1. Large SaaS Analytics Dashboard ([`showcase/dashboard.dac`](showcase/dashboard.dac))
+Complete responsive analytics dashboard featuring navigation, hero greetings, key performance metrics, data tables with pagination, and interactive sidebars.
 
-You can preview the pre-rendered HTML files directly:
+![Vireo SaaS Analytics Dashboard](DOCS/images/preview-dashboard.png)
+
+---
+
+### 2. SaaS Pricing Table ([`showcase/pricing.dac`](showcase/pricing.dac))
+Multi-tier comparative pricing table with highlight badges, feature lists, and action buttons.
+
+![Vireo Pricing Table Preview](DOCS/images/preview-pricing.png)
+
+---
+
+### 3. Profile Card ([`showcase/card.dac`](showcase/card.dac))
+User profile component demonstrating nested Auto Layout, avatar typography, followers metrics grid, and tag chips.
+
+<p align="center">
+  <img src="DOCS/images/preview-card.png" alt="Vireo Profile Card Preview" width="600" />
+</p>
+
+You can preview the pre-rendered HTML files directly in your browser:
 ```bash
 open showcase/dashboard.html
+# or
+open showcase/pricing.html
+# or
+open showcase/card.html
 ```
 
 ---

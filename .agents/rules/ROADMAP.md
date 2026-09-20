@@ -150,7 +150,7 @@ The correct transport is a private Figma Development Plugin — no review or pub
 
 ---
 
-## Phase 7 — IntelliJ IDEA Plugin `[in progress]`
+## Phase 7 — IntelliJ IDEA Plugin `[core scope built, verified]`
 
 > Goal: first-class `.dac` editing support in IntelliJ IDEA. Four concrete user-requested capabilities: (1) a file icon for `.dac`, (2) full-text syntax highlighting, (3) autocomplete (keywords + property keys), (4) inline diagnostics from the Analyzer.
 
@@ -160,16 +160,35 @@ The correct transport is a private Figma Development Plugin — no review or pub
 - [x] User approval to add the IntelliJ Platform Plugin SDK as a new external dependency — granted 2026-09-20
 
 **Scope:**
-- [ ] Standalone Gradle project `vireo-idea-plugin/` (own wrapper/toolchain — see feasibility note below), file type registration for `.dac` **+ icon**
-- [ ] **Syntax highlighting** — `SyntaxHighlighter` wrapping `vireo-lexer`'s `Lexer.tokenize()` via a `LexerBase` adapter (whole-file batch re-lex per edit — fine at `.dac` file sizes, not true incremental lexing). Comment highlighting deferred until `SYNTAX.md`'s open "comment syntax" question (`//` vs `#`) is resolved — `vireo-lexer` has no comment token yet.
-- [ ] **Diagnostics** — `ExternalAnnotator`/inspection calling `vireo-analysis`'s `Analyzer` in-process (pure Kotlin, no subprocess) — `VireoError.location` (`SourceLocation(file, line, column)`) maps directly onto IntelliJ's annotation ranges.
-- [ ] **Autocomplete** — `CompletionContributor` suggesting language keywords (`block`, `component`, `import`, `from`, `var`, `fun`, `if`/`then`/`else`, `ref`) and known property keys (`width`, `height`, `color`, `text`, `fontSize`, `radius`, `layout`, `gap`, `padding`, ...). Needs at least a lightweight `ParserDefinition`/PSI (not just the raw lexer) so suggestions are context-aware — property keys only inside a component body, block-level keywords only at top level. This is the standard IntelliJ "custom language" shape (JetBrains' own tutorial follows the same path), not a stretch goal. Note: `Property.key` is a plain `String` in the AST (no closed enum), so the suggestion list is hand-maintained in the plugin, separate from what the parser actually accepts.
+- [x] Standalone Gradle project `vireo-idea-plugin/` (own wrapper/toolchain — see feasibility note below), file type registration for `.dac` **+ icon** — `DacLanguage`, `DacFileType`, `DacIcons` (`icons/dac.svg`)
+- [x] **Syntax highlighting** — `DacSyntaxHighlighter` + `DacLexerAdapter` wrapping `vireo-lexer`'s `Lexer.tokenize()` as an IntelliJ `LexerBase` (whole-file batch re-lex per edit). Comment highlighting still deferred until `SYNTAX.md`'s open "comment syntax" question (`//` vs `#`) is resolved — `vireo-lexer` silently consumes comments, no comment token to color.
+- [x] **Diagnostics** — `DacAnnotator` (`ExternalAnnotator`) calling `vireo-parser`'s `Parser` + `vireo-analysis`'s `Analyzer` in-process — `VireoError.location` mapped to editor `TextRange`s via the `Document`.
+- [x] **Autocomplete** — `DacCompletionContributor` + `DacKeywords`, with a minimal flat-PSI `DacParserDefinition` backing it; context (top-level vs. inside a body) approximated by brace depth up to the caret rather than a full PSI scope walk.
+- [x] Build verification — `./gradlew compileKotlin`, `buildPlugin`, `verifyPluginStructure` all pass against the real IntelliJ Platform SDK (IC 2024.3); produces an installable `vireo-idea-plugin-0.1.0-SNAPSHOT.zip`. `runIde` (interactive sandbox smoke test) not run — needs a GUI session.
+
+**Scope, added 2026-09-20 (not yet built):**
+- [ ] **Cmd/Ctrl+click navigation** on `ref:` targets and import paths → jump to the target component/file. Needs a `PsiReferenceContributor` on those tokens, resolving via the same lookup `vireo-analysis`'s `Analyzer` already does.
+- [ ] **Distinct color for reference tokens** (`ref:` value, import path strings) — reuses the same reference-resolution above; unresolved references get IntelliJ's standard "unresolved reference" styling for free.
+- [ ] **Value-aware completion** — suggestions keyed by the property just typed, not just a flat list. E.g. `width:` → `fill`, `hug`, numbers; `layout:` → `horizontal`, `vertical`; `fontWeight:` → `bold`, `regular`, etc.
 
 **Explicitly out of scope for this phase (not requested — park for later if ever wanted):**
-- Go-to-definition / find-usages on cross-file `file.block.component` references
 - Live HTML/Figma preview panel inside the IDE
 
 **Feasibility note (verified 2026-09-20):** IntelliJ Platform Gradle Plugin 2.x requires **Kotlin 2.x and Gradle 9.0+** (root build is Kotlin `1.9.22` / Gradle `8.5`) — a bigger gap than first estimated, since a single Gradle invocation can't mix wrapper versions across modules. Resolved by making `vireo-idea-plugin/` a fully standalone Gradle project (own wrapper, own `settings.gradle.kts`) consuming `vireo-core`/`vireo-lexer`/`vireo-parser`/`vireo-analysis` as plain built jars rather than live `project(...)`/composite-build dependencies — see `BLOCK.md`. Root project untouched.
+
+---
+
+## Phase 8 — `.dac` Agent Skill + Docs Sync `[planned, gated on syntax freeze]`
+
+> Goal: a Claude Code Skill that gives any agent a complete, accurate picture of how to write `.dac` — kept in sync with real documentation instead of a hand-copied summary that drifts.
+
+**Sequencing (decided 2026-09-20):** waits for the `SYNTAX.md` freeze (Phase 6) — this skill's content *is* the syntax description, so building it against unfrozen `proposal` syntax means rewriting it later. Not parallel, unlike Phase 7.
+
+**Documentation source (decided 2026-09-20):** `DOCS/` in-repo for now. A published docs site is a future intent, not yet planned in detail — revisit the skill's sync mechanism once that site exists.
+
+**Scope:**
+- [ ] Skill package (`.claude/skills/dac/SKILL.md` + reference files) — language overview, syntax constructs, CLI commands (`render`/`check`/`init`), worked examples. Sourced from `SYNTAX.md`'s Decision Log (post-freeze) + `EXAMPLES.md`/`showcase/` + `DOCS/cli.md`.
+- [ ] Sync mechanism — some check (script or CI step) flagging when `SYNTAX.md`/`DOCS/` change but the skill wasn't updated.
 
 ---
 
