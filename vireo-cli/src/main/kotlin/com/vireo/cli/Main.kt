@@ -77,7 +77,7 @@ fun executeCli(
 }
 
 private fun printVersion(out: PrintStream) {
-    out.println("vireo version 0.1.0-SNAPSHOT (pure JVM 21)")
+    out.println("vireo version 0.1.0 (pure JVM 21)")
     out.println("Supported target formats: json, html (standard & snippet), figma")
 }
 
