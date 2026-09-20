@@ -51,13 +51,29 @@ You can inspect `designs/login.figma.json` to see the generated node tree with A
 
 1. In your Figma design file, right-click on the canvas and choose:
    **Plugins** → **Development** → **Vireo Importer**
-2. In the plugin modal, choose either:
-   - **File Upload**: Drag & drop `designs/login.figma.json` (or click to browse).
-   - **Paste JSON**: Paste the raw JSON text from your clipboard.
+2. In the plugin modal:
+   - Choose **File Upload** and pick `designs/login.figma.json` (or paste JSON directly).
+   - Select a **Device / Canvas Frame** preset:
+     - `None (Component Only)` — imports the component at its native dimensions.
+     - `iPhone 16 / 15 Pro (393 × 852)` — wraps the component inside an iPhone device frame with centered auto-layout and background.
+     - `Desktop Browser (1440 × 900)` — wraps the component inside a desktop browser canvas.
+     - `Google Pixel 7`, `Laptop`, or `iPad Air`.
 3. Click **Import to Canvas**.
-4. The plugin will instantiate the nodes, load fonts (Inter Regular / Bold), set up Auto Layout containers, and automatically center the viewport on your new design.
+4. The plugin will instantiate the nodes, load fonts (Inter Regular / Bold), set up Auto Layout containers, and center the viewport on your design.
 
 ---
+
+## How to Wrap into Frames Natively in Figma
+
+If you import with `None (Component Only)` and want to place it inside a device frame using Figma's native tools:
+
+1. Press `F` on your keyboard (or click the **Frame** tool in the top toolbar).
+2. Look at the **right-hand inspector panel** under **Frame Presets**:
+   - **Phone**: Select `iPhone 16 Pro` (or any device).
+   - **Desktop**: Select `Desktop (1440 × 1024)`.
+3. A blank device frame will appear on the canvas.
+4. Drag your imported `LoginForm` inside the device frame.
+5. In the right panel, turn on **Auto Layout** (`Shift+A`) on the device frame and set alignment to **Align center** (`Center / Center`).
 
 ## Supported Features in Figma
 
