@@ -7,8 +7,8 @@ This file captures the live state of the project: what is decided, what is in pr
 
 ## Current Phase
 
-**Phase 4.5 — Figma Plugin `[completed]`**
-Implemented `figma-plugin/` private development plugin (`manifest.json`, `ui.html`, `code.js`, `README.md`, and guide in `DOCS/figma-plugin.md`). Automatically imports `*.figma.json` and renders native Figma canvas frames, auto-layout constraints, fonts, text layers, shapes, fills, and strokes. Next is Phase 5 — Init Wizard.
+**Phase 5 — CLI Improvements & Init Wizard `[completed]`**
+Implemented `kubectl`-style CLI ergonomics, per-command `--help` (`vireo render --help`, `vireo check --help`, `vireo init --help`), format selection flags (`-o, --output <format>`, `--html`, `--figma`), HTML parameters (`HtmlRenderOptions` with standard HTML5 document vs embeddable `--snippet`, custom `--title`, preview `--theme`), Figma parameters (`--figma`, `--token`, `--pretty`, `--compact`), `vireo init` project scaffolding wizard, comprehensive reference in `DOCS/cli.md`, and Unlazy verified acceptance gates in `GATES.md`. Next is Phase 6 — Release Engineering (0.x → 1.0.0).
 
 ---
 
@@ -49,6 +49,13 @@ Implemented `figma-plugin/` private development plugin (`manifest.json`, `ui.htm
 | Figma Renderer Implementation | Implemented `FigmaRenderer` pure renderer in `vireo-renderer-figma` mapping `ResolvedFile` to Figma REST API `FigmaDocument` JSON nodes | 2026-08-01 |
 | CLI Figma Command | Extended `vireo-cli` with `vireo render <file.dac> --to figma [--token <token>] [-o <file.json>]` using OkHttp transport | 2026-08-01 |
 | Figma Development Plugin (4.5) | Private development plugin (JS/HTML) reading `*.figma.json` to draw designs natively on Figma canvas | 2026-09-20 |
+| Kubectl-style CLI Ergonomics (5) | Standardized CLI with `-o <format>`, convenience `--html`/`--figma`, per-command `--help`, version command | 2026-09-20 |
+| HTML Render Options (5) | Added `HtmlRenderOptions` supporting standard HTML5 full page vs embeddable `--snippet`, `--title`, `--theme` | 2026-09-20 |
+| Init Project Wizard (5) | Implemented `vireo init` scaffolding project structure with tokens, components, card, config, and README | 2026-09-20 |
+| Versioning & release gate | Lockstep SemVer across all Gradle modules, starting at `0.x`. No public release before `1.0.0`; `1.0.0` requires the `.dac` syntax freeze (see `SYNTAX.md` open questions) | 2026-09-20 |
+| CLI distribution channel | Homebrew is the target channel; bootstrap with GitHub Releases (fat jar) first, add a Homebrew tap once the release pipeline is proven | 2026-09-20 |
+| Figma wire-schema versioning | Added `schemaVersion` (default `1`) to `FigmaDocument`/`*.figma.json` (`vireo-renderer-figma`), plus a matching `SUPPORTED_SCHEMA_VERSION` check in the plugin's `code.js` that errors clearly instead of silently mis-rendering on a mismatch | 2026-09-20 |
+| Versioning playbook | Documented explicit PATCH/MINOR/MAJOR bump rules for the `0.x` beta stage and post-`1.0.0` in `ARCHITECTURE.md`, with the mandatory gate (`1.0.0` only on explicit user command) in `BLOCK.md` | 2026-09-20 |
 
 ---
 
@@ -60,24 +67,33 @@ Implemented `figma-plugin/` private development plugin (`manifest.json`, `ui.htm
 
 ## What Was Done Last Session
 
-- **Phase 4.5 — Figma Plugin & Showcase Verification**:
-  - Implemented private Figma development plugin in `figma-plugin/`:
-    - `manifest.json`: Figma development plugin manifest with `id`, `api: "1.0.0"`, `main: "code.js"`, `ui: "ui.html"`.
-    - `ui.html`: Polished UI supporting drag-and-drop file upload, file browsing for `*.figma.json`, and direct JSON pasting.
-    - `code.js`: Sandbox engine converting AST nodes (`CANVAS`, `FRAME`, `TEXT`, `RECTANGLE`) to native Figma nodes via `figma.createFrame`, `figma.createText`, font loading (`Inter` Regular/Bold), Auto Layout parameters (`layoutMode`, gaps, padding, axis sizing), fills, strokes, and corner radiuses.
-    - `README.md`: Quick reference in `figma-plugin/`.
-  - Created end-to-end guide in `DOCS/figma-plugin.md`.
-  - Verified node mapping against `designs/login.figma.json` using sandbox simulation test.
-  - Implemented comprehensive showcase designs in `showcase/`: `components/buttons.dac`, `components/badges.dac`, `card.dac`, `pricing.dac`, and a large multi-section SaaS `dashboard.dac` (261 KB, 3,428 lines of Figma nodes) with full `.html` and `.figma.json` rendering.
-  - Fixed compiler & renderer bugs: string interpolation with price literals (`$19`), Auto Layout `layoutGrow = 1f` / `flex: 1` in horizontal containers, and `justifyContent` / `alignItems` / `backgroundColor` properties.
+- **Phase 5 — CLI Improvements & Init Wizard**:
+  - Implemented `HtmlRenderOptions` in `vireo-renderer-html`:
+    - Full standard HTML5 document mode (`<!DOCTYPE html>`, `<html lang="en">`, `<head>`, `<meta charset>`, viewport, `<title>`, and centered preview container).
+    - Embeddable component fragment / snippet mode (`--snippet`, omitting outer DOCTYPE/head/body wrappers).
+    - Custom `--title` and preview background `--theme` (`light` vs `dark`).
+    - Added unit tests in `HtmlRendererTest.kt`.
+  - Implemented `kubectl`-style CLI in `vireo-cli`:
+    - First-class per-command help: `vireo render --help`, `vireo check --help`, `vireo init --help`, `vireo version`.
+    - Output format flags: `-o, --output <format>` (`json`, `html`, `figma`, `standard-html`), plus backward-compatible `--to <format>`.
+    - Convenience format flags: `--html`, `--figma`, `--json`.
+    - Destination output flags: `--out <file>`, `--output-file <file>`, and smart `-o <file>` fallback.
+    - Figma options: `--pretty` (default) vs `--compact` minified AST JSON, and `--token`.
+    - Global `vireo version` command.
+  - Implemented Phase 5 `vireo init` Project Wizard:
+    - Scaffolds a complete project with `vireo.config.json`, `designs/tokens.dac`, `designs/components/button.dac`, `designs/card.dac`, and `README.md`.
+    - Tested that the generated project passes `vireo check` and renders with `vireo render --html`.
+  - Updated `DOCS/cli.md` with complete reference manual, option tables, and examples.
+  - Authored and verified unlazy acceptance gates ledger `GATES.md` (all 7 gates met with machine evidence).
 
 ---
 
 ## What Is Next
 
-1. Phase 5 — Init Wizard: implement `vireo init` interactive project scaffolding.
+1. Phase 6 — Release Engineering (0.x → 1.0.0): syntax freeze, CI, release workflow, `schemaVersion` for `*.figma.json` + plugin version check, `CHANGELOG.md`, GitHub Releases → Homebrew tap.
 2. Backlog Item: Figma Design Bundle & Canvas Orchestrator (`vireo bundle`) — package multiple `.dac` files into a single consolidated canvas bundle with automated grid layout and Figma Sections/Pages.
-3. Internal refactor (temporary, side track — not a roadmap phase): `.agents/rules/REFACTOR_PLAN.md` — module-by-module file-splitting and dedup plan, test-first per phase. Phase 0 (baseline) and Phase 1 (`vireo-core` AST split into `ast/`) are `[complete]`. Phase 2 (`vireo-lexer`) is next. Pick up the first `[not started]` phase in that file when resuming this work.
+3. Parked, long-term: Code Generation (`ResolvedFile → UI code`) — deliberately not a numbered phase; revisit after `1.0.0` and after the bundle backlog item.
+4. Internal refactor (temporary, side track — not a roadmap phase): `.agents/rules/REFACTOR_PLAN.md` — Phase 2 (`vireo-lexer`) is next.
 
 ---
 
@@ -86,3 +102,4 @@ Implemented `figma-plugin/` private development plugin (`manifest.json`, `ui.htm
 - `vireo-core` must not use `java.io` or `java.net`
 - Every new AST node must have a `SourceLocation` field
 - Syntax proposals go in `SYNTAX.md`, not in code comments
+- No public release ships before `1.0.0` — that requires the `.dac` syntax freeze (open questions in `SYNTAX.md`), not just feature completeness

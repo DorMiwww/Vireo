@@ -2,30 +2,58 @@ package com.vireo.renderer.html
 
 import com.vireo.core.*
 
+data class HtmlRenderOptions(
+    val standardHtml: Boolean = true,
+    val title: String? = null,
+    val theme: String = "light"
+)
+
 object HtmlRenderer : Renderer<String> {
 
     override fun render(file: ResolvedFile): VireoResult<String> {
-        return render(file.file, file.loadedFiles)
+        return render(file, HtmlRenderOptions())
     }
 
-    fun render(file: VireoFile, loadedFiles: Map<String, VireoFile> = emptyMap()): VireoResult<String> {
+    fun render(file: ResolvedFile, options: HtmlRenderOptions): VireoResult<String> {
+        return render(file.file, file.loadedFiles, options)
+    }
+
+    fun render(
+        file: VireoFile,
+        loadedFiles: Map<String, VireoFile> = emptyMap(),
+        options: HtmlRenderOptions = HtmlRenderOptions()
+    ): VireoResult<String> {
         return try {
+            val pageTitle = options.title ?: file.path
+            val bgColor = when (options.theme.lowercase()) {
+                "dark" -> "#111827"
+                else -> "#F3F4F6"
+            }
+
             val html = buildString {
-                append("<!DOCTYPE html>\n")
-                append("<html lang=\"en\">\n")
-                append("<head>\n")
-                append("  <meta charset=\"UTF-8\">\n")
-                append("  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n")
-                append("  <title>${escapeHtml(file.path)}</title>\n")
-                append("</head>\n")
-                append("<body style=\"margin: 0; padding: 0;\">\n")
-                append("  <div class=\"vireo-file\" data-path=\"${escapeHtml(file.path)}\" style=\"font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: #F3F4F6; margin: 0; box-sizing: border-box;\">\n")
-                file.blocks.forEach { block ->
-                    renderBlock(this, block, "    ", file, loadedFiles)
+                if (options.standardHtml) {
+                    append("<!DOCTYPE html>\n")
+                    append("<html lang=\"en\">\n")
+                    append("<head>\n")
+                    append("  <meta charset=\"UTF-8\">\n")
+                    append("  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n")
+                    append("  <title>${escapeHtml(pageTitle)}</title>\n")
+                    append("</head>\n")
+                    append("<body style=\"margin: 0; padding: 0;\">\n")
+                    append("  <div class=\"vireo-file\" data-path=\"${escapeHtml(file.path)}\" style=\"font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: $bgColor; margin: 0; box-sizing: border-box;\">\n")
+                    file.blocks.forEach { block ->
+                        renderBlock(this, block, "    ", file, loadedFiles)
+                    }
+                    append("  </div>\n")
+                    append("</body>\n")
+                    append("</html>")
+                } else {
+                    append("<div class=\"vireo-file\" data-path=\"${escapeHtml(file.path)}\" style=\"font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; box-sizing: border-box;\">\n")
+                    file.blocks.forEach { block ->
+                        renderBlock(this, block, "  ", file, loadedFiles)
+                    }
+                    append("</div>")
                 }
-                append("  </div>\n")
-                append("</body>\n")
-                append("</html>")
             }
             VireoResult.Ok(html)
         } catch (e: Exception) {

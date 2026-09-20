@@ -3,6 +3,11 @@
 
 figma.showUI(__html__, { width: 380, height: 440, title: "Vireo Importer" });
 
+// Highest *.figma.json schemaVersion this plugin knows how to read.
+// Bump only when this file is updated to handle a newer node shape from the CLI
+// (see FigmaDocument.SCHEMA_VERSION in vireo-renderer-figma).
+const SUPPORTED_SCHEMA_VERSION = 1;
+
 const loadedFonts = new Set();
 
 async function ensureFont(family, style) {
@@ -291,6 +296,17 @@ figma.ui.onmessage = async (msg) => {
 
       if (!payload) {
         figma.ui.postMessage({ type: 'ERROR', error: 'Empty JSON payload' });
+        return;
+      }
+
+      // schemaVersion is absent on files generated before this check existed —
+      // those still match today's node shape, so treat missing as compatible.
+      if (typeof payload.schemaVersion === 'number' && payload.schemaVersion > SUPPORTED_SCHEMA_VERSION) {
+        const msg = `This design file needs a newer version of the Vireo plugin ` +
+          `(file schemaVersion ${payload.schemaVersion}, plugin supports up to ${SUPPORTED_SCHEMA_VERSION}). ` +
+          `Re-import the plugin from the latest vireo repo (Plugins → Development → Import from manifest).`;
+        figma.notify('Vireo: plugin is out of date for this file', { error: true });
+        figma.ui.postMessage({ type: 'ERROR', error: msg });
         return;
       }
 

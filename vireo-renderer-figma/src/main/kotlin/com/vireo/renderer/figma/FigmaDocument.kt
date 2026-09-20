@@ -8,9 +8,16 @@ import kotlinx.serialization.json.Json
 @OptIn(ExperimentalSerializationApi::class)
 @Serializable
 data class FigmaDocument(
+    @EncodeDefault val schemaVersion: Int = SCHEMA_VERSION,
     val name: String,
     val nodes: List<FigmaNode> = emptyList()
 ) {
+    companion object {
+        // Bump when the *.figma.json node shape changes in a way the Figma plugin's
+        // code.js must also handle — see SUPPORTED_SCHEMA_VERSION there.
+        const val SCHEMA_VERSION: Int = 1
+    }
+
     fun toJson(pretty: Boolean = true): String {
         val jsonFormatter = Json {
             prettyPrint = pretty

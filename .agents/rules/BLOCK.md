@@ -63,6 +63,17 @@ Read before touching any file. These override general coding instincts.
 
 ---
 
+## Versioning Rules
+
+- **Project is in Beta (`0.x`), starting at `0.1.0`.** Never bump to `1.0.0` unless the user explicitly gives the release command (e.g. "почати реліз" / "start release"). Crossing into `1.0.0` is a human decision, never inferred from a phase or checklist being complete.
+- **Single source of truth:** the version lives in the root `build.gradle.kts` (`allprojects { version = "..." }`), lockstep across every module. Anything that echoes it as a literal (e.g. `vireo-cli`'s `printVersion()`) must be updated in the same change — it does not read from Gradle automatically.
+- **How to pick which digit to bump** — full table and rationale in `ARCHITECTURE.md` → "Versioning Playbook". Short version while in `0.x`:
+  - `0.x.PATCH` → bug fix / internal change, no behavior change for existing `.dac` files
+  - `0.MINOR.x` → new capability (syntax, renderer, CLI flag) — **also used for breaking changes while in beta**, per SemVer's own pre-1.0 convention. `MAJOR` stays `0` throughout beta no matter what.
+- **A version bump is its own explicit step**, never a side effect of an unrelated task — only bump when the user asks or a release is being cut.
+
+---
+
 ## Approved External Libraries
 
 Only these libraries may be added without asking. Any library not on this list requires explicit user approval before adding.

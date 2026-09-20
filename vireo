@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Vireo CLI executable wrapper
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+BIN="$DIR/vireo-cli/build/install/vireo/bin/vireo"
+
+if [ ! -f "$BIN" ]; then
+    "$DIR/gradlew" -q -p "$DIR" :vireo-cli:installDist
+fi
+
+exec "$BIN" "$@"

@@ -312,6 +312,51 @@ Record decisions here when made.
 
 > **Decision:** Figma REST API transport. **Status: decided (2026-08-01)**
 
+### Versioning strategy
+
+| Option | Tradeoff |
+|--------|----------|
+| **Lockstep SemVer across all Gradle modules** | Simple; matches reality — only `vireo-cli` ships as a consumable artifact, no module is published independently to Maven Central |
+| Independent per-module versioning | Only pays off if `vireo-core` or a renderer is published separately for third-party consumption — not the case today |
+
+> **Decision:** Lockstep `MAJOR.MINOR.PATCH` across all modules, starting at `0.x`. No public release ships before `1.0.0` — `1.0.0` requires the `.dac` syntax to be frozen (all open questions in `SYNTAX.md` resolved and moved to its Decision Log), since the syntax is the compiler's real public contract. Once at `1.0.0`: MAJOR = breaks existing `.dac` files, MINOR = new backward-compatible syntax/feature, PATCH = bug fix. **Status: decided (2026-09-20)**
+
+### CLI distribution channel
+
+| Option | Tradeoff |
+|--------|----------|
+| GitHub Releases (fat jar + install script) | Simplest, zero packaging infra, works day one — good bootstrap channel |
+| **Homebrew formula/tap** | Best install UX for the target audience (`brew install vireo`), but needs a proven, versioned release pipeline behind it first |
+| GraalVM native-image | No JVM required for end users, but adds build complexity; must verify reflection config works with OkHttp (already used in `vireo-renderer-figma`) before committing |
+
+> **Decision:** Homebrew is the target distribution channel. Bootstrap with GitHub Releases (fat jar) first; add a Homebrew tap once the release pipeline (CI + tagged builds) is proven. GraalVM native-image left open as a later upgrade, pending an OkHttp reflection-config spike. **Status: decided (2026-09-20)**
+
+### Versioning Playbook — how to decide which digit to bump
+
+Applies whenever a change is being versioned (not every commit needs a version bump — most don't). The mandatory gate (no `1.0.0` without an explicit user command) lives in `BLOCK.md`; this table is the mechanics.
+
+**Current stage: Beta, `0.x.y`, starting at `0.1.0`.**
+
+| Change | Bump | Example |
+|--------|------|---------|
+| Bug fix, internal refactor, docs/test-only change — no behavior change for any valid `.dac` file | `PATCH` (`0.1.0` → `0.1.1`) | Fixed a spacing bug in `HtmlRenderer` |
+| New capability, additive and backward-compatible | `MINOR` (`0.1.x` → `0.2.0`) | New CLI flag, new renderer, new syntax construct |
+| Breaking change (removes/changes existing `.dac` behavior or the CLI contract) | `MINOR` (`0.1.x` → `0.2.0`) — **not** `MAJOR` | Renaming a property keyword, changing the AST shape incompatibly |
+
+`MAJOR` stays `0` for the entire beta period regardless of what changes — this is standard SemVer for `0.y.z`: `y` absorbs both features and breaking changes, since nothing pre-1.0 is a stability promise yet.
+
+**Crossing into `1.0.0`:** only on the user's explicit release command (e.g. "почати реліз" / "start release"). Never inferred from a checklist being complete or a phase being marked `[completed]`. Prerequisite: the `.dac` syntax freeze — every `Status: proposal` item in `SYNTAX.md` is either finalized into its Decision Log or explicitly deferred past `1.0`.
+
+**After `1.0.0` (for later reference):**
+
+| Change | Bump |
+|--------|------|
+| Breaking change to existing `.dac` files, the AST public contract, or CLI flags | `MAJOR` |
+| New backward-compatible feature | `MINOR` |
+| Bug fix only | `PATCH` |
+
+**Where the version lives (single source of truth):** `build.gradle.kts` → `allprojects { version = "..." }`, lockstep across every module. Anything that echoes the version as a literal (e.g. `vireo-cli`'s `printVersion()` in `Main.kt`) must be updated in the *same* change — it does not read from Gradle automatically, so it drifts silently if forgotten.
+
 ---
 
 ## Decision Log
@@ -328,3 +373,5 @@ Record decisions here when made.
 | 2026-07-29 | Parser strategy: Hand-written recursive descent | Zero dependencies, precise control over error reporting (`VireoResult`) |
 | 2026-07-29 | Expression evaluator: Custom AST mini-evaluator | Lightweight, 100% sandboxed, tailored for `.dac` layout math |
 | 2026-08-01 | Figma transport: Figma REST API | Pure renderer maps AST to Figma document object; CLI uses OkHttp for API sync or exports JSON |
+| 2026-09-20 | Versioning: lockstep SemVer, no release before 1.0.0 | Only the CLI ships as a consumable artifact; 1.0.0 gated on `.dac` syntax freeze so the public contract is stable before users depend on it |
+| 2026-09-20 | Distribution: Homebrew target, GitHub Releases bootstrap | Best install UX for target users, but needs a proven CI/release pipeline before adding packaging infra |

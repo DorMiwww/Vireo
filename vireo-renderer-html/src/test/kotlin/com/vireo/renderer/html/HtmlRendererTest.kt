@@ -153,4 +153,59 @@ class HtmlRendererTest {
         assertTrue(html.contains("border: 1px solid #D1D5DB;"))
         assertTrue(html.contains("data-name=\"SubmitButton\""))
     }
+
+    @Test
+    fun `test HtmlRenderer with standardHtml true renders complete HTML5 document with title and DOCTYPE`() {
+        val source = """
+            block Test {
+                component Box {
+                    width: 100
+                    height: 50
+                }
+            }
+        """.trimIndent()
+        val parseResult = Parser.parse(source, "box.dac")
+        assertIs<VireoResult.Ok<VireoFile>>(parseResult)
+        val analyzeResult = Analyzer.analyze(parseResult.value)
+        assertIs<VireoResult.Ok<ResolvedFile>>(analyzeResult)
+
+        val options = HtmlRenderOptions(standardHtml = true, title = "Custom Box Title", theme = "dark")
+        val renderResult = HtmlRenderer.render(analyzeResult.value, options)
+        assertIs<VireoResult.Ok<String>>(renderResult)
+
+        val html = renderResult.value
+        assertTrue(html.startsWith("<!DOCTYPE html>"))
+        assertTrue(html.contains("<title>Custom Box Title</title>"))
+        assertTrue(html.contains("background-color: #111827;"))
+        assertTrue(html.contains("class=\"vireo-file\""))
+        assertTrue(html.endsWith("</html>"))
+    }
+
+    @Test
+    fun `test HtmlRenderer with snippet mode renders only component container without DOCTYPE`() {
+        val source = """
+            block Test {
+                component Box {
+                    width: 100
+                    height: 50
+                }
+            }
+        """.trimIndent()
+        val parseResult = Parser.parse(source, "box.dac")
+        assertIs<VireoResult.Ok<VireoFile>>(parseResult)
+        val analyzeResult = Analyzer.analyze(parseResult.value)
+        assertIs<VireoResult.Ok<ResolvedFile>>(analyzeResult)
+
+        val options = HtmlRenderOptions(standardHtml = false)
+        val renderResult = HtmlRenderer.render(analyzeResult.value, options)
+        assertIs<VireoResult.Ok<String>>(renderResult)
+
+        val html = renderResult.value
+        assertTrue(!html.contains("<!DOCTYPE html>"))
+        assertTrue(!html.contains("<head>"))
+        assertTrue(!html.contains("<body>"))
+        assertTrue(html.startsWith("<div class=\"vireo-file\""))
+        assertTrue(html.endsWith("</div>"))
+        assertTrue(html.contains("data-name=\"Box\""))
+    }
 }
