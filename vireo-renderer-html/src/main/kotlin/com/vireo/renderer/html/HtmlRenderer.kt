@@ -5,15 +5,15 @@ import com.vireo.core.*
 object HtmlRenderer : Renderer<String> {
 
     override fun render(file: ResolvedFile): VireoResult<String> {
-        return render(file.file)
+        return render(file.file, file.loadedFiles)
     }
 
-    fun render(file: VireoFile): VireoResult<String> {
+    fun render(file: VireoFile, loadedFiles: Map<String, VireoFile> = emptyMap()): VireoResult<String> {
         return try {
             val html = buildString {
-                append("<div class=\"vireo-file\" data-path=\"${escapeHtml(file.path)}\">\n")
+                append("<div class=\"vireo-file\" data-path=\"${escapeHtml(file.path)}\" style=\"font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: #F3F4F6; margin: 0; box-sizing: border-box;\">\n")
                 file.blocks.forEach { block ->
-                    renderBlock(this, block, "  ")
+                    renderBlock(this, block, "  ", file, loadedFiles)
                 }
                 append("</div>")
             }
@@ -23,17 +23,32 @@ object HtmlRenderer : Renderer<String> {
         }
     }
 
-    private fun renderBlock(builder: StringBuilder, block: Block, indent: String) {
+    private fun renderBlock(
+        builder: StringBuilder,
+        block: Block,
+        indent: String,
+        file: VireoFile,
+        loadedFiles: Map<String, VireoFile>
+    ) {
         builder.append("$indent<div class=\"vireo-block\" data-name=\"${escapeHtml(block.name)}\">\n")
         block.components.forEach { comp ->
-            renderComponent(builder, comp, "$indent  ")
+            renderComponent(builder, comp, "$indent  ", file, loadedFiles)
         }
         builder.append("$indent</div>\n")
     }
 
-    private fun renderComponent(builder: StringBuilder, comp: ComponentNode, indent: String) {
+    private fun renderComponent(
+        builder: StringBuilder,
+        rawComp: ComponentNode,
+        indent: String,
+        file: VireoFile,
+        loadedFiles: Map<String, VireoFile>
+    ) {
+        val comp = resolveComponentRef(rawComp, file, loadedFiles)
         val cssStyles = mutableListOf<String>()
+        cssStyles.add("box-sizing: border-box;")
         var textContent: String? = null
+        var placeholderText: String? = null
 
         // 1. Process constraints
         comp.constraints.forEach { constraint ->
@@ -190,15 +205,31 @@ object HtmlRenderer : Renderer<String> {
                         cssStyles.add("box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);")
                     }
                 }
+                "placeholder" -> {
+                    placeholderText = strVal
+                }
                 "text" -> {
                     textContent = strVal
                 }
                 "label" -> {
-                    if (textContent == null) {
+                    if (comp.children.isEmpty() && textContent == null) {
                         textContent = strVal
                     }
                 }
             }
+        }
+
+        if (placeholderText != null && comp.children.isEmpty()) {
+            cssStyles.add("display: flex;")
+            cssStyles.add("align-items: center;")
+            if (comp.properties.none { it.key == "padding" }) {
+                cssStyles.add("padding: 0 16px;")
+            }
+        } else if (comp.children.isNotEmpty() && comp.constraints.none { it is Constraint.AutoLayout }) {
+            cssStyles.add("display: flex;")
+            cssStyles.add("align-items: center;")
+            cssStyles.add("justify-content: center;")
+            cssStyles.add("cursor: pointer;")
         }
 
         val styleAttr = if (cssStyles.isNotEmpty()) {
@@ -209,17 +240,121 @@ object HtmlRenderer : Renderer<String> {
 
         if (textContent != null) {
             builder.append(escapeHtml(textContent))
+        } else if (placeholderText != null && comp.children.isEmpty()) {
+            builder.append("<span style=\"color: #9CA3AF; font-size: 14px; user-select: none;\">${escapeHtml(placeholderText)}</span>")
         }
 
         if (comp.children.isNotEmpty()) {
             builder.append("\n")
             comp.children.forEach { child ->
-                renderComponent(builder, child, "$indent  ")
+                renderComponent(builder, child, "$indent  ", file, loadedFiles)
             }
             builder.append(indent)
         }
 
         builder.append("</div>\n")
+    }
+
+    private fun resolveComponentRef(
+        comp: ComponentNode,
+        sourceFile: VireoFile,
+        loadedFiles: Map<String, VireoFile>
+    ): ComponentNode {
+        val refProp = comp.properties.find { it.key == "ref" } ?: return comp
+        if (refProp.value !is PropertyValue.Ref) return comp
+
+        val ref = (refProp.value as PropertyValue.Ref).reference
+        val imp = sourceFile.imports.find { it.alias == ref.file } ?: return comp
+        val targetPath = resolvePath(sourceFile.path, imp.filePath)
+        val targetFile = loadedFiles[targetPath] ?: return comp
+        val targetBlock = targetFile.blocks.find { it.name == ref.block } ?: return comp
+        val baseComp = findComponent(targetBlock.components, ref.component) ?: return comp
+
+        val overriddenKeys = comp.properties.map { it.key }.toSet()
+        val mergedProps = comp.properties.filter { it.key != "ref" } +
+            baseComp.properties.filter { it.key !in overriddenKeys && it.key != "ref" }
+
+        val overriddenAxes = comp.constraints.map {
+            when (it) {
+                is Constraint.Explicit -> it.axis
+                is Constraint.Relational -> it.axis
+                is Constraint.AutoLayout -> Axis.WIDTH
+            }
+        }.toMutableSet()
+        if (comp.properties.any { it.key == "width" }) overriddenAxes.add(Axis.WIDTH)
+        if (comp.properties.any { it.key == "height" }) overriddenAxes.add(Axis.HEIGHT)
+
+        val mergedConstraints = comp.constraints +
+            baseComp.constraints.filter {
+                val axis = when (it) {
+                    is Constraint.Explicit -> it.axis
+                    is Constraint.Relational -> it.axis
+                    is Constraint.AutoLayout -> Axis.WIDTH
+                }
+                axis !in overriddenAxes
+            }
+
+        val customLabel = comp.properties.find { it.key == "label" }?.let { extractPropertyValueString(it.value) }
+        val mergedChildren = if (comp.children.isNotEmpty()) {
+            comp.children
+        } else if (customLabel != null && baseComp.children.isNotEmpty()) {
+            baseComp.children.map { child ->
+                if (child.name == "Label" || child.properties.any { it.key == "text" }) {
+                    val updatedProps = child.properties.filter { it.key != "text" } +
+                        Property("text", PropertyValue.Literal(customLabel, child.location), child.location)
+                    child.copy(properties = updatedProps)
+                } else {
+                    child
+                }
+            }
+        } else {
+            baseComp.children
+        }
+
+        return comp.copy(
+            constraints = mergedConstraints,
+            properties = mergedProps,
+            children = mergedChildren
+        )
+    }
+
+    private fun findComponent(components: List<ComponentNode>, name: String): ComponentNode? {
+        for (c in components) {
+            if (c.name == name) return c
+            val found = findComponent(c.children, name)
+            if (found != null) return found
+        }
+        return null
+    }
+
+    private fun resolvePath(basePath: String, relativePath: String): String {
+        val cleanRel = relativePath.trimStart('.', '/')
+        val baseDir = basePath.substringBeforeLast('/', "")
+        val combined = if (baseDir.isEmpty()) cleanRel else "$baseDir/$cleanRel"
+        val parts = combined.split('/')
+        val normalized = mutableListOf<String>()
+        for (part in parts) {
+            when (part) {
+                "", "." -> {}
+                ".." -> if (normalized.isNotEmpty()) normalized.removeAt(normalized.lastIndex)
+                else -> normalized.add(part)
+            }
+        }
+        return normalized.joinToString("/")
+    }
+
+    private fun extractPropertyValueString(rawVal: PropertyValue): String {
+        return when (rawVal) {
+            is PropertyValue.Literal -> rawVal.value.toString()
+            is PropertyValue.Expr -> rawVal.source
+            is PropertyValue.Ref -> "${rawVal.reference.file}.${rawVal.reference.block}.${rawVal.reference.component}"
+            is PropertyValue.ConditionalExpr -> {
+                val condStr = extractPropertyValueString(rawVal.condition)
+                val thenStr = extractPropertyValueString(rawVal.thenBranch)
+                val elseStr = extractPropertyValueString(rawVal.elseBranch)
+                "if $condStr then $thenStr else $elseStr"
+            }
+        }
     }
 
     private fun formatRelationalCss(axis: Axis, expression: String): String? {
