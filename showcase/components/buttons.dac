@@ -1,0 +1,95 @@
+block Primary {
+    component Default {
+        height: 40
+        padding: 0 16
+        color: #2563EB
+        radius: 8
+
+        component Label {
+            text: "Button"
+            fontSize: 14
+            fontWeight: bold
+            color: #FFFFFF
+        }
+    }
+
+    component Small {
+        height: 32
+        padding: 0 12
+        color: #2563EB
+        radius: 6
+
+        component Label {
+            text: "Button"
+            fontSize: 13
+            fontWeight: bold
+            color: #FFFFFF
+        }
+    }
+}
+
+block Secondary {
+    component Default {
+        height: 40
+        padding: 0 16
+        color: #F3F4F6
+        border: 1 #E5E7EB
+        radius: 8
+
+        component Label {
+            text: "Button"
+            fontSize: 14
+            fontWeight: bold
+            color: #374151
+        }
+    }
+}
+
+block Success {
+    component Default {
+        height: 40
+        padding: 0 16
+        color: #10B981
+        radius: 8
+
+        component Label {
+            text: "Button"
+            fontSize: 14
+            fontWeight: bold
+            color: #FFFFFF
+        }
+    }
+}
+
+block Danger {
+    component Default {
+        height: 40
+        padding: 0 16
+        color: #EF4444
+        radius: 8
+
+        component Label {
+            text: "Button"
+            fontSize: 14
+            fontWeight: bold
+            color: #FFFFFF
+        }
+    }
+}
+
+block Outline {
+    component Default {
+        height: 40
+        padding: 0 16
+        color: #FFFFFF
+        border: 1 #D1D5DB
+        radius: 8
+
+        component Label {
+            text: "Button"
+            fontSize: 14
+            fontWeight: bold
+            color: #374151
+        }
+    }
+}

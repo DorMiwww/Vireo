@@ -32,7 +32,7 @@ object HtmlRenderer : Renderer<String> {
     ) {
         builder.append("$indent<div class=\"vireo-block\" data-name=\"${escapeHtml(block.name)}\">\n")
         block.components.forEach { comp ->
-            renderComponent(builder, comp, "$indent  ", file, loadedFiles)
+            renderComponent(builder, comp, "$indent  ", file, loadedFiles, "VERTICAL")
         }
         builder.append("$indent</div>\n")
     }
@@ -42,7 +42,8 @@ object HtmlRenderer : Renderer<String> {
         rawComp: ComponentNode,
         indent: String,
         file: VireoFile,
-        loadedFiles: Map<String, VireoFile>
+        loadedFiles: Map<String, VireoFile>,
+        parentLayoutDir: String? = null
     ) {
         val comp = resolveComponentRef(rawComp, file, loadedFiles)
         val cssStyles = mutableListOf<String>()
@@ -135,6 +136,9 @@ object HtmlRenderer : Renderer<String> {
                     if (comp.constraints.none { it is Constraint.Explicit && it.axis == Axis.WIDTH } &&
                         comp.constraints.none { it is Constraint.Relational && it.axis == Axis.WIDTH }) {
                         if (strVal == "fill") {
+                            if (parentLayoutDir == "HORIZONTAL") {
+                                cssStyles.add("flex: 1;")
+                            }
                             cssStyles.add("width: 100%;")
                         } else if (strVal == "hug") {
                             cssStyles.add("width: fit-content;")
@@ -147,6 +151,9 @@ object HtmlRenderer : Renderer<String> {
                     if (comp.constraints.none { it is Constraint.Explicit && it.axis == Axis.HEIGHT } &&
                         comp.constraints.none { it is Constraint.Relational && it.axis == Axis.HEIGHT }) {
                         if (strVal == "fill") {
+                            if (parentLayoutDir == "VERTICAL") {
+                                cssStyles.add("flex: 1;")
+                            }
                             cssStyles.add("height: 100%;")
                         } else if (strVal == "hug") {
                             cssStyles.add("height: fit-content;")
@@ -205,6 +212,15 @@ object HtmlRenderer : Renderer<String> {
                         cssStyles.add("box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);")
                     }
                 }
+                "backgroundColor" -> {
+                    cssStyles.add("background-color: $strVal;")
+                }
+                "alignItems" -> {
+                    cssStyles.add("align-items: ${strVal.trim('"', '\'')};")
+                }
+                "justifyContent" -> {
+                    cssStyles.add("justify-content: ${strVal.trim('"', '\'')};")
+                }
                 "placeholder" -> {
                     placeholderText = strVal
                 }
@@ -244,10 +260,17 @@ object HtmlRenderer : Renderer<String> {
             builder.append("<span style=\"color: #9CA3AF; font-size: 14px; user-select: none;\">${escapeHtml(placeholderText)}</span>")
         }
 
+        val autoLayout = comp.constraints.filterIsInstance<Constraint.AutoLayout>().firstOrNull()
+        val currentLayoutDir = when (autoLayout?.direction) {
+            Direction.VERTICAL -> "VERTICAL"
+            Direction.HORIZONTAL -> "HORIZONTAL"
+            null -> null
+        }
+
         if (comp.children.isNotEmpty()) {
             builder.append("\n")
             comp.children.forEach { child ->
-                renderComponent(builder, child, "$indent  ", file, loadedFiles)
+                renderComponent(builder, child, "$indent  ", file, loadedFiles, currentLayoutDir)
             }
             builder.append(indent)
         }

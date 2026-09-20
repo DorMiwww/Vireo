@@ -1,0 +1,171 @@
+import buttons from "./components/buttons.dac"
+import badges from "./components/badges.dac"
+
+block Profile {
+    component Card {
+        width: 380
+        color: #FFFFFF
+        radius: 16
+        shadow: true
+        padding: 24
+        layout: vertical
+        gap: 16
+
+        component Header {
+            layout: horizontal
+            gap: 16
+            alignItems: center
+
+            component Avatar {
+                width: 56
+                height: 56
+                radius: 99
+                color: #2563EB
+
+                component Initials {
+                    text: "JD"
+                    fontSize: 20
+                    fontWeight: bold
+                    color: #FFFFFF
+                }
+            }
+
+            component UserInfo {
+                layout: vertical
+                gap: 4
+
+                component Name {
+                    text: "Jane Doe"
+                    fontSize: 18
+                    fontWeight: bold
+                    color: #111827
+                }
+
+                component Handle {
+                    text: "@janedoe • Design Systems"
+                    fontSize: 13
+                    color: #6B7280
+                }
+            }
+        }
+
+        component Bio {
+            text: "Design systems architect and UI engineer. Passionate about declarative design tooling and UI synthesis."
+            fontSize: 14
+            color: #4B5563
+        }
+
+        component StatsRow {
+            layout: horizontal
+            gap: 12
+            width: fill
+
+            component StatFollowers {
+                layout: vertical
+                gap: 2
+                padding: 12
+                radius: 8
+                color: #F9FAFB
+                width: fill
+                alignItems: center
+
+                component Number {
+                    text: "12.4k"
+                    fontSize: 16
+                    fontWeight: bold
+                    color: #111827
+                }
+
+                component Label {
+                    text: "Followers"
+                    fontSize: 12
+                    color: #6B7280
+                }
+            }
+
+            component StatFollowing {
+                layout: vertical
+                gap: 2
+                padding: 12
+                radius: 8
+                color: #F9FAFB
+                width: fill
+                alignItems: center
+
+                component Number {
+                    text: "842"
+                    fontSize: 16
+                    fontWeight: bold
+                    color: #111827
+                }
+
+                component Label {
+                    text: "Following"
+                    fontSize: 12
+                    color: #6B7280
+                }
+            }
+
+            component StatProjects {
+                layout: vertical
+                gap: 2
+                padding: 12
+                radius: 8
+                color: #F9FAFB
+                width: fill
+                alignItems: center
+
+                component Number {
+                    text: "38"
+                    fontSize: 16
+                    fontWeight: bold
+                    color: #111827
+                }
+
+                component Label {
+                    text: "Projects"
+                    fontSize: 12
+                    color: #6B7280
+                }
+            }
+        }
+
+        component SkillsRow {
+            layout: horizontal
+            gap: 8
+
+            component Badge1 {
+                ref: badges.Badges.Primary
+                label: "Figma"
+            }
+
+            component Badge2 {
+                ref: badges.Badges.Success
+                label: "Vireo DSL"
+            }
+
+            component Badge3 {
+                ref: badges.Badges.Neutral
+                label: "Systems"
+            }
+        }
+
+        component Actions {
+            layout: horizontal
+            gap: 12
+            width: fill
+
+            component FollowBtn {
+                ref: buttons.Primary.Default
+                label: "Follow"
+                width: fill
+            }
+
+            component MessageBtn {
+                ref: buttons.Secondary.Default
+                label: "Message"
+                width: fill
+            }
+        }
+    }
+}

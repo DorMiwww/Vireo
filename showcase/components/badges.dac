@@ -1,0 +1,71 @@
+block Badges {
+    component Success {
+        layout: horizontal
+        padding: 4 10
+        radius: 99
+        color: #ECFDF5
+
+        component Text {
+            text: "Completed"
+            fontSize: 12
+            fontWeight: bold
+            color: #059669
+        }
+    }
+
+    component Warning {
+        layout: horizontal
+        padding: 4 10
+        radius: 99
+        color: #FFFBEB
+
+        component Text {
+            text: "Pending"
+            fontSize: 12
+            fontWeight: bold
+            color: #D97706
+        }
+    }
+
+    component Danger {
+        layout: horizontal
+        padding: 4 10
+        radius: 99
+        color: #FEF2F2
+
+        component Text {
+            text: "Cancelled"
+            fontSize: 12
+            fontWeight: bold
+            color: #DC2626
+        }
+    }
+
+    component Neutral {
+        layout: horizontal
+        padding: 4 10
+        radius: 99
+        color: #F3F4F6
+
+        component Text {
+            text: "Draft"
+            fontSize: 12
+            fontWeight: bold
+            color: #4B5563
+        }
+    }
+
+    component Primary {
+        layout: horizontal
+        padding: 4 10
+        radius: 99
+        color: #EFF6FF
+
+        component Text {
+            text: "Pro"
+            fontSize: 12
+            fontWeight: bold
+            color: #2563EB
+        }
+    }
+}

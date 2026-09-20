@@ -41,7 +41,7 @@ object FigmaRenderer : Renderer<FigmaDocument> {
     ): FigmaNode {
         var childCounter = 1
         val childrenNodes = block.components.map { comp ->
-            renderComponent(comp, "1:$blockId:${childCounter++}", file, loadedFiles)
+            renderComponent(comp, "1:$blockId:${childCounter++}", file, loadedFiles, "VERTICAL")
         }
 
         return FigmaNode(
@@ -60,7 +60,8 @@ object FigmaRenderer : Renderer<FigmaDocument> {
         rawComp: ComponentNode,
         nodeId: String,
         file: VireoFile,
-        loadedFiles: Map<String, VireoFile>
+        loadedFiles: Map<String, VireoFile>,
+        parentLayoutDir: String? = null
     ): FigmaNode {
         val comp = resolveComponentRef(rawComp, file, loadedFiles)
 
@@ -90,6 +91,8 @@ object FigmaRenderer : Renderer<FigmaDocument> {
         var mainAxisSizing: String? = null
         var crossAxisSizing: String? = null
         var itemGap: Float? = null
+        var primaryAlign: String? = null
+        var counterAlign: String? = null
 
         // 1. Process constraints
         comp.constraints.forEach { constraint ->
@@ -175,6 +178,24 @@ object FigmaRenderer : Renderer<FigmaDocument> {
                         }
                     }
                 }
+                "backgroundColor" -> colorHex = strVal
+                "alignItems" -> {
+                    counterAlign = when (strVal.lowercase().trim('"', '\'')) {
+                        "center" -> "CENTER"
+                        "flex-start", "start", "min" -> "MIN"
+                        "flex-end", "end", "max" -> "MAX"
+                        else -> null
+                    }
+                }
+                "justifyContent" -> {
+                    primaryAlign = when (strVal.lowercase().trim('"', '\'')) {
+                        "center" -> "CENTER"
+                        "space-between" -> "SPACE_BETWEEN"
+                        "flex-start", "start", "min" -> "MIN"
+                        "flex-end", "end", "max" -> "MAX"
+                        else -> null
+                    }
+                }
                 "border" -> {
                     val parts = strVal.split("\\s+".toRegex())
                     if (parts.size >= 2) {
@@ -229,8 +250,17 @@ object FigmaRenderer : Renderer<FigmaDocument> {
             else -> null
         }
 
-        val layoutAlignVal = if (isFillWidth) "STRETCH" else null
-        val layoutGrowVal = if (isFillHeight) 1f else null
+        val layoutAlignVal = when (parentLayoutDir) {
+            "VERTICAL" -> if (isFillWidth) "STRETCH" else null
+            "HORIZONTAL" -> if (isFillHeight) "STRETCH" else null
+            else -> if (isFillWidth) "STRETCH" else null
+        }
+
+        val layoutGrowVal = when (parentLayoutDir) {
+            "VERTICAL" -> if (isFillHeight) 1f else null
+            "HORIZONTAL" -> if (isFillWidth) 1f else null
+            else -> null
+        }
 
         val fillsList = colorHex?.let { listOf(Paint(type = "SOLID", color = Color.fromHex(it))) }
         val strokesList = strokeHex?.let { listOf(Paint(type = "SOLID", color = Color.fromHex(it))) }
@@ -250,6 +280,25 @@ object FigmaRenderer : Renderer<FigmaDocument> {
             "RECTANGLE"
         }
 
+        // Auto Layout defaults for containers
+        var effectiveLayoutDir = layoutDir
+        var effectivePrimaryAlign = primaryAlign
+        var effectiveCounterAlign = counterAlign
+
+        if (isInputBox && effectiveLayoutDir == null) {
+            effectiveLayoutDir = "HORIZONTAL"
+            if (effectiveCounterAlign == null) effectiveCounterAlign = "CENTER"
+            if (pLeft == null) pLeft = 16f
+            if (pRight == null) pRight = 16f
+            if (heightVal == null) heightVal = 44f
+        } else if (comp.children.isNotEmpty() && effectiveLayoutDir == null) {
+            // Button-like container centering its children
+            effectiveLayoutDir = "HORIZONTAL"
+            if (effectivePrimaryAlign == null) effectivePrimaryAlign = "CENTER"
+            if (effectiveCounterAlign == null) effectiveCounterAlign = "CENTER"
+            if (heightVal == null) heightVal = 44f
+        }
+
         // Render children
         var childCounter = 1
         var renderedChildren: List<FigmaNode>? = if (isInputBox && placeholderText != null && comp.children.isEmpty()) {
@@ -265,28 +314,9 @@ object FigmaRenderer : Renderer<FigmaDocument> {
             )
         } else if (comp.children.isNotEmpty()) {
             comp.children.map { child ->
-                renderComponent(child, "$nodeId:${childCounter++}", file, loadedFiles)
+                renderComponent(child, "$nodeId:${childCounter++}", file, loadedFiles, effectiveLayoutDir)
             }
         } else null
-
-        // Auto Layout defaults for containers
-        var effectiveLayoutDir = layoutDir
-        var effectivePrimaryAlign: String? = null
-        var effectiveCounterAlign: String? = null
-
-        if (isInputBox && effectiveLayoutDir == null) {
-            effectiveLayoutDir = "HORIZONTAL"
-            effectiveCounterAlign = "CENTER"
-            if (pLeft == null) pLeft = 16f
-            if (pRight == null) pRight = 16f
-            if (heightVal == null) heightVal = 44f
-        } else if (comp.children.isNotEmpty() && effectiveLayoutDir == null) {
-            // Button-like container centering its children
-            effectiveLayoutDir = "HORIZONTAL"
-            effectivePrimaryAlign = "CENTER"
-            effectiveCounterAlign = "CENTER"
-            if (heightVal == null) heightVal = 44f
-        }
 
         val boundingBox = if (xVal != null || yVal != null || widthVal != null || heightVal != null) {
             Rect(
@@ -350,7 +380,9 @@ object FigmaRenderer : Renderer<FigmaDocument> {
                 is Constraint.Relational -> it.axis
                 is Constraint.AutoLayout -> Axis.WIDTH
             }
-        }.toSet()
+        }.toMutableSet()
+        if (comp.properties.any { it.key == "width" }) overriddenAxes.add(Axis.WIDTH)
+        if (comp.properties.any { it.key == "height" }) overriddenAxes.add(Axis.HEIGHT)
         val mergedConstraints = comp.constraints +
             baseComp.constraints.filter {
                 val axis = when (it) {

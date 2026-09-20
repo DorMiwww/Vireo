@@ -1,0 +1,1079 @@
+import buttons from "./components/buttons.dac"
+import badges from "./components/badges.dac"
+
+block Dashboard {
+    component Page {
+        width: 1280
+        color: #F8FAFC
+        padding: 24
+        layout: vertical
+        gap: 24
+
+        component Navbar {
+            width: fill
+            color: #FFFFFF
+            radius: 12
+            padding: 14 24
+            shadow: true
+            layout: horizontal
+            justifyContent: "space-between"
+            alignItems: center
+
+            component LeftNav {
+                layout: horizontal
+                gap: 32
+                alignItems: center
+
+                component Brand {
+                    layout: horizontal
+                    gap: 10
+                    alignItems: center
+
+                    component Logo {
+                        width: 32
+                        height: 32
+                        radius: 8
+                        color: #2563EB
+
+                        component LogoChar {
+                            text: "V"
+                            fontSize: 18
+                            fontWeight: bold
+                            color: #FFFFFF
+                        }
+                    }
+
+                    component BrandName {
+                        text: "Vireo Cloud"
+                        fontSize: 18
+                        fontWeight: bold
+                        color: #0F172A
+                    }
+                }
+
+                component NavLinks {
+                    layout: horizontal
+                    gap: 20
+                    alignItems: center
+
+                    component LinkDashboard {
+                        text: "Overview"
+                        fontSize: 14
+                        fontWeight: bold
+                        color: #2563EB
+                    }
+
+                    component LinkAnalytics {
+                        text: "Analytics"
+                        fontSize: 14
+                        color: #64748B
+                    }
+
+                    component LinkInvoices {
+                        text: "Invoices"
+                        fontSize: 14
+                        color: #64748B
+                    }
+
+                    component LinkCustomers {
+                        text: "Customers"
+                        fontSize: 14
+                        color: #64748B
+                    }
+
+                    component LinkSettings {
+                        text: "Settings"
+                        fontSize: 14
+                        color: #64748B
+                    }
+                }
+            }
+
+            component RightNav {
+                layout: horizontal
+                gap: 16
+                alignItems: center
+
+                component SearchField {
+                    width: 200
+                    height: 36
+                    radius: 8
+                    border: 1 #E2E8F0
+                    placeholder: "Search anything..."
+                }
+
+                component NotificationBox {
+                    layout: horizontal
+                    padding: 6 10
+                    radius: 8
+                    color: #F1F5F9
+
+                    component NotifText {
+                        text: "3 Alerts"
+                        fontSize: 13
+                        fontWeight: bold
+                        color: #334155
+                    }
+                }
+
+                component UserMenu {
+                    layout: horizontal
+                    gap: 10
+                    alignItems: center
+
+                    component UserAvatar {
+                        width: 36
+                        height: 36
+                        radius: 99
+                        color: #3B82F6
+
+                        component Initials {
+                            text: "AK"
+                            fontSize: 14
+                            fontWeight: bold
+                            color: #FFFFFF
+                        }
+                    }
+
+                    component UserName {
+                        text: "Alex K."
+                        fontSize: 14
+                        fontWeight: bold
+                        color: #0F172A
+                    }
+                }
+            }
+        }
+
+        component HeaderBanner {
+            width: fill
+            layout: horizontal
+            justifyContent: "space-between"
+            alignItems: center
+            padding: 8 4
+
+            component GreetingBlock {
+                layout: vertical
+                gap: 4
+
+                component GreetingTitle {
+                    text: "Welcome back, Alex 👋"
+                    fontSize: 24
+                    fontWeight: bold
+                    color: #0F172A
+                }
+
+                component GreetingSub {
+                    text: "Here is your business performance summary for today, Sep 20, 2026."
+                    fontSize: 14
+                    color: #64748B
+                }
+            }
+
+            component ActionButtons {
+                layout: horizontal
+                gap: 12
+
+                component ExportBtn {
+                    ref: buttons.Secondary.Default
+                    label: "Export CSV"
+                }
+
+                component CreateBtn {
+                    ref: buttons.Primary.Default
+                    label: "+ New Invoice"
+                }
+            }
+        }
+
+        component MetricsGrid {
+            layout: horizontal
+            gap: 16
+            width: fill
+
+            component MetricCard1 {
+                width: fill
+                color: #FFFFFF
+                radius: 12
+                padding: 20
+                shadow: true
+                layout: vertical
+                gap: 12
+
+                component CardTop1 {
+                    width: fill
+                    layout: horizontal
+                    justifyContent: "space-between"
+                    alignItems: center
+
+                    component Title1 {
+                        text: "Total Revenue"
+                        fontSize: 13
+                        color: #64748B
+                    }
+
+                    component Badge1 {
+                        ref: badges.Badges.Success
+                        label: "+18.2%"
+                    }
+                }
+
+                component Value1 {
+                    text: "$128,430.00"
+                    fontSize: 26
+                    fontWeight: bold
+                    color: #0F172A
+                }
+
+                component Subtext1 {
+                    text: "vs. $108,650 last month"
+                    fontSize: 12
+                    color: #94A3B8
+                }
+            }
+
+            component MetricCard2 {
+                width: fill
+                color: #FFFFFF
+                radius: 12
+                padding: 20
+                shadow: true
+                layout: vertical
+                gap: 12
+
+                component CardTop2 {
+                    width: fill
+                    layout: horizontal
+                    justifyContent: "space-between"
+                    alignItems: center
+
+                    component Title2 {
+                        text: "Active Subscriptions"
+                        fontSize: 13
+                        color: #64748B
+                    }
+
+                    component Badge2 {
+                        ref: badges.Badges.Success
+                        label: "+12.4%"
+                    }
+                }
+
+                component Value2 {
+                    text: "8,492"
+                    fontSize: 26
+                    fontWeight: bold
+                    color: #0F172A
+                }
+
+                component Subtext2 {
+                    text: "+428 new subscribers this week"
+                    fontSize: 12
+                    color: #94A3B8
+                }
+            }
+
+            component MetricCard3 {
+                width: fill
+                color: #FFFFFF
+                radius: 12
+                padding: 20
+                shadow: true
+                layout: vertical
+                gap: 12
+
+                component CardTop3 {
+                    width: fill
+                    layout: horizontal
+                    justifyContent: "space-between"
+                    alignItems: center
+
+                    component Title3 {
+                        text: "Avg. Order Value"
+                        fontSize: 13
+                        color: #64748B
+                    }
+
+                    component Badge3 {
+                        ref: badges.Badges.Primary
+                        label: "+3.1%"
+                    }
+                }
+
+                component Value3 {
+                    text: "$89.50"
+                    fontSize: 26
+                    fontWeight: bold
+                    color: #0F172A
+                }
+
+                component Subtext3 {
+                    text: "Target: $85.00 exceeded"
+                    fontSize: 12
+                    color: #94A3B8
+                }
+            }
+
+            component MetricCard4 {
+                width: fill
+                color: #FFFFFF
+                radius: 12
+                padding: 20
+                shadow: true
+                layout: vertical
+                gap: 12
+
+                component CardTop4 {
+                    width: fill
+                    layout: horizontal
+                    justifyContent: "space-between"
+                    alignItems: center
+
+                    component Title4 {
+                        text: "Churn Rate"
+                        fontSize: 13
+                        color: #64748B
+                    }
+
+                    component Badge4 {
+                        ref: badges.Badges.Warning
+                        label: "-0.4%"
+                    }
+                }
+
+                component Value4 {
+                    text: "1.24%"
+                    fontSize: 26
+                    fontWeight: bold
+                    color: #0F172A
+                }
+
+                component Subtext4 {
+                    text: "Industry benchmark: 2.1%"
+                    fontSize: 12
+                    color: #94A3B8
+                }
+            }
+        }
+
+        component ContentRow {
+            layout: horizontal
+            gap: 24
+            width: fill
+
+            component MainArea {
+                width: fill
+                layout: vertical
+                gap: 24
+
+                component InvoicesCard {
+                    width: fill
+                    color: #FFFFFF
+                    radius: 12
+                    padding: 20
+                    shadow: true
+                    layout: vertical
+                    gap: 16
+
+                    component TableHeaderBlock {
+                        width: fill
+                        layout: horizontal
+                        justifyContent: "space-between"
+                        alignItems: center
+
+                        component TableTitleGroup {
+                            layout: vertical
+                            gap: 2
+
+                            component TableTitle {
+                                text: "Recent Invoices"
+                                fontSize: 16
+                                fontWeight: bold
+                                color: #0F172A
+                            }
+
+                            component TableSubtitle {
+                                text: "Overview of your most recent transactions and settlement status."
+                                fontSize: 13
+                                color: #64748B
+                            }
+                        }
+
+                        component FilterBtn {
+                            ref: buttons.Outline.Default
+                            label: "Filter (All)"
+                        }
+                    }
+
+                    component TableColumnsHeader {
+                        width: fill
+                        layout: horizontal
+                        padding: 10 12
+                        color: #F8FAFC
+                        radius: 6
+                        alignItems: center
+
+                        component Col1 {
+                            width: fill
+                            text: "INVOICE"
+                            fontSize: 11
+                            fontWeight: bold
+                            color: #64748B
+                        }
+
+                        component Col2 {
+                            width: fill
+                            text: "CLIENT"
+                            fontSize: 11
+                            fontWeight: bold
+                            color: #64748B
+                        }
+
+                        component Col3 {
+                            width: fill
+                            text: "DATE"
+                            fontSize: 11
+                            fontWeight: bold
+                            color: #64748B
+                        }
+
+                        component Col4 {
+                            width: fill
+                            text: "STATUS"
+                            fontSize: 11
+                            fontWeight: bold
+                            color: #64748B
+                        }
+
+                        component Col5 {
+                            width: fill
+                            text: "AMOUNT"
+                            fontSize: 11
+                            fontWeight: bold
+                            color: #64748B
+                        }
+                    }
+
+                    component Row1 {
+                        width: fill
+                        layout: horizontal
+                        padding: 12
+                        border: 1 #F1F5F9
+                        radius: 8
+                        alignItems: center
+
+                        component Inv1 {
+                            width: fill
+                            text: "#INV-2026-089"
+                            fontSize: 13
+                            fontWeight: bold
+                            color: #2563EB
+                        }
+
+                        component Client1 {
+                            width: fill
+                            text: "Acme Global Corp"
+                            fontSize: 13
+                            color: #0F172A
+                        }
+
+                        component Date1 {
+                            width: fill
+                            text: "Sep 20, 2026"
+                            fontSize: 13
+                            color: #64748B
+                        }
+
+                        component Status1 {
+                            width: fill
+
+                            component Badge {
+                                ref: badges.Badges.Success
+                                label: "Paid"
+                            }
+                        }
+
+                        component Amount1 {
+                            width: fill
+                            text: "$4,500.00"
+                            fontSize: 13
+                            fontWeight: bold
+                            color: #0F172A
+                        }
+                    }
+
+                    component Row2 {
+                        width: fill
+                        layout: horizontal
+                        padding: 12
+                        border: 1 #F1F5F9
+                        radius: 8
+                        alignItems: center
+
+                        component Inv2 {
+                            width: fill
+                            text: "#INV-2026-088"
+                            fontSize: 13
+                            fontWeight: bold
+                            color: #2563EB
+                        }
+
+                        component Client2 {
+                            width: fill
+                            text: "Cyberdyne Systems"
+                            fontSize: 13
+                            color: #0F172A
+                        }
+
+                        component Date2 {
+                            width: fill
+                            text: "Sep 20, 2026"
+                            fontSize: 13
+                            color: #64748B
+                        }
+
+                        component Status2 {
+                            width: fill
+
+                            component Badge {
+                                ref: badges.Badges.Warning
+                                label: "Pending"
+                            }
+                        }
+
+                        component Amount2 {
+                            width: fill
+                            text: "$1,280.00"
+                            fontSize: 13
+                            fontWeight: bold
+                            color: #0F172A
+                        }
+                    }
+
+                    component Row3 {
+                        width: fill
+                        layout: horizontal
+                        padding: 12
+                        border: 1 #F1F5F9
+                        radius: 8
+                        alignItems: center
+
+                        component Inv3 {
+                            width: fill
+                            text: "#INV-2026-087"
+                            fontSize: 13
+                            fontWeight: bold
+                            color: #2563EB
+                        }
+
+                        component Client3 {
+                            width: fill
+                            text: "Weyland-Yutani Inc"
+                            fontSize: 13
+                            color: #0F172A
+                        }
+
+                        component Date3 {
+                            width: fill
+                            text: "Sep 19, 2026"
+                            fontSize: 13
+                            color: #64748B
+                        }
+
+                        component Status3 {
+                            width: fill
+
+                            component Badge {
+                                ref: badges.Badges.Success
+                                label: "Paid"
+                            }
+                        }
+
+                        component Amount3 {
+                            width: fill
+                            text: "$8,920.00"
+                            fontSize: 13
+                            fontWeight: bold
+                            color: #0F172A
+                        }
+                    }
+
+                    component Row4 {
+                        width: fill
+                        layout: horizontal
+                        padding: 12
+                        border: 1 #F1F5F9
+                        radius: 8
+                        alignItems: center
+
+                        component Inv4 {
+                            width: fill
+                            text: "#INV-2026-086"
+                            fontSize: 13
+                            fontWeight: bold
+                            color: #2563EB
+                        }
+
+                        component Client4 {
+                            width: fill
+                            text: "Stark Industries"
+                            fontSize: 13
+                            color: #0F172A
+                        }
+
+                        component Date4 {
+                            width: fill
+                            text: "Sep 18, 2026"
+                            fontSize: 13
+                            color: #64748B
+                        }
+
+                        component Status4 {
+                            width: fill
+
+                            component Badge {
+                                ref: badges.Badges.Danger
+                                label: "Refunded"
+                            }
+                        }
+
+                        component Amount4 {
+                            width: fill
+                            text: "$340.00"
+                            fontSize: 13
+                            fontWeight: bold
+                            color: #0F172A
+                        }
+                    }
+
+                    component Row5 {
+                        width: fill
+                        layout: horizontal
+                        padding: 12
+                        border: 1 #F1F5F9
+                        radius: 8
+                        alignItems: center
+
+                        component Inv5 {
+                            width: fill
+                            text: "#INV-2026-085"
+                            fontSize: 13
+                            fontWeight: bold
+                            color: #2563EB
+                        }
+
+                        component Client5 {
+                            width: fill
+                            text: "Massive Dynamic"
+                            fontSize: 13
+                            color: #0F172A
+                        }
+
+                        component Date5 {
+                            width: fill
+                            text: "Sep 17, 2026"
+                            fontSize: 13
+                            color: #64748B
+                        }
+
+                        component Status5 {
+                            width: fill
+
+                            component Badge {
+                                ref: badges.Badges.Success
+                                label: "Paid"
+                            }
+                        }
+
+                        component Amount5 {
+                            width: fill
+                            text: "$2,150.00"
+                            fontSize: 13
+                            fontWeight: bold
+                            color: #0F172A
+                        }
+                    }
+
+                    component TablePagination {
+                        width: fill
+                        layout: horizontal
+                        justifyContent: "space-between"
+                        alignItems: center
+                        padding: 4 0
+
+                        component PaginationInfo {
+                            text: "Showing 1 to 5 of 248 invoices"
+                            fontSize: 13
+                            color: #64748B
+                        }
+
+                        component NextPageBtn {
+                            ref: buttons.Secondary.Default
+                            label: "Next Page →"
+                        }
+                    }
+                }
+
+                component ServerHealthCard {
+                    width: fill
+                    color: #FFFFFF
+                    radius: 12
+                    padding: 20
+                    shadow: true
+                    layout: vertical
+                    gap: 16
+
+                    component HealthHeader {
+                        text: "System Infrastructure & Uptime"
+                        fontSize: 16
+                        fontWeight: bold
+                        color: #0F172A
+                    }
+
+                    component HealthMetricsRow {
+                        layout: horizontal
+                        gap: 16
+                        width: fill
+
+                        component ServerBox1 {
+                            width: fill
+                            padding: 16
+                            color: #F8FAFC
+                            radius: 8
+                            layout: vertical
+                            gap: 6
+
+                            component ServerLabel1 {
+                                text: "Primary Gateway (us-east)"
+                                fontSize: 12
+                                color: #64748B
+                            }
+
+                            component ServerVal1 {
+                                text: "28ms (99.99% uptime)"
+                                fontSize: 14
+                                fontWeight: bold
+                                color: #10B981
+                            }
+                        }
+
+                        component ServerBox2 {
+                            width: fill
+                            padding: 16
+                            color: #F8FAFC
+                            radius: 8
+                            layout: vertical
+                            gap: 6
+
+                            component ServerLabel2 {
+                                text: "Database Cluster"
+                                fontSize: 12
+                                color: #64748B
+                            }
+
+                            component ServerVal2 {
+                                text: "Healthy (Lag: 2ms)"
+                                fontSize: 14
+                                fontWeight: bold
+                                color: #10B981
+                            }
+                        }
+
+                        component ServerBox3 {
+                            width: fill
+                            padding: 16
+                            color: #F8FAFC
+                            radius: 8
+                            layout: vertical
+                            gap: 6
+
+                            component ServerLabel3 {
+                                text: "Edge Cache Hit Ratio"
+                                fontSize: 12
+                                color: #64748B
+                            }
+
+                            component ServerVal3 {
+                                text: "97.2% (Redis Cluster)"
+                                fontSize: 14
+                                fontWeight: bold
+                                color: #2563EB
+                            }
+                        }
+                    }
+                }
+            }
+
+            component Sidebar {
+                width: 360
+                layout: vertical
+                gap: 24
+
+                component ActivityCard {
+                    width: fill
+                    color: #FFFFFF
+                    radius: 12
+                    padding: 20
+                    shadow: true
+                    layout: vertical
+                    gap: 16
+
+                    component ActivityTitle {
+                        text: "Team Activity"
+                        fontSize: 16
+                        fontWeight: bold
+                        color: #0F172A
+                    }
+
+                    component ActivityItem1 {
+                        layout: horizontal
+                        gap: 12
+                        alignItems: center
+
+                        component ActivityDot1 {
+                            width: 10
+                            height: 10
+                            radius: 99
+                            color: #10B981
+                        }
+
+                        component ActivityBody1 {
+                            layout: vertical
+                            gap: 2
+
+                            component ActivityText1 {
+                                text: "Sophia merged design tokens"
+                                fontSize: 13
+                                fontWeight: bold
+                                color: #0F172A
+                            }
+
+                            component ActivityTime1 {
+                                text: "12 minutes ago"
+                                fontSize: 11
+                                color: #94A3B8
+                            }
+                        }
+                    }
+
+                    component ActivityItem2 {
+                        layout: horizontal
+                        gap: 12
+                        alignItems: center
+
+                        component ActivityDot2 {
+                            width: 10
+                            height: 10
+                            radius: 99
+                            color: #2563EB
+                        }
+
+                        component ActivityBody2 {
+                            layout: vertical
+                            gap: 2
+
+                            component ActivityText2 {
+                                text: "Michael added 4 team seats"
+                                fontSize: 13
+                                fontWeight: bold
+                                color: #0F172A
+                            }
+
+                            component ActivityTime2 {
+                                text: "45 minutes ago"
+                                fontSize: 11
+                                color: #94A3B8
+                            }
+                        }
+                    }
+
+                    component ActivityItem3 {
+                        layout: horizontal
+                        gap: 12
+                        alignItems: center
+
+                        component ActivityDot3 {
+                            width: 10
+                            height: 10
+                            radius: 99
+                            color: #F59E0B
+                        }
+
+                        component ActivityBody3 {
+                            layout: vertical
+                            gap: 2
+
+                            component ActivityText3 {
+                                text: "Stripe payout batch prepared"
+                                fontSize: 13
+                                fontWeight: bold
+                                color: #0F172A
+                            }
+
+                            component ActivityTime3 {
+                                text: "2 hours ago"
+                                fontSize: 11
+                                color: #94A3B8
+                            }
+                        }
+                    }
+
+                    component ActivityItem4 {
+                        layout: horizontal
+                        gap: 12
+                        alignItems: center
+
+                        component ActivityDot4 {
+                            width: 10
+                            height: 10
+                            radius: 99
+                            color: #64748B
+                        }
+
+                        component ActivityBody4 {
+                            layout: vertical
+                            gap: 2
+
+                            component ActivityText4 {
+                                text: "System snapshot backed up"
+                                fontSize: 13
+                                fontWeight: bold
+                                color: #0F172A
+                            }
+
+                            component ActivityTime4 {
+                                text: "5 hours ago"
+                                fontSize: 11
+                                color: #94A3B8
+                            }
+                        }
+                    }
+                }
+
+                component StorageCard {
+                    width: fill
+                    color: #FFFFFF
+                    radius: 12
+                    padding: 20
+                    shadow: true
+                    layout: vertical
+                    gap: 16
+
+                    component StorageHeader {
+                        width: fill
+                        layout: horizontal
+                        justifyContent: "space-between"
+                        alignItems: center
+
+                        component StorageTitle {
+                            text: "Storage Quota"
+                            fontSize: 16
+                            fontWeight: bold
+                            color: #0F172A
+                        }
+
+                        component StoragePct {
+                            text: "78% Used"
+                            fontSize: 13
+                            fontWeight: bold
+                            color: #2563EB
+                        }
+                    }
+
+                    component ProgressBarTrack {
+                        width: fill
+                        height: 8
+                        radius: 99
+                        color: #E2E8F0
+
+                        component ProgressBarFill {
+                            width: 240
+                            height: 8
+                            radius: 99
+                            color: #2563EB
+                        }
+                    }
+
+                    component StorageDesc {
+                        text: "390 GB of 500 GB used. Upgrading will prevent service throttling."
+                        fontSize: 12
+                        color: #64748B
+                    }
+
+                    component UpgradePlanBtn {
+                        ref: buttons.Primary.Default
+                        label: "Upgrade Storage"
+                        width: fill
+                    }
+                }
+
+                component SupportWidget {
+                    width: fill
+                    color: #EFF6FF
+                    radius: 12
+                    padding: 20
+                    layout: vertical
+                    gap: 12
+
+                    component SupportHeading {
+                        text: "Dedicated Support"
+                        fontSize: 15
+                        fontWeight: bold
+                        color: #1E40AF
+                    }
+
+                    component SupportCopy {
+                        text: "Have a question about API integration or Figma sync? Talk to an engineer."
+                        fontSize: 12
+                        color: #3B82F6
+                    }
+
+                    component ContactSupportBtn {
+                        ref: buttons.Secondary.Default
+                        label: "Open Support Ticket"
+                        width: fill
+                    }
+                }
+            }
+        }
+
+        component Footer {
+            width: fill
+            layout: horizontal
+            justifyContent: "space-between"
+            alignItems: center
+            padding: 16 8
+
+            component Copyright {
+                text: "© 2026 Vireo Design Systems Inc. All rights reserved."
+                fontSize: 13
+                color: #94A3B8
+            }
+
+            component FooterLinks {
+                layout: horizontal
+                gap: 20
+                alignItems: center
+
+                component DocLink {
+                    text: "Documentation"
+                    fontSize: 13
+                    color: #64748B
+                }
+
+                component ApiLink {
+                    text: "API Docs"
+                    fontSize: 13
+                    color: #64748B
+                }
+
+                component StatusLink {
+                    text: "● All Systems Operational"
+                    fontSize: 13
+                    fontWeight: bold
+                    color: #10B981
+                }
+            }
+        }
+    }
+}

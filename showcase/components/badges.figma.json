@@ -1,0 +1,243 @@
+{
+    "name": "showcase/components/badges.dac",
+    "nodes": [
+        {
+            "id": "0:1",
+            "name": "showcase/components/badges.dac",
+            "type": "CANVAS",
+            "children": [
+                {
+                    "id": "1:1",
+                    "name": "Badges",
+                    "type": "FRAME",
+                    "children": [
+                        {
+                            "id": "1:1:1",
+                            "name": "Success",
+                            "type": "FRAME",
+                            "children": [
+                                {
+                                    "id": "1:1:1:1",
+                                    "name": "Text",
+                                    "type": "TEXT",
+                                    "characters": "Completed",
+                                    "style": {
+                                        "fontSize": 12.0,
+                                        "fontWeight": 700.0
+                                    },
+                                    "fills": [
+                                        {
+                                            "color": {
+                                                "r": 0.019607844,
+                                                "g": 0.5882353,
+                                                "b": 0.4117647
+                                            }
+                                        }
+                                    ]
+                                }
+                            ],
+                            "fills": [
+                                {
+                                    "color": {
+                                        "r": 0.9254902,
+                                        "g": 0.99215686,
+                                        "b": 0.9607843
+                                    }
+                                }
+                            ],
+                            "cornerRadius": 99.0,
+                            "layoutMode": "HORIZONTAL",
+                            "primaryAxisSizingMode": "AUTO",
+                            "counterAxisSizingMode": "AUTO",
+                            "itemSpacing": 0.0,
+                            "paddingLeft": 10.0,
+                            "paddingRight": 10.0,
+                            "paddingTop": 4.0,
+                            "paddingBottom": 4.0
+                        },
+                        {
+                            "id": "1:1:2",
+                            "name": "Warning",
+                            "type": "FRAME",
+                            "children": [
+                                {
+                                    "id": "1:1:2:1",
+                                    "name": "Text",
+                                    "type": "TEXT",
+                                    "characters": "Pending",
+                                    "style": {
+                                        "fontSize": 12.0,
+                                        "fontWeight": 700.0
+                                    },
+                                    "fills": [
+                                        {
+                                            "color": {
+                                                "r": 0.8509804,
+                                                "g": 0.46666667,
+                                                "b": 0.023529412
+                                            }
+                                        }
+                                    ]
+                                }
+                            ],
+                            "fills": [
+                                {
+                                    "color": {
+                                        "r": 1.0,
+                                        "g": 0.9843137,
+                                        "b": 0.92156863
+                                    }
+                                }
+                            ],
+                            "cornerRadius": 99.0,
+                            "layoutMode": "HORIZONTAL",
+                            "primaryAxisSizingMode": "AUTO",
+                            "counterAxisSizingMode": "AUTO",
+                            "itemSpacing": 0.0,
+                            "paddingLeft": 10.0,
+                            "paddingRight": 10.0,
+                            "paddingTop": 4.0,
+                            "paddingBottom": 4.0
+                        },
+                        {
+                            "id": "1:1:3",
+                            "name": "Danger",
+                            "type": "FRAME",
+                            "children": [
+                                {
+                                    "id": "1:1:3:1",
+                                    "name": "Text",
+                                    "type": "TEXT",
+                                    "characters": "Cancelled",
+                                    "style": {
+                                        "fontSize": 12.0,
+                                        "fontWeight": 700.0
+                                    },
+                                    "fills": [
+                                        {
+                                            "color": {
+                                                "r": 0.8627451,
+                                                "g": 0.14901961,
+                                                "b": 0.14901961
+                                            }
+                                        }
+                                    ]
+                                }
+                            ],
+                            "fills": [
+                                {
+                                    "color": {
+                                        "r": 0.99607843,
+                                        "g": 0.9490196,
+                                        "b": 0.9490196
+                                    }
+                                }
+                            ],
+                            "cornerRadius": 99.0,
+                            "layoutMode": "HORIZONTAL",
+                            "primaryAxisSizingMode": "AUTO",
+                            "counterAxisSizingMode": "AUTO",
+                            "itemSpacing": 0.0,
+                            "paddingLeft": 10.0,
+                            "paddingRight": 10.0,
+                            "paddingTop": 4.0,
+                            "paddingBottom": 4.0
+                        },
+                        {
+                            "id": "1:1:4",
+                            "name": "Neutral",
+                            "type": "FRAME",
+                            "children": [
+                                {
+                                    "id": "1:1:4:1",
+                                    "name": "Text",
+                                    "type": "TEXT",
+                                    "characters": "Draft",
+                                    "style": {
+                                        "fontSize": 12.0,
+                                        "fontWeight": 700.0
+                                    },
+                                    "fills": [
+                                        {
+                                            "color": {
+                                                "r": 0.29411766,
+                                                "g": 0.33333334,
+                                                "b": 0.3882353
+                                            }
+                                        }
+                                    ]
+                                }
+                            ],
+                            "fills": [
+                                {
+                                    "color": {
+                                        "r": 0.9529412,
+                                        "g": 0.95686275,
+                                        "b": 0.9647059
+                                    }
+                                }
+                            ],
+                            "cornerRadius": 99.0,
+                            "layoutMode": "HORIZONTAL",
+                            "primaryAxisSizingMode": "AUTO",
+                            "counterAxisSizingMode": "AUTO",
+                            "itemSpacing": 0.0,
+                            "paddingLeft": 10.0,
+                            "paddingRight": 10.0,
+                            "paddingTop": 4.0,
+                            "paddingBottom": 4.0
+                        },
+                        {
+                            "id": "1:1:5",
+                            "name": "Primary",
+                            "type": "FRAME",
+                            "children": [
+                                {
+                                    "id": "1:1:5:1",
+                                    "name": "Text",
+                                    "type": "TEXT",
+                                    "characters": "Pro",
+                                    "style": {
+                                        "fontSize": 12.0,
+                                        "fontWeight": 700.0
+                                    },
+                                    "fills": [
+                                        {
+                                            "color": {
+                                                "r": 0.14509805,
+                                                "g": 0.3882353,
+                                                "b": 0.92156863
+                                            }
+                                        }
+                                    ]
+                                }
+                            ],
+                            "fills": [
+                                {
+                                    "color": {
+                                        "r": 0.9372549,
+                                        "g": 0.9647059,
+                                        "b": 1.0
+                                    }
+                                }
+                            ],
+                            "cornerRadius": 99.0,
+                            "layoutMode": "HORIZONTAL",
+                            "primaryAxisSizingMode": "AUTO",
+                            "counterAxisSizingMode": "AUTO",
+                            "itemSpacing": 0.0,
+                            "paddingLeft": 10.0,
+                            "paddingRight": 10.0,
+                            "paddingTop": 4.0,
+                            "paddingBottom": 4.0
+                        }
+                    ],
+                    "layoutMode": "VERTICAL",
+                    "primaryAxisSizingMode": "AUTO",
+                    "counterAxisSizingMode": "AUTO",
+                    "itemSpacing": 16.0
+                }
+            ]
+        }
+    ]
+}

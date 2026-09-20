@@ -180,6 +180,11 @@ private class ExprEvaluatorEngine(
         val result = StringBuilder()
         var i = 0
         while (i < raw.length) {
+            if (raw[i] == '\\' && i + 1 < raw.length && raw[i + 1] == '$') {
+                result.append('$')
+                i += 2
+                continue
+            }
             if (raw[i] == '$') {
                 if (i + 1 < raw.length && raw[i + 1] == '{') {
                     val closing = raw.indexOf('}', i + 2)
@@ -192,10 +197,11 @@ private class ExprEvaluatorEngine(
                     }
                 }
                 var j = i + 1
-                while (j < raw.length && (raw[j].isLetterOrDigit() || raw[j] == '_')) {
+                if (j < raw.length && (raw[j].isLetter() || raw[j] == '_')) {
                     j++
-                }
-                if (j > i + 1) {
+                    while (j < raw.length && (raw[j].isLetterOrDigit() || raw[j] == '_')) {
+                        j++
+                    }
                     val varName = raw.substring(i + 1, j)
                     val valInScope = localScope[varName] ?: varScope[varName]
                     if (valInScope == null) {
@@ -583,6 +589,11 @@ private class ExpressionParser(
         val result = StringBuilder()
         var i = 0
         while (i < raw.length) {
+            if (raw[i] == '\\' && i + 1 < raw.length && raw[i + 1] == '$') {
+                result.append('$')
+                i += 2
+                continue
+            }
             if (raw[i] == '$') {
                 if (i + 1 < raw.length && raw[i + 1] == '{') {
                     val closing = raw.indexOf('}', i + 2)
@@ -597,10 +608,11 @@ private class ExpressionParser(
                     }
                 }
                 var j = i + 1
-                while (j < raw.length && (raw[j].isLetterOrDigit() || raw[j] == '_')) {
+                if (j < raw.length && (raw[j].isLetter() || raw[j] == '_')) {
                     j++
-                }
-                if (j > i + 1) {
+                    while (j < raw.length && (raw[j].isLetterOrDigit() || raw[j] == '_')) {
+                        j++
+                    }
                     val varName = raw.substring(i + 1, j)
                     val valInScope = localScope[varName] ?: varScope[varName]
                     if (valInScope == null) {

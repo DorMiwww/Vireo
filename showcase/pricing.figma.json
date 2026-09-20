@@ -1,0 +1,938 @@
+{
+    "name": "showcase/pricing.dac",
+    "nodes": [
+        {
+            "id": "0:1",
+            "name": "showcase/pricing.dac",
+            "type": "CANVAS",
+            "children": [
+                {
+                    "id": "1:1",
+                    "name": "Pricing",
+                    "type": "FRAME",
+                    "children": [
+                        {
+                            "id": "1:1:1",
+                            "name": "Section",
+                            "type": "FRAME",
+                            "children": [
+                                {
+                                    "id": "1:1:1:1",
+                                    "name": "Header",
+                                    "type": "FRAME",
+                                    "children": [
+                                        {
+                                            "id": "1:1:1:1:1",
+                                            "name": "Title",
+                                            "type": "TEXT",
+                                            "characters": "Simple, transparent pricing",
+                                            "style": {
+                                                "fontSize": 32.0,
+                                                "fontWeight": 700.0
+                                            },
+                                            "fills": [
+                                                {
+                                                    "color": {
+                                                        "r": 0.06666667,
+                                                        "g": 0.09411765,
+                                                        "b": 0.15294118
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "id": "1:1:1:1:2",
+                                            "name": "Subtitle",
+                                            "type": "TEXT",
+                                            "characters": "Choose the perfect plan for your team. Upgrade or downgrade anytime.",
+                                            "style": {
+                                                "fontSize": 16.0
+                                            },
+                                            "fills": [
+                                                {
+                                                    "color": {
+                                                        "r": 0.41960785,
+                                                        "g": 0.44705883,
+                                                        "b": 0.5019608
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "layoutMode": "VERTICAL",
+                                    "primaryAxisSizingMode": "AUTO",
+                                    "counterAxisSizingMode": "AUTO",
+                                    "counterAxisAlignItems": "CENTER",
+                                    "itemSpacing": 8.0
+                                },
+                                {
+                                    "id": "1:1:1:2",
+                                    "name": "Plans",
+                                    "type": "FRAME",
+                                    "children": [
+                                        {
+                                            "id": "1:1:1:2:1",
+                                            "name": "StarterCard",
+                                            "type": "FRAME",
+                                            "children": [
+                                                {
+                                                    "id": "1:1:1:2:1:1",
+                                                    "name": "PlanName",
+                                                    "type": "TEXT",
+                                                    "characters": "Starter",
+                                                    "style": {
+                                                        "fontSize": 18.0,
+                                                        "fontWeight": 700.0
+                                                    },
+                                                    "fills": [
+                                                        {
+                                                            "color": {
+                                                                "r": 0.06666667,
+                                                                "g": 0.09411765,
+                                                                "b": 0.15294118
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "id": "1:1:1:2:1:2",
+                                                    "name": "PriceRow",
+                                                    "type": "FRAME",
+                                                    "children": [
+                                                        {
+                                                            "id": "1:1:1:2:1:2:1",
+                                                            "name": "Amount",
+                                                            "type": "TEXT",
+                                                            "characters": "$19",
+                                                            "style": {
+                                                                "fontSize": 36.0,
+                                                                "fontWeight": 700.0
+                                                            },
+                                                            "fills": [
+                                                                {
+                                                                    "color": {
+                                                                        "r": 0.06666667,
+                                                                        "g": 0.09411765,
+                                                                        "b": 0.15294118
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "id": "1:1:1:2:1:2:2",
+                                                            "name": "Period",
+                                                            "type": "TEXT",
+                                                            "characters": "/ month",
+                                                            "style": {
+                                                                "fontSize": 14.0
+                                                            },
+                                                            "fills": [
+                                                                {
+                                                                    "color": {
+                                                                        "r": 0.41960785,
+                                                                        "g": 0.44705883,
+                                                                        "b": 0.5019608
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    ],
+                                                    "layoutMode": "HORIZONTAL",
+                                                    "primaryAxisSizingMode": "AUTO",
+                                                    "counterAxisSizingMode": "AUTO",
+                                                    "counterAxisAlignItems": "CENTER",
+                                                    "itemSpacing": 4.0
+                                                },
+                                                {
+                                                    "id": "1:1:1:2:1:3",
+                                                    "name": "Description",
+                                                    "type": "TEXT",
+                                                    "characters": "Essential tools for freelancers and individuals getting started.",
+                                                    "style": {
+                                                        "fontSize": 14.0
+                                                    },
+                                                    "fills": [
+                                                        {
+                                                            "color": {
+                                                                "r": 0.41960785,
+                                                                "g": 0.44705883,
+                                                                "b": 0.5019608
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "id": "1:1:1:2:1:4",
+                                                    "name": "FeaturesList",
+                                                    "type": "FRAME",
+                                                    "children": [
+                                                        {
+                                                            "id": "1:1:1:2:1:4:1",
+                                                            "name": "Feature1",
+                                                            "type": "TEXT",
+                                                            "characters": "✓ Up to 3 active projects",
+                                                            "style": {
+                                                                "fontSize": 13.0
+                                                            },
+                                                            "fills": [
+                                                                {
+                                                                    "color": {
+                                                                        "r": 0.21568628,
+                                                                        "g": 0.25490198,
+                                                                        "b": 0.31764707
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "id": "1:1:1:2:1:4:2",
+                                                            "name": "Feature2",
+                                                            "type": "TEXT",
+                                                            "characters": "✓ Standard Figma export",
+                                                            "style": {
+                                                                "fontSize": 13.0
+                                                            },
+                                                            "fills": [
+                                                                {
+                                                                    "color": {
+                                                                        "r": 0.21568628,
+                                                                        "g": 0.25490198,
+                                                                        "b": 0.31764707
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "id": "1:1:1:2:1:4:3",
+                                                            "name": "Feature3",
+                                                            "type": "TEXT",
+                                                            "characters": "✓ Community forum support",
+                                                            "style": {
+                                                                "fontSize": 13.0
+                                                            },
+                                                            "fills": [
+                                                                {
+                                                                    "color": {
+                                                                        "r": 0.21568628,
+                                                                        "g": 0.25490198,
+                                                                        "b": 0.31764707
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "id": "1:1:1:2:1:4:4",
+                                                            "name": "Feature4",
+                                                            "type": "TEXT",
+                                                            "characters": "✓ 5 GB cloud storage",
+                                                            "style": {
+                                                                "fontSize": 13.0
+                                                            },
+                                                            "fills": [
+                                                                {
+                                                                    "color": {
+                                                                        "r": 0.21568628,
+                                                                        "g": 0.25490198,
+                                                                        "b": 0.31764707
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    ],
+                                                    "layoutMode": "VERTICAL",
+                                                    "primaryAxisSizingMode": "AUTO",
+                                                    "counterAxisSizingMode": "AUTO",
+                                                    "itemSpacing": 10.0
+                                                },
+                                                {
+                                                    "id": "1:1:1:2:1:5",
+                                                    "name": "StarterCTA",
+                                                    "type": "FRAME",
+                                                    "children": [
+                                                        {
+                                                            "id": "1:1:1:2:1:5:1",
+                                                            "name": "Label",
+                                                            "type": "TEXT",
+                                                            "characters": "Get Started",
+                                                            "style": {
+                                                                "fontSize": 14.0,
+                                                                "fontWeight": 700.0
+                                                            },
+                                                            "fills": [
+                                                                {
+                                                                    "color": {
+                                                                        "r": 0.21568628,
+                                                                        "g": 0.25490198,
+                                                                        "b": 0.31764707
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    ],
+                                                    "fills": [
+                                                        {
+                                                            "color": {
+                                                                "r": 0.9529412,
+                                                                "g": 0.95686275,
+                                                                "b": 0.9647059
+                                                            }
+                                                        }
+                                                    ],
+                                                    "strokes": [
+                                                        {
+                                                            "color": {
+                                                                "r": 0.8980392,
+                                                                "g": 0.90588236,
+                                                                "b": 0.92156863
+                                                            }
+                                                        }
+                                                    ],
+                                                    "strokeWeight": 1.0,
+                                                    "cornerRadius": 8.0,
+                                                    "layoutMode": "HORIZONTAL",
+                                                    "counterAxisAlignItems": "CENTER",
+                                                    "layoutAlign": "STRETCH",
+                                                    "paddingLeft": 16.0,
+                                                    "paddingRight": 16.0,
+                                                    "paddingTop": 0.0,
+                                                    "paddingBottom": 0.0,
+                                                    "absoluteBoundingBox": {
+                                                        "height": 40.0
+                                                    }
+                                                }
+                                            ],
+                                            "fills": [
+                                                {
+                                                    "color": {
+                                                        "r": 1.0,
+                                                        "g": 1.0,
+                                                        "b": 1.0
+                                                    }
+                                                }
+                                            ],
+                                            "strokes": [
+                                                {
+                                                    "color": {
+                                                        "r": 0.8980392,
+                                                        "g": 0.90588236,
+                                                        "b": 0.92156863
+                                                    }
+                                                }
+                                            ],
+                                            "strokeWeight": 1.0,
+                                            "cornerRadius": 16.0,
+                                            "layoutMode": "VERTICAL",
+                                            "primaryAxisSizingMode": "AUTO",
+                                            "counterAxisSizingMode": "AUTO",
+                                            "layoutGrow": 1.0,
+                                            "itemSpacing": 20.0,
+                                            "paddingLeft": 24.0,
+                                            "paddingRight": 24.0,
+                                            "paddingTop": 24.0,
+                                            "paddingBottom": 24.0
+                                        },
+                                        {
+                                            "id": "1:1:1:2:2",
+                                            "name": "ProCard",
+                                            "type": "FRAME",
+                                            "children": [
+                                                {
+                                                    "id": "1:1:1:2:2:1",
+                                                    "name": "CardHeader",
+                                                    "type": "FRAME",
+                                                    "children": [
+                                                        {
+                                                            "id": "1:1:1:2:2:1:1",
+                                                            "name": "PlanName",
+                                                            "type": "TEXT",
+                                                            "characters": "Professional",
+                                                            "style": {
+                                                                "fontSize": 18.0,
+                                                                "fontWeight": 700.0
+                                                            },
+                                                            "fills": [
+                                                                {
+                                                                    "color": {
+                                                                        "r": 1.0,
+                                                                        "g": 1.0,
+                                                                        "b": 1.0
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "id": "1:1:1:2:2:1:2",
+                                                            "name": "Badge",
+                                                            "type": "FRAME",
+                                                            "children": [
+                                                                {
+                                                                    "id": "1:1:1:2:2:1:2:1",
+                                                                    "name": "Text",
+                                                                    "type": "TEXT",
+                                                                    "characters": "MOST POPULAR",
+                                                                    "style": {
+                                                                        "fontSize": 12.0,
+                                                                        "fontWeight": 700.0
+                                                                    },
+                                                                    "fills": [
+                                                                        {
+                                                                            "color": {
+                                                                                "r": 0.14509805,
+                                                                                "g": 0.3882353,
+                                                                                "b": 0.92156863
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            ],
+                                                            "fills": [
+                                                                {
+                                                                    "color": {
+                                                                        "r": 0.9372549,
+                                                                        "g": 0.9647059,
+                                                                        "b": 1.0
+                                                                    }
+                                                                }
+                                                            ],
+                                                            "cornerRadius": 99.0,
+                                                            "layoutMode": "HORIZONTAL",
+                                                            "primaryAxisSizingMode": "AUTO",
+                                                            "counterAxisSizingMode": "AUTO",
+                                                            "itemSpacing": 0.0,
+                                                            "paddingLeft": 10.0,
+                                                            "paddingRight": 10.0,
+                                                            "paddingTop": 4.0,
+                                                            "paddingBottom": 4.0
+                                                        }
+                                                    ],
+                                                    "layoutMode": "HORIZONTAL",
+                                                    "primaryAxisSizingMode": "AUTO",
+                                                    "counterAxisSizingMode": "AUTO",
+                                                    "primaryAxisAlignItems": "SPACE_BETWEEN",
+                                                    "counterAxisAlignItems": "CENTER",
+                                                    "layoutAlign": "STRETCH",
+                                                    "itemSpacing": 0.0
+                                                },
+                                                {
+                                                    "id": "1:1:1:2:2:2",
+                                                    "name": "PriceRow",
+                                                    "type": "FRAME",
+                                                    "children": [
+                                                        {
+                                                            "id": "1:1:1:2:2:2:1",
+                                                            "name": "Amount",
+                                                            "type": "TEXT",
+                                                            "characters": "$49",
+                                                            "style": {
+                                                                "fontSize": 36.0,
+                                                                "fontWeight": 700.0
+                                                            },
+                                                            "fills": [
+                                                                {
+                                                                    "color": {
+                                                                        "r": 1.0,
+                                                                        "g": 1.0,
+                                                                        "b": 1.0
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "id": "1:1:1:2:2:2:2",
+                                                            "name": "Period",
+                                                            "type": "TEXT",
+                                                            "characters": "/ month",
+                                                            "style": {
+                                                                "fontSize": 14.0
+                                                            },
+                                                            "fills": [
+                                                                {
+                                                                    "color": {
+                                                                        "r": 0.5803922,
+                                                                        "g": 0.6392157,
+                                                                        "b": 0.72156864
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    ],
+                                                    "layoutMode": "HORIZONTAL",
+                                                    "primaryAxisSizingMode": "AUTO",
+                                                    "counterAxisSizingMode": "AUTO",
+                                                    "counterAxisAlignItems": "CENTER",
+                                                    "itemSpacing": 4.0
+                                                },
+                                                {
+                                                    "id": "1:1:1:2:2:3",
+                                                    "name": "Description",
+                                                    "type": "TEXT",
+                                                    "characters": "Everything needed for fast-growing design and engineering teams.",
+                                                    "style": {
+                                                        "fontSize": 14.0
+                                                    },
+                                                    "fills": [
+                                                        {
+                                                            "color": {
+                                                                "r": 0.79607844,
+                                                                "g": 0.8352941,
+                                                                "b": 0.88235295
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "id": "1:1:1:2:2:4",
+                                                    "name": "FeaturesList",
+                                                    "type": "FRAME",
+                                                    "children": [
+                                                        {
+                                                            "id": "1:1:1:2:2:4:1",
+                                                            "name": "Feature1",
+                                                            "type": "TEXT",
+                                                            "characters": "✓ Unlimited active projects",
+                                                            "style": {
+                                                                "fontSize": 13.0
+                                                            },
+                                                            "fills": [
+                                                                {
+                                                                    "color": {
+                                                                        "r": 0.94509804,
+                                                                        "g": 0.9607843,
+                                                                        "b": 0.9764706
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "id": "1:1:1:2:2:4:2",
+                                                            "name": "Feature2",
+                                                            "type": "TEXT",
+                                                            "characters": "✓ Real-time Figma sync and tokens",
+                                                            "style": {
+                                                                "fontSize": 13.0
+                                                            },
+                                                            "fills": [
+                                                                {
+                                                                    "color": {
+                                                                        "r": 0.94509804,
+                                                                        "g": 0.9607843,
+                                                                        "b": 0.9764706
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "id": "1:1:1:2:2:4:3",
+                                                            "name": "Feature3",
+                                                            "type": "TEXT",
+                                                            "characters": "✓ Priority 24/7 Slack support",
+                                                            "style": {
+                                                                "fontSize": 13.0
+                                                            },
+                                                            "fills": [
+                                                                {
+                                                                    "color": {
+                                                                        "r": 0.94509804,
+                                                                        "g": 0.9607843,
+                                                                        "b": 0.9764706
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "id": "1:1:1:2:2:4:4",
+                                                            "name": "Feature4",
+                                                            "type": "TEXT",
+                                                            "characters": "✓ 100 GB cloud storage",
+                                                            "style": {
+                                                                "fontSize": 13.0
+                                                            },
+                                                            "fills": [
+                                                                {
+                                                                    "color": {
+                                                                        "r": 0.94509804,
+                                                                        "g": 0.9607843,
+                                                                        "b": 0.9764706
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "id": "1:1:1:2:2:4:5",
+                                                            "name": "Feature5",
+                                                            "type": "TEXT",
+                                                            "characters": "✓ Advanced design analytics",
+                                                            "style": {
+                                                                "fontSize": 13.0
+                                                            },
+                                                            "fills": [
+                                                                {
+                                                                    "color": {
+                                                                        "r": 0.94509804,
+                                                                        "g": 0.9607843,
+                                                                        "b": 0.9764706
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    ],
+                                                    "layoutMode": "VERTICAL",
+                                                    "primaryAxisSizingMode": "AUTO",
+                                                    "counterAxisSizingMode": "AUTO",
+                                                    "itemSpacing": 10.0
+                                                },
+                                                {
+                                                    "id": "1:1:1:2:2:5",
+                                                    "name": "ProCTA",
+                                                    "type": "FRAME",
+                                                    "children": [
+                                                        {
+                                                            "id": "1:1:1:2:2:5:1",
+                                                            "name": "Label",
+                                                            "type": "TEXT",
+                                                            "characters": "Start 14-Day Trial",
+                                                            "style": {
+                                                                "fontSize": 14.0,
+                                                                "fontWeight": 700.0
+                                                            },
+                                                            "fills": [
+                                                                {
+                                                                    "color": {
+                                                                        "r": 1.0,
+                                                                        "g": 1.0,
+                                                                        "b": 1.0
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    ],
+                                                    "fills": [
+                                                        {
+                                                            "color": {
+                                                                "r": 0.14509805,
+                                                                "g": 0.3882353,
+                                                                "b": 0.92156863
+                                                            }
+                                                        }
+                                                    ],
+                                                    "cornerRadius": 8.0,
+                                                    "layoutMode": "HORIZONTAL",
+                                                    "counterAxisAlignItems": "CENTER",
+                                                    "layoutAlign": "STRETCH",
+                                                    "paddingLeft": 16.0,
+                                                    "paddingRight": 16.0,
+                                                    "paddingTop": 0.0,
+                                                    "paddingBottom": 0.0,
+                                                    "absoluteBoundingBox": {
+                                                        "height": 40.0
+                                                    }
+                                                }
+                                            ],
+                                            "fills": [
+                                                {
+                                                    "color": {
+                                                        "r": 0.11764706,
+                                                        "g": 0.16078432,
+                                                        "b": 0.23137255
+                                                    }
+                                                }
+                                            ],
+                                            "cornerRadius": 16.0,
+                                            "layoutMode": "VERTICAL",
+                                            "primaryAxisSizingMode": "AUTO",
+                                            "counterAxisSizingMode": "AUTO",
+                                            "layoutGrow": 1.0,
+                                            "itemSpacing": 20.0,
+                                            "paddingLeft": 24.0,
+                                            "paddingRight": 24.0,
+                                            "paddingTop": 24.0,
+                                            "paddingBottom": 24.0
+                                        },
+                                        {
+                                            "id": "1:1:1:2:3",
+                                            "name": "EnterpriseCard",
+                                            "type": "FRAME",
+                                            "children": [
+                                                {
+                                                    "id": "1:1:1:2:3:1",
+                                                    "name": "PlanName",
+                                                    "type": "TEXT",
+                                                    "characters": "Enterprise",
+                                                    "style": {
+                                                        "fontSize": 18.0,
+                                                        "fontWeight": 700.0
+                                                    },
+                                                    "fills": [
+                                                        {
+                                                            "color": {
+                                                                "r": 0.06666667,
+                                                                "g": 0.09411765,
+                                                                "b": 0.15294118
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "id": "1:1:1:2:3:2",
+                                                    "name": "PriceRow",
+                                                    "type": "FRAME",
+                                                    "children": [
+                                                        {
+                                                            "id": "1:1:1:2:3:2:1",
+                                                            "name": "Amount",
+                                                            "type": "TEXT",
+                                                            "characters": "$199",
+                                                            "style": {
+                                                                "fontSize": 36.0,
+                                                                "fontWeight": 700.0
+                                                            },
+                                                            "fills": [
+                                                                {
+                                                                    "color": {
+                                                                        "r": 0.06666667,
+                                                                        "g": 0.09411765,
+                                                                        "b": 0.15294118
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "id": "1:1:1:2:3:2:2",
+                                                            "name": "Period",
+                                                            "type": "TEXT",
+                                                            "characters": "/ month",
+                                                            "style": {
+                                                                "fontSize": 14.0
+                                                            },
+                                                            "fills": [
+                                                                {
+                                                                    "color": {
+                                                                        "r": 0.41960785,
+                                                                        "g": 0.44705883,
+                                                                        "b": 0.5019608
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    ],
+                                                    "layoutMode": "HORIZONTAL",
+                                                    "primaryAxisSizingMode": "AUTO",
+                                                    "counterAxisSizingMode": "AUTO",
+                                                    "counterAxisAlignItems": "CENTER",
+                                                    "itemSpacing": 4.0
+                                                },
+                                                {
+                                                    "id": "1:1:1:2:3:3",
+                                                    "name": "Description",
+                                                    "type": "TEXT",
+                                                    "characters": "Maximum security, custom integrations, and dedicated SLA.",
+                                                    "style": {
+                                                        "fontSize": 14.0
+                                                    },
+                                                    "fills": [
+                                                        {
+                                                            "color": {
+                                                                "r": 0.41960785,
+                                                                "g": 0.44705883,
+                                                                "b": 0.5019608
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "id": "1:1:1:2:3:4",
+                                                    "name": "FeaturesList",
+                                                    "type": "FRAME",
+                                                    "children": [
+                                                        {
+                                                            "id": "1:1:1:2:3:4:1",
+                                                            "name": "Feature1",
+                                                            "type": "TEXT",
+                                                            "characters": "✓ Custom SSO and SAML",
+                                                            "style": {
+                                                                "fontSize": 13.0
+                                                            },
+                                                            "fills": [
+                                                                {
+                                                                    "color": {
+                                                                        "r": 0.21568628,
+                                                                        "g": 0.25490198,
+                                                                        "b": 0.31764707
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "id": "1:1:1:2:3:4:2",
+                                                            "name": "Feature2",
+                                                            "type": "TEXT",
+                                                            "characters": "✓ On-premises deployment",
+                                                            "style": {
+                                                                "fontSize": 13.0
+                                                            },
+                                                            "fills": [
+                                                                {
+                                                                    "color": {
+                                                                        "r": 0.21568628,
+                                                                        "g": 0.25490198,
+                                                                        "b": 0.31764707
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "id": "1:1:1:2:3:4:3",
+                                                            "name": "Feature3",
+                                                            "type": "TEXT",
+                                                            "characters": "✓ Dedicated account manager",
+                                                            "style": {
+                                                                "fontSize": 13.0
+                                                            },
+                                                            "fills": [
+                                                                {
+                                                                    "color": {
+                                                                        "r": 0.21568628,
+                                                                        "g": 0.25490198,
+                                                                        "b": 0.31764707
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "id": "1:1:1:2:3:4:4",
+                                                            "name": "Feature4",
+                                                            "type": "TEXT",
+                                                            "characters": "✓ Unlimited cloud storage",
+                                                            "style": {
+                                                                "fontSize": 13.0
+                                                            },
+                                                            "fills": [
+                                                                {
+                                                                    "color": {
+                                                                        "r": 0.21568628,
+                                                                        "g": 0.25490198,
+                                                                        "b": 0.31764707
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    ],
+                                                    "layoutMode": "VERTICAL",
+                                                    "primaryAxisSizingMode": "AUTO",
+                                                    "counterAxisSizingMode": "AUTO",
+                                                    "itemSpacing": 10.0
+                                                },
+                                                {
+                                                    "id": "1:1:1:2:3:5",
+                                                    "name": "EnterpriseCTA",
+                                                    "type": "FRAME",
+                                                    "children": [
+                                                        {
+                                                            "id": "1:1:1:2:3:5:1",
+                                                            "name": "Label",
+                                                            "type": "TEXT",
+                                                            "characters": "Contact Sales",
+                                                            "style": {
+                                                                "fontSize": 14.0,
+                                                                "fontWeight": 700.0
+                                                            },
+                                                            "fills": [
+                                                                {
+                                                                    "color": {
+                                                                        "r": 0.21568628,
+                                                                        "g": 0.25490198,
+                                                                        "b": 0.31764707
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    ],
+                                                    "fills": [
+                                                        {
+                                                            "color": {
+                                                                "r": 1.0,
+                                                                "g": 1.0,
+                                                                "b": 1.0
+                                                            }
+                                                        }
+                                                    ],
+                                                    "strokes": [
+                                                        {
+                                                            "color": {
+                                                                "r": 0.81960785,
+                                                                "g": 0.8352941,
+                                                                "b": 0.85882354
+                                                            }
+                                                        }
+                                                    ],
+                                                    "strokeWeight": 1.0,
+                                                    "cornerRadius": 8.0,
+                                                    "layoutMode": "HORIZONTAL",
+                                                    "counterAxisAlignItems": "CENTER",
+                                                    "layoutAlign": "STRETCH",
+                                                    "paddingLeft": 16.0,
+                                                    "paddingRight": 16.0,
+                                                    "paddingTop": 0.0,
+                                                    "paddingBottom": 0.0,
+                                                    "absoluteBoundingBox": {
+                                                        "height": 40.0
+                                                    }
+                                                }
+                                            ],
+                                            "fills": [
+                                                {
+                                                    "color": {
+                                                        "r": 1.0,
+                                                        "g": 1.0,
+                                                        "b": 1.0
+                                                    }
+                                                }
+                                            ],
+                                            "strokes": [
+                                                {
+                                                    "color": {
+                                                        "r": 0.8980392,
+                                                        "g": 0.90588236,
+                                                        "b": 0.92156863
+                                                    }
+                                                }
+                                            ],
+                                            "strokeWeight": 1.0,
+                                            "cornerRadius": 16.0,
+                                            "layoutMode": "VERTICAL",
+                                            "primaryAxisSizingMode": "AUTO",
+                                            "counterAxisSizingMode": "AUTO",
+                                            "layoutGrow": 1.0,
+                                            "itemSpacing": 20.0,
+                                            "paddingLeft": 24.0,
+                                            "paddingRight": 24.0,
+                                            "paddingTop": 24.0,
+                                            "paddingBottom": 24.0
+                                        }
+                                    ],
+                                    "layoutMode": "HORIZONTAL",
+                                    "primaryAxisSizingMode": "AUTO",
+                                    "counterAxisSizingMode": "AUTO",
+                                    "layoutAlign": "STRETCH",
+                                    "itemSpacing": 24.0
+                                }
+                            ],
+                            "layoutMode": "VERTICAL",
+                            "primaryAxisSizingMode": "AUTO",
+                            "counterAxisSizingMode": "AUTO",
+                            "counterAxisAlignItems": "CENTER",
+                            "itemSpacing": 32.0,
+                            "absoluteBoundingBox": {
+                                "width": 1024.0
+                            }
+                        }
+                    ],
+                    "layoutMode": "VERTICAL",
+                    "primaryAxisSizingMode": "AUTO",
+                    "counterAxisSizingMode": "AUTO",
+                    "itemSpacing": 16.0
+                }
+            ]
+        }
+    ]
+}

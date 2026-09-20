@@ -1,0 +1,285 @@
+import buttons from "./components/buttons.dac"
+import badges from "./components/badges.dac"
+
+block Pricing {
+    component Section {
+        width: 1024
+        layout: vertical
+        gap: 32
+        alignItems: center
+
+        component Header {
+            layout: vertical
+            gap: 8
+            alignItems: center
+
+            component Title {
+                text: "Simple, transparent pricing"
+                fontSize: 32
+                fontWeight: bold
+                color: #111827
+            }
+
+            component Subtitle {
+                text: "Choose the perfect plan for your team. Upgrade or downgrade anytime."
+                fontSize: 16
+                color: #6B7280
+            }
+        }
+
+        component Plans {
+            layout: horizontal
+            gap: 24
+            width: fill
+
+            component StarterCard {
+                width: fill
+                color: #FFFFFF
+                radius: 16
+                border: 1 #E5E7EB
+                padding: 24
+                layout: vertical
+                gap: 20
+
+                component PlanName {
+                    text: "Starter"
+                    fontSize: 18
+                    fontWeight: bold
+                    color: #111827
+                }
+
+                component PriceRow {
+                    layout: horizontal
+                    gap: 4
+                    alignItems: center
+
+                    component Amount {
+                        text: "$19"
+                        fontSize: 36
+                        fontWeight: bold
+                        color: #111827
+                    }
+
+                    component Period {
+                        text: "/ month"
+                        fontSize: 14
+                        color: #6B7280
+                    }
+                }
+
+                component Description {
+                    text: "Essential tools for freelancers and individuals getting started."
+                    fontSize: 14
+                    color: #6B7280
+                }
+
+                component FeaturesList {
+                    layout: vertical
+                    gap: 10
+
+                    component Feature1 {
+                        text: "✓ Up to 3 active projects"
+                        fontSize: 13
+                        color: #374151
+                    }
+
+                    component Feature2 {
+                        text: "✓ Standard Figma export"
+                        fontSize: 13
+                        color: #374151
+                    }
+
+                    component Feature3 {
+                        text: "✓ Community forum support"
+                        fontSize: 13
+                        color: #374151
+                    }
+
+                    component Feature4 {
+                        text: "✓ 5 GB cloud storage"
+                        fontSize: 13
+                        color: #374151
+                    }
+                }
+
+                component StarterCTA {
+                    ref: buttons.Secondary.Default
+                    label: "Get Started"
+                    width: fill
+                }
+            }
+
+            component ProCard {
+                width: fill
+                color: #1E293B
+                radius: 16
+                padding: 24
+                shadow: true
+                layout: vertical
+                gap: 20
+
+                component CardHeader {
+                    width: fill
+                    layout: horizontal
+                    justifyContent: "space-between"
+                    alignItems: center
+
+                    component PlanName {
+                        text: "Professional"
+                        fontSize: 18
+                        fontWeight: bold
+                        color: #FFFFFF
+                    }
+
+                    component Badge {
+                        ref: badges.Badges.Primary
+                        label: "MOST POPULAR"
+                    }
+                }
+
+                component PriceRow {
+                    layout: horizontal
+                    gap: 4
+                    alignItems: center
+
+                    component Amount {
+                        text: "$49"
+                        fontSize: 36
+                        fontWeight: bold
+                        color: #FFFFFF
+                    }
+
+                    component Period {
+                        text: "/ month"
+                        fontSize: 14
+                        color: #94A3B8
+                    }
+                }
+
+                component Description {
+                    text: "Everything needed for fast-growing design and engineering teams."
+                    fontSize: 14
+                    color: #CBD5E1
+                }
+
+                component FeaturesList {
+                    layout: vertical
+                    gap: 10
+
+                    component Feature1 {
+                        text: "✓ Unlimited active projects"
+                        fontSize: 13
+                        color: #F1F5F9
+                    }
+
+                    component Feature2 {
+                        text: "✓ Real-time Figma sync and tokens"
+                        fontSize: 13
+                        color: #F1F5F9
+                    }
+
+                    component Feature3 {
+                        text: "✓ Priority 24/7 Slack support"
+                        fontSize: 13
+                        color: #F1F5F9
+                    }
+
+                    component Feature4 {
+                        text: "✓ 100 GB cloud storage"
+                        fontSize: 13
+                        color: #F1F5F9
+                    }
+
+                    component Feature5 {
+                        text: "✓ Advanced design analytics"
+                        fontSize: 13
+                        color: #F1F5F9
+                    }
+                }
+
+                component ProCTA {
+                    ref: buttons.Primary.Default
+                    label: "Start 14-Day Trial"
+                    width: fill
+                }
+            }
+
+            component EnterpriseCard {
+                width: fill
+                color: #FFFFFF
+                radius: 16
+                border: 1 #E5E7EB
+                padding: 24
+                layout: vertical
+                gap: 20
+
+                component PlanName {
+                    text: "Enterprise"
+                    fontSize: 18
+                    fontWeight: bold
+                    color: #111827
+                }
+
+                component PriceRow {
+                    layout: horizontal
+                    gap: 4
+                    alignItems: center
+
+                    component Amount {
+                        text: "$199"
+                        fontSize: 36
+                        fontWeight: bold
+                        color: #111827
+                    }
+
+                    component Period {
+                        text: "/ month"
+                        fontSize: 14
+                        color: #6B7280
+                    }
+                }
+
+                component Description {
+                    text: "Maximum security, custom integrations, and dedicated SLA."
+                    fontSize: 14
+                    color: #6B7280
+                }
+
+                component FeaturesList {
+                    layout: vertical
+                    gap: 10
+
+                    component Feature1 {
+                        text: "✓ Custom SSO and SAML"
+                        fontSize: 13
+                        color: #374151
+                    }
+
+                    component Feature2 {
+                        text: "✓ On-premises deployment"
+                        fontSize: 13
+                        color: #374151
+                    }
+
+                    component Feature3 {
+                        text: "✓ Dedicated account manager"
+                        fontSize: 13
+                        color: #374151
+                    }
+
+                    component Feature4 {
+                        text: "✓ Unlimited cloud storage"
+                        fontSize: 13
+                        color: #374151
+                    }
+                }
+
+                component EnterpriseCTA {
+                    ref: buttons.Outline.Default
+                    label: "Contact Sales"
+                    width: fill
+                }
+            }
+        }
+    }
+}
