@@ -64,6 +64,9 @@ function applyChildLayoutSizing(figmaElement, node, parent) {
   try {
     if (node.layoutAlign === 'STRETCH') {
       if (parent && parent.layoutMode === 'VERTICAL') {
+        if (figmaElement.type === 'TEXT') {
+          figmaElement.textAutoResize = 'HEIGHT';
+        }
         figmaElement.layoutSizingHorizontal = 'FILL';
       } else if (parent && parent.layoutMode === 'HORIZONTAL') {
         figmaElement.layoutSizingVertical = 'FILL';
@@ -71,6 +74,9 @@ function applyChildLayoutSizing(figmaElement, node, parent) {
     }
     if (node.layoutGrow === 1) {
       if (parent && parent.layoutMode === 'HORIZONTAL') {
+        if (figmaElement.type === 'TEXT') {
+          figmaElement.textAutoResize = 'HEIGHT';
+        }
         figmaElement.layoutSizingHorizontal = 'FILL';
       } else if (parent && parent.layoutMode === 'VERTICAL') {
         figmaElement.layoutSizingVertical = 'FILL';
@@ -205,6 +211,12 @@ async function renderNode(node, parent) {
 
     text.characters = node.characters || "";
 
+    const bbox = node.absoluteBoundingBox;
+    if (bbox && bbox.width > 0) {
+      text.resize(bbox.width, bbox.height > 0 ? bbox.height : text.height);
+      text.textAutoResize = "HEIGHT";
+    }
+
     if (node.fills && node.fills.length > 0) {
       text.fills = mapPaints(node.fills);
     }
@@ -315,18 +327,42 @@ figma.ui.onmessage = async (msg) => {
           deviceFrame.resize(p.width, p.height);
           if (p.radius) {
             deviceFrame.cornerRadius = p.radius;
-            deviceFrame.clipsContent = true;
           }
           deviceFrame.fills = [{ type: 'SOLID', color: p.bg }];
-          deviceFrame.layoutMode = "VERTICAL";
-          deviceFrame.primaryAxisAlignItems = "CENTER";
-          deviceFrame.counterAxisAlignItems = "CENTER";
-          deviceFrame.primaryAxisSizingMode = "FIXED";
-          deviceFrame.counterAxisSizingMode = "FIXED";
 
           for (const item of createdItems) {
             deviceFrame.appendChild(item);
           }
+
+          const totalContentHeight = createdItems.reduce((acc, item) => acc + (item.height || 0), 0);
+          const isPage = createdItems.some(item => (item.name || "").toLowerCase().includes("page") || (item.name || "").toLowerCase().includes("screen"));
+          const isTall = totalContentHeight > (p.height - 80);
+
+          deviceFrame.layoutMode = "VERTICAL";
+          deviceFrame.counterAxisAlignItems = "CENTER";
+          deviceFrame.counterAxisSizingMode = "FIXED";
+
+          if (isTall) {
+            // Tall/multi-element layout: top-align and stretch canvas vertically
+            deviceFrame.primaryAxisAlignItems = "MIN";
+            deviceFrame.primaryAxisSizingMode = "AUTO";
+            deviceFrame.paddingTop = 40;
+            deviceFrame.paddingBottom = 60;
+            deviceFrame.clipsContent = p.radius ? true : false;
+          } else if (isPage) {
+            // Page layout that fits within preset viewport: top-align with standard padding
+            deviceFrame.primaryAxisAlignItems = "MIN";
+            deviceFrame.primaryAxisSizingMode = "FIXED";
+            deviceFrame.paddingTop = 40;
+            deviceFrame.paddingBottom = 40;
+            deviceFrame.clipsContent = p.radius ? true : false;
+          } else {
+            // Standalone component/widget: centered in device canvas
+            deviceFrame.primaryAxisAlignItems = "CENTER";
+            deviceFrame.primaryAxisSizingMode = "FIXED";
+            deviceFrame.clipsContent = p.radius ? true : false;
+          }
+
           figma.currentPage.appendChild(deviceFrame);
           finalSelection = [deviceFrame];
         }

@@ -214,61 +214,6 @@ object FigmaRenderer : Renderer<FigmaDocument> {
             }
         }
 
-        // Sizing in Auto Layout
-        val isVertical = layoutDir == "VERTICAL"
-        val isHorizontal = layoutDir == "HORIZONTAL"
-
-        val primarySizing = when {
-            isVertical -> when {
-                isHugHeight || mainAxisSizing == "AUTO" -> "AUTO"
-                isFillHeight || mainAxisSizing == "FIXED" -> "FIXED"
-                heightVal != null -> "FIXED"
-                else -> "AUTO"
-            }
-            isHorizontal -> when {
-                isHugWidth || mainAxisSizing == "AUTO" -> "AUTO"
-                isFillWidth || mainAxisSizing == "FIXED" -> "FIXED"
-                widthVal != null -> "FIXED"
-                else -> "AUTO"
-            }
-            else -> null
-        }
-
-        val counterSizing = when {
-            isVertical -> when {
-                isHugWidth || crossAxisSizing == "AUTO" -> "AUTO"
-                isFillWidth || crossAxisSizing == "FIXED" -> "FIXED"
-                widthVal != null -> "FIXED"
-                else -> "AUTO"
-            }
-            isHorizontal -> when {
-                isHugHeight || crossAxisSizing == "AUTO" -> "AUTO"
-                isFillHeight || crossAxisSizing == "FIXED" -> "FIXED"
-                heightVal != null -> "FIXED"
-                else -> "AUTO"
-            }
-            else -> null
-        }
-
-        val layoutAlignVal = when (parentLayoutDir) {
-            "VERTICAL" -> if (isFillWidth) "STRETCH" else null
-            "HORIZONTAL" -> if (isFillHeight) "STRETCH" else null
-            else -> if (isFillWidth) "STRETCH" else null
-        }
-
-        val layoutGrowVal = when (parentLayoutDir) {
-            "VERTICAL" -> if (isFillHeight) 1f else null
-            "HORIZONTAL" -> if (isFillWidth) 1f else null
-            else -> null
-        }
-
-        val fillsList = colorHex?.let { listOf(Paint(type = "SOLID", color = Color.fromHex(it))) }
-        val strokesList = strokeHex?.let { listOf(Paint(type = "SOLID", color = Color.fromHex(it))) }
-
-        val typeStyle = if (fontSizeVal != null || fontWeightVal != null) {
-            TypeStyle(fontSize = fontSizeVal, fontWeight = fontWeightVal)
-        } else null
-
         val isInputBox = placeholderText != null || (textContent != null && (radiusVal != null || strokeW != null || strokeHex != null))
         val isButtonOrContainerWithChildren = comp.children.isNotEmpty() || layoutDir != null
 
@@ -298,6 +243,61 @@ object FigmaRenderer : Renderer<FigmaDocument> {
             if (effectiveCounterAlign == null) effectiveCounterAlign = "CENTER"
             if (heightVal == null) heightVal = 44f
         }
+
+        // Sizing in Auto Layout
+        val isVertical = effectiveLayoutDir == "VERTICAL"
+        val isHorizontal = effectiveLayoutDir == "HORIZONTAL"
+
+        val primarySizing = when {
+            isVertical -> when {
+                heightVal != null -> "FIXED"
+                isFillHeight || mainAxisSizing == "FIXED" -> "FIXED"
+                isHugHeight || mainAxisSizing == "AUTO" -> "AUTO"
+                else -> "AUTO"
+            }
+            isHorizontal -> when {
+                widthVal != null -> "FIXED"
+                isFillWidth || mainAxisSizing == "FIXED" -> "FIXED"
+                isHugWidth || mainAxisSizing == "AUTO" -> "AUTO"
+                else -> "AUTO"
+            }
+            else -> null
+        }
+
+        val counterSizing = when {
+            isVertical -> when {
+                widthVal != null -> "FIXED"
+                isFillWidth || crossAxisSizing == "FIXED" -> "FIXED"
+                isHugWidth || crossAxisSizing == "AUTO" -> "AUTO"
+                else -> "AUTO"
+            }
+            isHorizontal -> when {
+                heightVal != null -> "FIXED"
+                isFillHeight || crossAxisSizing == "FIXED" -> "FIXED"
+                isHugHeight || crossAxisSizing == "AUTO" -> "AUTO"
+                else -> "AUTO"
+            }
+            else -> null
+        }
+
+        val layoutAlignVal = when (parentLayoutDir) {
+            "VERTICAL" -> if (isFillWidth) "STRETCH" else null
+            "HORIZONTAL" -> if (isFillHeight) "STRETCH" else null
+            else -> if (isFillWidth) "STRETCH" else null
+        }
+
+        val layoutGrowVal = when (parentLayoutDir) {
+            "VERTICAL" -> if (isFillHeight) 1f else null
+            "HORIZONTAL" -> if (isFillWidth) 1f else null
+            else -> null
+        }
+
+        val fillsList = colorHex?.let { listOf(Paint(type = "SOLID", color = Color.fromHex(it))) }
+        val strokesList = strokeHex?.let { listOf(Paint(type = "SOLID", color = Color.fromHex(it))) }
+
+        val typeStyle = if (fontSizeVal != null || fontWeightVal != null) {
+            TypeStyle(fontSize = fontSizeVal, fontWeight = fontWeightVal)
+        } else null
 
         // Render children
         var childCounter = 1
