@@ -4,12 +4,14 @@
 
 [![CI](https://github.com/DorMiwww/Vireo/actions/workflows/ci.yml/badge.svg)](https://github.com/DorMiwww/Vireo/actions)
 [![Documentation](https://img.shields.io/badge/docs-online-blue)](https://dormiwww.github.io/Vireo/)
+[![Agent Skill](https://img.shields.io/badge/Agent%20Skill-Claude%20%26%20Antigravity-teal)](https://github.com/DorMiwww/vireo-skill)
 [![Version](https://img.shields.io/badge/version-0.1.0-orange)]()
 [![Kotlin](https://img.shields.io/badge/Kotlin-2.0-blue.svg)]()
 [![Figma Plugin](https://img.shields.io/badge/Figma-Plugin%20Supported-purple)]()
 [![License](https://img.shields.io/badge/license-MIT-green)]()
 
 > 📖 **Official Documentation & Live Guide:** [https://dormiwww.github.io/Vireo/](https://dormiwww.github.io/Vireo/)
+> 🤖 **Official AI Agent Skill:** [https://github.com/DorMiwww/vireo-skill](https://github.com/DorMiwww/vireo-skill)
 
 Vireo bridges the gap between codebases and design systems. Instead of manually drawing components in Figma and re-implementing them in code, you define your design system in a clean, declarative `.dac` syntax that compiles into:
 
@@ -138,6 +140,17 @@ curl -fsSL https://raw.githubusercontent.com/DorMiwww/Vireo/main/install.sh | ba
 # Or run the local repository wrapper directly:
 ./vireo --help
 ```
+
+### AI Agent Skill (Claude Code & Antigravity)
+
+Vireo provides an official AI agent skill for **Claude Code** and **Google Antigravity**: [**`DorMiwww/vireo-skill`**](https://github.com/DorMiwww/vireo-skill). It equips coding assistants to professionally author, refactor, and architect `.dac` design systems using live, dynamically fetched documentation.
+
+Install globally with a single command:
+```bash
+curl -fsSL https://raw.githubusercontent.com/DorMiwww/vireo-skill/main/install.sh | bash
+```
+
+👉 Repository & documentation: **[https://github.com/DorMiwww/vireo-skill](https://github.com/DorMiwww/vireo-skill)**
 
 ---
 
@@ -284,6 +297,7 @@ Project guidelines, syntax references, architecture decision records, and agent 
 - **Rules & Architecture**: [`.agents/rules/AGENTS.md`](.agents/rules/AGENTS.md)
 - **Roadmap & Context**: [`.agents/rules/ROADMAP.md`](.agents/rules/ROADMAP.md), [`.agents/rules/CONTEXT.md`](.agents/rules/CONTEXT.md)
 - **Agent Skills**: [`.agents/skills/`](.agents/skills/)
+- **Official AI Skill Repository**: [`DorMiwww/vireo-skill`](https://github.com/DorMiwww/vireo-skill)
 
 ---
 
