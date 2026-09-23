@@ -105,3 +105,15 @@ Rules for approved libraries:
 | Skip `SourceLocation` on a new AST node | Errors become unlocalizable |
 | Pick a TBD tool without proposing options | User must make tooling decisions |
 | Invent syntax without a concrete example | Abstract specs produce bad parsers |
+| Modify a system component without updating documentation | Outdated docs mislead users and break VitePress/GitBook builds |
+
+---
+
+## Documentation Integrity & Sync Rule (Mandatory)
+
+- **Always keep documentation in sync with system changes.** Whenever any system component is modified, added, or refactored (e.g., changes in syntax, AST, component properties, CLI commands/flags, renderer outputs, layout behavior, or Figma plugin workflows) and the agent determines that this affects user-facing behavior, the agent **MUST** update the documentation:
+  - Update existing documents in `DOCS/` corresponding to the modified domain (e.g., `DOCS/components/`, `DOCS/layout.md`, `DOCS/renderers/`, `DOCS/cli.md`).
+  - For major, novel, or impactful user-facing features requiring human instructions, add a dedicated new documentation page under the appropriate category in `DOCS/`, link it in `DOCS/SUMMARY.md`, and register it in `DOCS/.vitepress/config.mts`.
+  - Run `node scripts/verify-all-docs.mjs` and `npm run docs:build` to guarantee all links and VitePress builds pass cleanly without broken references.
+  - The live documentation is hosted at: **https://dormiwww.github.io/Vireo/**
+

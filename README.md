@@ -3,10 +3,13 @@
 > **Design as Code (DaaC).** Write declarative design files (`.dac`) and compile them into HTML, JSON IR, and native Figma Auto Layout components.
 
 [![CI](https://github.com/DorMiwww/Vireo/actions/workflows/ci.yml/badge.svg)](https://github.com/DorMiwww/Vireo/actions)
-[![Version](https://img.shields.io/badge/version-0.1.0--SNAPSHOT-orange)]()
+[![Documentation](https://img.shields.io/badge/docs-online-blue)](https://dormiwww.github.io/Vireo/)
+[![Version](https://img.shields.io/badge/version-0.1.0-orange)]()
 [![Kotlin](https://img.shields.io/badge/Kotlin-2.0-blue.svg)]()
 [![Figma Plugin](https://img.shields.io/badge/Figma-Plugin%20Supported-purple)]()
 [![License](https://img.shields.io/badge/license-MIT-green)]()
+
+> 📖 **Official Documentation & Live Guide:** [https://dormiwww.github.io/Vireo/](https://dormiwww.github.io/Vireo/)
 
 Vireo bridges the gap between codebases and design systems. Instead of manually drawing components in Figma and re-implementing them in code, you define your design system in a clean, declarative `.dac` syntax that compiles into:
 
@@ -242,6 +245,23 @@ open showcase/pricing.html
 # or
 open showcase/card.html
 ```
+
+---
+
+## Documentation
+
+Full developer documentation, component catalogue, language syntax, and layout specifications are available online:
+
+👉 **[https://dormiwww.github.io/Vireo/](https://dormiwww.github.io/Vireo/)**
+
+Source markdown documentation files are maintained in the [`DOCS/`](DOCS/) directory:
+- [Getting Started](https://dormiwww.github.io/Vireo/getting-started)
+- [Core Concepts & Addressing](https://dormiwww.github.io/Vireo/concepts/)
+- [Component Model & Properties](https://dormiwww.github.io/Vireo/components/)
+- [Auto Layout & Constraints](https://dormiwww.github.io/Vireo/layout)
+- [Renderers (HTML, JSON AST, Figma)](https://dormiwww.github.io/Vireo/renderers/)
+- [CLI Reference Manual](https://dormiwww.github.io/Vireo/cli)
+- [Figma Plugin Guide](https://dormiwww.github.io/Vireo/figma-plugin)
 
 ---
 
