@@ -244,4 +244,44 @@ class JsonRendererTest {
         assertTrue(json.contains("\"name\": \"spacing\""))
         assertTrue(json.contains("\"type\": \"conditional\""))
     }
+
+    @Test
+    fun `test JsonRenderer serializes rich media and stack layout properties`() {
+        val source = """
+            block MediaBlock {
+                component Hero {
+                    layout: stack
+                    width: 800
+                    height: 450
+
+                    component Photo {
+                        src: "https://example.com/banner.jpg"
+                        fit: cover
+                        zIndex: 0
+                    }
+
+                    component Video {
+                        src: "https://example.com/movie.mp4"
+                        poster: "https://example.com/poster.jpg"
+                        controls: true
+                        zIndex: 1
+                    }
+                }
+            }
+        """.trimIndent()
+        val parsed = Parser.parse(source, "media.dac")
+        assertIs<VireoResult.Ok<VireoFile>>(parsed)
+
+        val result = JsonRenderer.render(parsed.value)
+        assertIs<VireoResult.Ok<String>>(result)
+        val json = result.value
+
+        assertTrue(json.contains("\"layout\": \"stack\""))
+        assertTrue(json.contains("\"src\": \"https://example.com/banner.jpg\""))
+        assertTrue(json.contains("\"fit\": \"cover\""))
+        assertTrue(json.contains("\"zIndex\": 0"))
+        assertTrue(json.contains("\"src\": \"https://example.com/movie.mp4\""))
+        assertTrue(json.contains("\"poster\": \"https://example.com/poster.jpg\""))
+        assertTrue(json.contains("\"controls\": true"))
+    }
 }

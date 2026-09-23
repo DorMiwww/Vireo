@@ -29,7 +29,7 @@ enum class Axis {
 }
 
 enum class Direction {
-    HORIZONTAL, VERTICAL
+    HORIZONTAL, VERTICAL, STACK
 }
 
 enum class Sizing {

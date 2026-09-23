@@ -7,8 +7,8 @@ Update this file when priorities shift or a phase is completed.
 
 ## Current Status
 
-**Phase:** Phase 5 — CLI Improvements & Init Wizard `[completed]`
-**Next step:** Implement Phase 6 — Release Engineering: 0.x → 1.0.0
+**Phase:** Phase 8 — Rich Media & Asset Pipeline `[completed]`
+**Next step:** Implement Phase 6 — Release Engineering: 0.x → 1.0.0 (or Phase 7 Advanced Features)
 
 ---
 
@@ -178,6 +178,46 @@ The correct transport is a private Figma Development Plugin — no review or pub
 
 ---
 
+## Phase 8 — Rich Media & Asset Pipeline (Images, Vectors, Audio, Video & Embeds) `[completed]`
+
+> Goal: Full, first-class support for raster images (`.png`, `.jpg`/`.jpeg`, `.webp`, `.gif`, `.avif`), vector graphics (`.svg`), video (`.mp4`, `.webm`), audio (`.mp3`, `.wav`, `.ogg`), iframe embeds (YouTube, Vimeo, web previews), and layered constraint stacks (`layout: stack`) across the `.dac` language, compiler, and all renderers (JSON, HTML, Figma).
+
+**Motivation:**
+Real-world UI designs require images, background photography, video demos, audio clips, and overlays. Bringing rich media and stack layouts into the compilation pipeline makes Vireo production-grade for design systems and real-world interfaces.
+
+**Scope:**
+- [x] **`.dac` Syntax & Semantic Properties:**
+  - Property `src:` (or `image:`, `video:`, `audio:`, `iframe:`, `backgroundImage:`) accepting local relative file paths (`"./assets/avatar.jpg"`) or remote URLs (`"https://..."`).
+  - Sizing & scaling properties: `fit: cover | contain | fill | none` (matching CSS `object-fit` and Figma `scaleMode`).
+  - Stack and constraint layouts: `layout: stack` (or `layout: layer`, `layout: constraint`), `zIndex`, `x`, `y` for placing elements cleanly over or under photography.
+  - Video parameters: `poster:`, `controls:`, `autoplay:`, `loop:`, `muted:`.
+  - Embed support: auto-converting standard YouTube watch/short URLs into responsive `/embed/` iframes.
+- [x] **AST & Semantic Analysis (`vireo-core`, `vireo-analysis`):**
+  - AST additions: `Direction.STACK` in `Direction` enum.
+  - Semantic analyzer checks: verify local asset file exists relative to the `.dac` file, detect unsupported file formats, validate `fit` scale modes, emit clear `VireoError` with `SourceLocation`.
+- [x] **HTML Renderer (`vireo-renderer-html`):**
+  - Renders `<img>` tags with proper `src`, `alt`, and `style="object-fit: ...;"`.
+  - Containers with `backgroundImage` render `background-image: url(...)` with `background-size: cover/contain`.
+  - Video tags `<video>` with full playback controls and poster thumbnails.
+  - Audio tags `<audio>` with native browser controls.
+  - Responsive `<iframe>` embeds with sandbox and permission attributes.
+  - Stack layout rendering: `position: relative;` container with absolute, z-indexed children.
+- [x] **Figma Renderer & Plugin (`vireo-renderer-figma`, `figma-plugin`):**
+  - Schema Version 2 bump (`schemaVersion: 2`).
+  - Raster images (`.png`, `.jpg`, `.webp`, `.gif`, `.avif`): image fills with `Paint(type = "IMAGE", scaleMode = "FILL" | "FIT" | "STRETCH" | "CROP")`.
+  - Freeform Stack layout: `layout: stack` containers export with `layoutMode = null` and children sorted by `zIndex`.
+  - Video, audio, iframe card placeholders with badges and metadata.
+  - Vector graphics (`.svg`): `figma.createNodeFromSvg()` in development plugin.
+- [x] **JSON Renderer (`vireo-renderer-json`):**
+  - Emits standardized asset and stack metadata.
+- [x] **CLI & Bundling (`vireo-cli`):**
+  - Asset bundling support: `--embed-assets` packs local images, SVGs, and audio into self-contained base64 data URIs in HTML and Figma JSON.
+
+**Definition of done:**
+A `.dac` file with images, layered stack layouts, videos, audio, and YouTube embeds renders identically to HTML and Figma JSON, verified via end-to-end tests and documentation sync.
+
+---
+
 ## Future Backlog & Proposals
 
 ### 1. Figma Design Bundle & Canvas Orchestrator (`vireo bundle`)
@@ -220,6 +260,51 @@ When a project has dozens of `.dac` files (design systems, components, multiple 
 **Scope:**
 - Skill package (`.claude/skills/dac/SKILL.md` + reference files) — language overview, syntax constructs, CLI commands (`render`/`check`/`init`), worked examples. Sourced from `SYNTAX.md`'s Decision Log (post-freeze) + `EXAMPLES.md`/`showcase/` + `DOCS/cli.md`.
 - Sync mechanism — some check (script or CI step) flagging when `SYNTAX.md`/`DOCS/` change but the skill wasn't updated.
+
+### 4. PDF Architecture & Strategic Blueprint: Output Renderer & Vector Asset Ingestion
+> Goal: High-fidelity PDF support in Vireo — both as a **Renderer Target (`--to pdf`)** for documents/specs/presentations and as an **Input Vector Asset (`.pdf`)** for design components.
+
+#### A. PDF as an Output Target (`vireo render <file.dac> --to pdf`)
+Designers, architects, and product managers need printable or archivable vector documents: design system specification sheets, brand books, slide presentations, and invoices.
+
+**Architectural Paths & Tradeoffs:**
+1. **Path A: Pure Kotlin JVM Vector PDF Renderer (`vireo-renderer-pdf`) [Recommended]**
+   - **Mechanism:** Dedicated module implementing `Renderer<ByteArray>` using a pure JVM library (such as **Apache PDFBox** or **OpenPDF**).
+   - **Rendering:** Translates AST blocks and components directly into PDF operators — drawing vector rectangles, rounded borders, text with embedded OpenType/TrueType fonts, and embedding raster images.
+   - **Tradeoffs:**
+     - *Pros:* Fully headless, lightweight, blazing fast, strictly adheres to `BLOCK.md` (Pure Kotlin JVM, zero Node/Chromium dependency), produces crisp vector output.
+     - *Cons:* Requires resolving exact 2D box coordinates (layout pass) prior to drawing.
+2. **Path B: Headless Browser Print-to-PDF (`vireo-renderer-html` bridge)**
+   - **Mechanism:** Uses the existing HTML renderer output and pipes it into headless Chromium (`--headless --print-to-pdf`).
+   - **Tradeoffs:**
+     - *Pros:* Zero layout calculation needed; full CSS flexbox/grid fidelity out-of-the-box.
+     - *Cons:* Heavy external browser dependency; contradicts the standalone JVM CLI model.
+
+**Proposed `.dac` Document & Multi-Page Primitives:**
+```dac
+block BrandBook {
+    page Cover {
+        size: "A4"          // presets: "A4", "Letter", or explicit 1920x1080
+        orientation: portrait
+        margins: 24
+
+        component Header { ... }
+        component Content { ... }
+    }
+}
+```
+
+#### B. PDF as an Input Vector Asset (`src: "./vector-logo.pdf"`)
+In graphic design (notably macOS and iOS toolchains), vector artwork is commonly supplied as single-page PDF files rather than SVG.
+
+**Implementation Strategy:**
+1. **Single-Page Vector PDF (Icons / Illustrations):**
+   - At compile time, the asset pipeline extracts vector paths from the PDF and converts them into SVG primitives (or renders high-DPI vector paths).
+   - In HTML: rendered as SVG or embedded via `<object type="application/pdf">`.
+   - In Figma: imported as native editable vector shapes via `figma.createNodeFromSvg()`.
+2. **Multi-Page Document Embeds:**
+   - Syntax: `src: "./guidelines.pdf#page=1"`.
+   - Rasterizes the selected page at high resolution (2x/3x Retina) into WebP/PNG for layout preview.
 
 ---
 

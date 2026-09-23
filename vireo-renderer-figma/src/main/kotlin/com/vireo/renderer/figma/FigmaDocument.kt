@@ -15,7 +15,7 @@ data class FigmaDocument(
     companion object {
         // Bump when the *.figma.json node shape changes in a way the Figma plugin's
         // code.js must also handle — see SUPPORTED_SCHEMA_VERSION there.
-        const val SCHEMA_VERSION: Int = 1
+        const val SCHEMA_VERSION: Int = 2
     }
 
     fun toJson(pretty: Boolean = true): String {
@@ -52,7 +52,12 @@ data class FigmaNode(
     val paddingRight: Float? = null,
     val paddingTop: Float? = null,
     val paddingBottom: Float? = null,
-    val absoluteBoundingBox: Rect? = null
+    val absoluteBoundingBox: Rect? = null,
+    val mediaType: String? = null,
+    val mediaUrl: String? = null,
+    val imageBase64: String? = null,
+    val svgContent: String? = null,
+    val scaleMode: String? = null
 )
 
 @Serializable
@@ -74,7 +79,9 @@ data class TypeStyle(
 data class Paint(
     val type: String = "SOLID",
     val color: Color? = null,
-    val opacity: Float? = 1.0f
+    val opacity: Float? = 1.0f,
+    val scaleMode: String? = null,
+    val imageRef: String? = null
 )
 
 @Serializable

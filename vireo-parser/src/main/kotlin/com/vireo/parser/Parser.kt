@@ -269,7 +269,12 @@ object Parser {
                     is PropertyValue.Expr -> v.source
                     else -> ""
                 }
-                val dir = if (layoutValStr.lowercase().contains("horizontal")) Direction.HORIZONTAL else Direction.VERTICAL
+                val lower = layoutValStr.lowercase()
+                val dir = when {
+                    lower.contains("stack") || lower.contains("layer") || lower.contains("constraint") -> Direction.STACK
+                    lower.contains("horizontal") -> Direction.HORIZONTAL
+                    else -> Direction.VERTICAL
+                }
 
                 fun parseSizingStr(str: String): Sizing? = when (str.lowercase()) {
                     "fill" -> Sizing.FILL
@@ -443,8 +448,12 @@ object Parser {
                     if (numVal is Number) {
                         constraints.add(Constraint.Explicit(axis, numVal.toFloat(), keyTok.location))
                     }
-                } else if (keyTok.value == "layout" && (tok.value.lowercase() == "horizontal" || tok.value.lowercase() == "vertical")) {
-                    val dir = if (tok.value.lowercase() == "vertical") Direction.VERTICAL else Direction.HORIZONTAL
+                } else if (keyTok.value == "layout" && (tok.value.lowercase() == "horizontal" || tok.value.lowercase() == "vertical" || tok.value.lowercase() == "stack" || tok.value.lowercase() == "layer" || tok.value.lowercase() == "constraint")) {
+                    val dir = when (tok.value.lowercase()) {
+                        "stack", "layer", "constraint" -> Direction.STACK
+                        "vertical" -> Direction.VERTICAL
+                        else -> Direction.HORIZONTAL
+                    }
                     constraints.add(Constraint.AutoLayout(direction = dir, mainAxis = Sizing.HUG, crossAxis = Sizing.HUG, gap = 0f, location = keyTok.location))
                 }
                 properties.add(Property(keyTok.value, parsedValue, keyTok.location))

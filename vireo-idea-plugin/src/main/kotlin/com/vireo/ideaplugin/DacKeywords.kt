@@ -19,6 +19,8 @@ object DacKeywords {
         "color", "backgroundColor", "text", "label", "placeholder",
         "fontSize", "fontWeight", "radius", "padding", "border", "shadow",
         "layout", "mainAxis", "crossAxis", "gap",
-        "alignItems", "justifyContent"
+        "alignItems", "justifyContent",
+        "src", "image", "backgroundImage", "video", "audio", "iframe", "embed",
+        "fit", "poster", "zIndex", "z", "controls", "autoplay", "loop", "muted"
     )
 }

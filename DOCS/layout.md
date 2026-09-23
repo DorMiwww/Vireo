@@ -124,3 +124,57 @@ component FloatingCallout {
     width: 80%parent
 }
 ```
+
+---
+
+## 5. Stack & Layer Stacking (`layout: stack`)
+
+To build layered interfaces such as card banners with background photography, floating chips, or Android ConstraintLayout-style overlays, use `layout: stack`:
+
+```dac
+component HeroBanner {
+    layout: stack
+    width: 600
+    height: 240
+    radius: 12
+
+    // Background photo under other elements
+    component CoverPhoto {
+        image: "hero.jpg"
+        fit: cover
+        width: 600
+        height: 240
+        zIndex: 1
+    }
+
+    // Semi-transparent overlay
+    component Tint {
+        width: 600
+        height: 240
+        backgroundColor: #000000
+        zIndex: 2
+    }
+
+    // Floating text card placed on top
+    component OverlaidCard {
+        x: 24
+        y: 40
+        width: 320
+        zIndex: 3
+
+        component Title {
+            text: "Explore Mountains"
+            color: #FFFFFF
+            fontSize: 20
+            fontWeight: bold
+        }
+    }
+}
+```
+
+### Stacking Properties
+
+- `zIndex`: Integer specifying layer depth. Children with higher `zIndex` render above lower ones.
+- `x`, `y`: Offsets within the stack container (renders `position: absolute; left: ...; top: ...;`).
+- In Figma export, `layout: stack` disables auto-layout on the parent container, allowing freeform layered positioning and reorders children by `zIndex`.
+

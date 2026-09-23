@@ -516,5 +516,73 @@ class EndToEndTest {
         assertTrue(writtenContent.contains("VERTICAL"))
         assertTrue(writtenContent.contains("Sign In"))
     }
+
+    @Test
+    fun `test Phase 8 - Rich media and embed-assets CLI flags`() {
+        val tempDir = java.nio.file.Files.createTempDirectory("vireo_media_test").toFile()
+        tempDir.deleteOnExit()
+
+        val sampleImg = File(tempDir, "avatar.png")
+        sampleImg.writeBytes(byteArrayOf(0x89.toByte(), 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A)) // PNG magic header
+
+        val dacFile = File(tempDir, "media.dac")
+        dacFile.writeText(
+            """
+            block Showcase {
+                component Hero {
+                    layout: stack
+                    width: 320
+                    height: 200
+
+                    component Photo {
+                        image: "avatar.png"
+                        fit: cover
+                        width: 320
+                        height: 200
+                        zIndex: 1
+                    }
+
+                    component Title {
+                        x: 16
+                        y: 20
+                        text: "Overlay on Photo"
+                        color: #FFFFFF
+                        zIndex: 2
+                    }
+
+                    component VideoPlayer {
+                        video: "https://example.com/demo.mp4"
+                        width: 300
+                        height: 150
+                    }
+                }
+            }
+            """.trimIndent()
+        )
+
+        // 1. Check CLI
+        val (checkCode, checkOut, checkErr) = runCli("check", dacFile.absolutePath)
+        assertEquals(0, checkCode, "Check should pass: $checkErr")
+        assertTrue(checkOut.contains("passed analysis"))
+
+        // 2. Render HTML without embed-assets -> retains relative path
+        val (htmlCode1, htmlOut1, htmlErr1) = runCli("render", dacFile.absolutePath, "--html", "--stdout")
+        assertEquals(0, htmlCode1, "HTML render failed: $htmlErr1")
+        assertTrue(htmlOut1.contains("src=\"avatar.png\""))
+        assertTrue(htmlOut1.contains("<video"))
+        assertTrue(htmlOut1.contains("position: absolute;"))
+
+        // 3. Render HTML with --embed-assets -> converts to base64 data URI
+        val (htmlCode2, htmlOut2, htmlErr2) = runCli("render", dacFile.absolutePath, "--html", "--embed-assets", "--stdout")
+        assertEquals(0, htmlCode2, "HTML render with --embed-assets failed: $htmlErr2")
+        assertTrue(htmlOut2.contains("data:image/png;base64,"))
+
+        // 4. Render Figma with --embed-assets -> embeds base64
+        val (figmaCode, figmaOut, figmaErr) = runCli("render", dacFile.absolutePath, "--figma", "--embed-assets", "--stdout")
+        assertEquals(0, figmaCode, "Figma render with --embed-assets failed: $figmaErr")
+        assertTrue(figmaOut.contains("\"mediaType\": \"IMAGE\""))
+        assertTrue(figmaOut.contains("\"imageBase64\":"))
+        assertTrue(figmaOut.contains("\"schemaVersion\": 2"))
+    }
 }
 

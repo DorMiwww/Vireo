@@ -8,16 +8,18 @@ object Analyzer {
 
     fun analyze(
         entryFile: VireoFile,
+        assetChecker: (String) -> Boolean = { File(it).exists() },
         fileLoader: (String) -> String = { File(it).readText() }
     ): VireoResult<ResolvedFile> {
-        val analyzer = FileAnalyzer(entryFile, fileLoader)
+        val analyzer = FileAnalyzer(entryFile, fileLoader, assetChecker)
         return analyzer.analyze()
     }
 }
 
 private class FileAnalyzer(
     private val entryFile: VireoFile,
-    private val fileLoader: (String) -> String
+    private val fileLoader: (String) -> String,
+    private val assetChecker: (String) -> Boolean
 ) {
     private val loadedFiles = mutableMapOf<String, VireoFile>()
     private val visitingStack = mutableListOf<String>()
@@ -112,7 +114,7 @@ private class FileAnalyzer(
 
             // Validate property types
             for (prop in visitor.properties) {
-                validatePropertyType(prop)
+                validatePropertyType(prop, file)
             }
         }
     }
@@ -126,12 +128,12 @@ private class FileAnalyzer(
         return null
     }
 
-    private fun validatePropertyType(prop: Property) {
-        val numericKeys = setOf("width", "height", "x", "y", "fontSize", "radius", "gap")
+    private fun validatePropertyType(prop: Property, file: VireoFile) {
+        val numericKeys = setOf("width", "height", "x", "y", "fontSize", "radius", "gap", "zIndex", "z")
         if (prop.key in numericKeys && prop.value is PropertyValue.Literal) {
             val literal = (prop.value as PropertyValue.Literal).value
             if (literal is String) {
-                val isAllowedKeyword = literal.lowercase() in setOf("fill", "hug", "auto", "bold", "normal", "horizontal", "vertical")
+                val isAllowedKeyword = literal.lowercase() in setOf("fill", "hug", "auto", "bold", "normal", "horizontal", "vertical", "stack", "layer")
                 if (!isAllowedKeyword && literal.toFloatOrNull() == null && !literal.contains("%")) {
                     errors.add(VireoError("Property '${prop.key}' expects a numeric value or valid keyword, but got '$literal'", prop.location))
                 }
@@ -151,6 +153,40 @@ private class FileAnalyzer(
                 val isValidBorder = parts.size == 2 && parts[0].toFloatOrNull() != null
                 if (!isValidBorder) {
                     errors.add(VireoError("Property 'border' expects width and color (e.g. '1 #D1D5DB'), but got '$literal'", prop.location))
+                }
+            }
+        } else if (prop.key == "fit" && prop.value is PropertyValue.Literal) {
+            val literal = (prop.value as PropertyValue.Literal).value.toString().lowercase().trim('"', '\'')
+            val allowedFit = setOf("cover", "contain", "fill", "none")
+            if (literal !in allowedFit) {
+                errors.add(VireoError("Property 'fit' expects 'cover', 'contain', 'fill', or 'none', but got '$literal'", prop.location))
+            }
+        }
+
+        val mediaKeys = setOf("src", "image", "backgroundImage", "poster", "video", "audio", "iframe")
+        if (prop.key in mediaKeys && prop.value is PropertyValue.Literal) {
+            val rawPath = (prop.value as PropertyValue.Literal).value.toString().trim('"', '\'')
+            val isRemote = rawPath.startsWith("http://") || rawPath.startsWith("https://") || rawPath.startsWith("data:")
+            if (!isRemote && rawPath.isNotEmpty()) {
+                val cleanPath = rawPath.substringBefore("#").substringBefore("?")
+                val ext = cleanPath.substringAfterLast(".", "").lowercase()
+                val supportedExts = setOf(
+                    // Images
+                    "png", "jpg", "jpeg", "webp", "gif", "avif", "svg",
+                    // Video
+                    "mp4", "webm",
+                    // Audio
+                    "mp3", "wav", "ogg",
+                    // Web / Embed
+                    "html", "htm"
+                )
+                if (ext.isNotEmpty() && ext !in supportedExts) {
+                    errors.add(VireoError("Unsupported asset format '.$ext' in property '${prop.key}' (supported: png, jpg, jpeg, webp, gif, avif, svg, mp4, webm, mp3, wav, ogg, html)", prop.location))
+                } else {
+                    val resolvedAssetPath = resolvePath(file.path, cleanPath)
+                    if (!assetChecker(resolvedAssetPath)) {
+                        errors.add(VireoError("Asset file '$rawPath' not found at '$resolvedAssetPath'", prop.location))
+                    }
                 }
             }
         }

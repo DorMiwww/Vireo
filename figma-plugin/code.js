@@ -6,7 +6,7 @@ figma.showUI(__html__, { width: 380, height: 440, title: "Vireo Importer" });
 // Highest *.figma.json schemaVersion this plugin knows how to read.
 // Bump only when this file is updated to handle a newer node shape from the CLI
 // (see FigmaDocument.SCHEMA_VERSION in vireo-renderer-figma).
-const SUPPORTED_SCHEMA_VERSION = 1;
+const SUPPORTED_SCHEMA_VERSION = 2;
 
 const loadedFonts = new Set();
 
@@ -37,15 +37,74 @@ async function ensureFont(family, style) {
   }
 }
 
-function mapPaints(paintList) {
+function base64ToBytes(base64Str) {
+  try {
+    const raw = base64Str.replace(/^data:[^;]+;base64,/, '').trim();
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+    const len = raw.length;
+    let placeHolders = 0;
+    if (raw.endsWith('==')) placeHolders = 2;
+    else if (raw.endsWith('=')) placeHolders = 1;
+    const bytes = new Uint8Array(Math.max(0, Math.floor((len * 3) / 4) - placeHolders));
+    let p = 0;
+    for (let i = 0; i < len; i += 4) {
+      const a = chars.indexOf(raw[i]);
+      const b = chars.indexOf(raw[i + 1]);
+      const c = chars.indexOf(raw[i + 2]);
+      const d = chars.indexOf(raw[i + 3]);
+      if (a === -1 || b === -1) break;
+      bytes[p++] = (a << 2) | (b >> 4);
+      if (c !== -1 && c !== 64) {
+        bytes[p++] = ((b & 15) << 4) | (c >> 2);
+      }
+      if (d !== -1 && d !== 64) {
+        bytes[p++] = ((c & 3) << 6) | d;
+      }
+    }
+    return bytes;
+  } catch (e) {
+    return null;
+  }
+}
+
+function mapPaints(paintList, node) {
   if (!paintList || paintList.length === 0) return [];
-  return paintList.map(p => {
+  const result = [];
+  for (const p of paintList) {
+    if (p.type === 'IMAGE') {
+      let hash = null;
+      const b64 = (node && node.imageBase64) || (p.imageRef && p.imageRef.startsWith('data:') ? p.imageRef : null);
+      if (b64) {
+        const bytes = base64ToBytes(b64);
+        if (bytes && bytes.length > 0 && typeof figma.createImage === 'function') {
+          try {
+            const img = figma.createImage(bytes);
+            hash = img.hash;
+          } catch (e) {}
+        }
+      }
+      if (hash) {
+        result.push({
+          type: 'IMAGE',
+          scaleMode: p.scaleMode || 'FILL',
+          imageHash: hash,
+          opacity: (p.opacity !== undefined && p.opacity !== null) ? p.opacity : 1.0
+        });
+      } else {
+        result.push({
+          type: 'SOLID',
+          color: { r: 0.9, g: 0.92, b: 0.95 },
+          opacity: (p.opacity !== undefined && p.opacity !== null) ? p.opacity : 1.0
+        });
+      }
+      continue;
+    }
     const col = p.color || { r: 0, g: 0, b: 0 };
     const opacity = (col.a !== undefined && col.a !== null)
       ? col.a
       : ((p.opacity !== undefined && p.opacity !== null) ? p.opacity : 1.0);
 
-    return {
+    result.push({
       type: 'SOLID',
       color: {
         r: Math.max(0, Math.min(1, col.r)),
@@ -53,8 +112,9 @@ function mapPaints(paintList) {
         b: Math.max(0, Math.min(1, col.b))
       },
       opacity: Math.max(0, Math.min(1, opacity))
-    };
-  });
+    });
+  }
+  return result;
 }
 
 function applyChildLayoutSizing(figmaElement, node, parent) {
@@ -111,6 +171,26 @@ async function renderNode(node, parent) {
     return created;
   }
 
+  if (node.mediaType === "SVG" && node.svgContent) {
+    try {
+      const svgNode = figma.createNodeFromSvg(node.svgContent);
+      svgNode.name = node.name || "SVG";
+      const bbox = node.absoluteBoundingBox;
+      if (bbox && bbox.width > 0 && bbox.height > 0) {
+        svgNode.resize(bbox.width, bbox.height);
+      }
+      if (bbox && parent && (!parent.layoutMode || parent.layoutMode === "NONE")) {
+        if (bbox.x !== undefined && bbox.x !== null) svgNode.x = bbox.x;
+        if (bbox.y !== undefined && bbox.y !== null) svgNode.y = bbox.y;
+      }
+      if (parent && parent.appendChild) {
+        parent.appendChild(svgNode);
+      }
+      applyChildLayoutSizing(svgNode, node, parent);
+      return svgNode;
+    } catch (e) {}
+  }
+
   if (node.type === "FRAME") {
     const frame = figma.createFrame();
     frame.name = node.name || "Frame";
@@ -123,6 +203,11 @@ async function renderNode(node, parent) {
       frame.resize(bbox.width, Math.max(frame.height, 44));
     } else if (bbox && bbox.height > 0) {
       frame.resize(Math.max(frame.width, 100), bbox.height);
+    }
+
+    if (bbox && parent && (!parent.layoutMode || parent.layoutMode === "NONE")) {
+      if (bbox.x !== undefined && bbox.x !== null) frame.x = bbox.x;
+      if (bbox.y !== undefined && bbox.y !== null) frame.y = bbox.y;
     }
 
     // Auto Layout configuration
@@ -165,14 +250,14 @@ async function renderNode(node, parent) {
 
     // Fills
     if (node.fills && node.fills.length > 0) {
-      frame.fills = mapPaints(node.fills);
+      frame.fills = mapPaints(node.fills, node);
     } else {
       frame.fills = [];
     }
 
     // Strokes
     if (node.strokes && node.strokes.length > 0) {
-      frame.strokes = mapPaints(node.strokes);
+      frame.strokes = mapPaints(node.strokes, node);
       if (node.strokeWeight) frame.strokeWeight = node.strokeWeight;
     }
 
@@ -222,12 +307,17 @@ async function renderNode(node, parent) {
       text.textAutoResize = "HEIGHT";
     }
 
+    if (bbox && parent && (!parent.layoutMode || parent.layoutMode === "NONE")) {
+      if (bbox.x !== undefined && bbox.x !== null) text.x = bbox.x;
+      if (bbox.y !== undefined && bbox.y !== null) text.y = bbox.y;
+    }
+
     if (node.fills && node.fills.length > 0) {
-      text.fills = mapPaints(node.fills);
+      text.fills = mapPaints(node.fills, node);
     }
 
     if (node.strokes && node.strokes.length > 0) {
-      text.strokes = mapPaints(node.strokes);
+      text.strokes = mapPaints(node.strokes, node);
       if (node.strokeWeight) text.strokeWeight = node.strokeWeight;
     }
 
@@ -253,18 +343,23 @@ async function renderNode(node, parent) {
     const h = bbox && bbox.height > 0 ? bbox.height : 44;
     rect.resize(w, h);
 
+    if (bbox && parent && (!parent.layoutMode || parent.layoutMode === "NONE")) {
+      if (bbox.x !== undefined && bbox.x !== null) rect.x = bbox.x;
+      if (bbox.y !== undefined && bbox.y !== null) rect.y = bbox.y;
+    }
+
     if (node.cornerRadius !== undefined && node.cornerRadius !== null) {
       rect.cornerRadius = node.cornerRadius;
     }
 
     if (node.fills && node.fills.length > 0) {
-      rect.fills = mapPaints(node.fills);
+      rect.fills = mapPaints(node.fills, node);
     } else {
       rect.fills = [];
     }
 
     if (node.strokes && node.strokes.length > 0) {
-      rect.strokes = mapPaints(node.strokes);
+      rect.strokes = mapPaints(node.strokes, node);
       if (node.strokeWeight) rect.strokeWeight = node.strokeWeight;
     }
 

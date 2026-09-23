@@ -56,8 +56,34 @@ vireo render pricing.dac -o html --title "Vireo Pricing Plans"
 The HTML renderer translates Vireo concepts into modern standard CSS:
 - `layout: horizontal` ➔ `display: flex; flex-direction: row;`
 - `layout: vertical` ➔ `display: flex; flex-direction: column;`
+- `layout: stack` ➔ `position: relative; display: block;` (with layered children `position: absolute; z-index: ...;`)
 - `gap: 16` ➔ `gap: 16px;`
 - `width: fill` ➔ `flex: 1; width: 100%;`
 - `width: hug` ➔ `width: fit-content;`
 - `shadow: true` ➔ `box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);`
 - `href: "..."` ➔ renders an `<a>` element with hover states and external link attributes.
+
+---
+
+## Rich Media & Asset Rendering (Phase 8)
+
+The HTML renderer natively outputs semantic HTML5 tags for media:
+
+| Vireo Property | HTML Output | Attributes / Styles |
+| :--- | :--- | :--- |
+| `image: "photo.jpg"` | `<img>` | `src="photo.jpg"`, `object-fit: cover` |
+| `backgroundImage: "bg.jpg"` | `<div>` (container) | `background-image: url('bg.jpg'); background-size: cover;` |
+| `video: "clip.mp4"` | `<video>` | `controls`, `poster`, `autoplay`, `loop`, `muted` |
+| `audio: "song.mp3"` | `<audio>` | `controls`, `src="song.mp3"` |
+| `iframe: "..."` | `<iframe>` | `frameborder="0"`, `allowfullscreen`, YouTube auto-embed URL |
+
+### Embedding Local Assets (`--embed-assets`)
+
+By default, the HTML renderer keeps relative paths to local assets intact (`src="assets/logo.png"`).
+
+Pass `--embed-assets` to bundle local assets directly into self-contained `data:...;base64,...` data URIs:
+
+```bash
+vireo render landing.dac --html --embed-assets
+```
+

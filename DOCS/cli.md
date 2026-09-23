@@ -111,6 +111,12 @@ When rendering to Figma AST JSON (`-o figma` or `--figma`):
 | `--pretty` | Indent and format Figma JSON document for human inspection | `true` |
 | `--compact` | Emit minified, compact JSON without extra whitespace | `false` |
 
+### Asset Pipeline Parameters (Phase 8)
+
+| Flag | Description | Default |
+| :--- | :--- | :--- |
+| `--embed-assets` | Pack all referenced local raster images, vector SVGs, and audio files into self-contained base64 data URIs in HTML and Figma JSON | `false` |
+
 ### `vireo render` Examples
 
 ```bash
@@ -139,7 +145,13 @@ vireo render designs/card.dac --html --snippet --stdout
 # 8. Render compact Figma JSON
 vireo render designs/card.dac --figma --compact
 
-# 9. View render command options
+# 9. Render standalone HTML with embedded base64 assets
+vireo render designs/card.dac --html --embed-assets
+
+# 10. Render Figma JSON with embedded base64 assets
+vireo render designs/card.dac --figma --embed-assets
+
+# 11. View render command options
 vireo render --help
 ```
 
@@ -237,7 +249,7 @@ vireo --version
 
 **Output:**
 ```
-vireo version 0.1.0-SNAPSHOT (pure JVM 21)
+vireo version 0.2.0 (pure JVM 21)
 Supported target formats: json, html (standard & snippet), figma
 ```
 

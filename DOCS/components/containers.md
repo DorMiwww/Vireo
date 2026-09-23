@@ -93,3 +93,32 @@ When a container has `layout: horizontal` or `layout: vertical`, its children ca
 - `width: fill`: Fills all remaining cross-axis or main-axis width (`flex: 1` / `width: 100%`).
 - `height: fill`: Fills all remaining height.
 - `width: hug`: Shrinks boundaries to precisely wrap nested children.
+
+---
+
+## 4. Stack Containers & Background Images
+
+Containers can layer children on top of each other using `layout: stack`, or display background images with `backgroundImage`:
+
+```dac
+component MediaCard {
+    width: 360
+    height: 220
+    radius: 16
+    backgroundImage: "mountain-cover.jpg"
+    fit: cover
+    padding: 24
+    layout: vertical
+    justifyContent: "flex-end"
+
+    component CardTitle {
+        text: "Alpine Retreat"
+        fontSize: 20
+        fontWeight: bold
+        color: #FFFFFF
+    }
+}
+```
+
+See [Media & Assets](media.md) and [Layout System](../layout.md) for full details on stack layers and z-index ordering.
+

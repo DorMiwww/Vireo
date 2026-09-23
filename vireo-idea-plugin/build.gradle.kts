@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "com.vireo"
-version = "0.1.0-SNAPSHOT"
+version = "0.2.0-SNAPSHOT"
 
 // No repositories {} block here: settings.gradle.kts declares
 // RepositoriesMode.FAIL_ON_PROJECT_REPOS, so all repositories come from its

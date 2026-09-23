@@ -41,3 +41,15 @@ To inject the compiled design onto your Figma canvas:
 4. The plugin automatically generates real, editable Figma frames and components.
 
 For step-by-step screenshots and detailed setup instructions, see the [Figma Plugin Guide](../figma-plugin.md).
+
+---
+
+## 3. Schema Version 2 & Rich Media (Phase 8)
+
+Vireo's Figma export conforms to Schema Version 2 (`schemaVersion: 2`):
+
+- **Image Fills:** Image components and containers with `backgroundImage` generate native `Paint(type = "IMAGE")` fills with matching `scaleMode` (`FILL`, `FIT`, `STRETCH`, or `CROP`).
+- **Freeform Layer Stacking:** Containers with `layout: stack` export with `layoutMode: null`, allowing freeform positioning and ordering children according to `zIndex`.
+- **Media Cards:** Videos, audio clips, and iframes generate styled placeholder frames with type badges and URLs on canvas.
+- **Embedded Assets:** Using `vireo render <file.dac> --figma --embed-assets` encodes local images directly as base64 into the JSON document, allowing the Figma plugin to create native Figma images without external hosting.
+

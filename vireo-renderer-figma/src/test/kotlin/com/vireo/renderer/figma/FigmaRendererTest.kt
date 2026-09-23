@@ -129,7 +129,7 @@ class FigmaRendererTest {
         assertTrue(parseResult is VireoResult.Ok)
         val file = parseResult.value
 
-        val analysisResult = Analyzer.analyze(file, fileLoader)
+        val analysisResult = Analyzer.analyze(file, fileLoader = fileLoader)
         assertTrue(analysisResult is VireoResult.Ok)
         val resolvedFile = analysisResult.value
 
@@ -144,4 +144,102 @@ class FigmaRendererTest {
         assertTrue(json.contains("Sign In"))
         assertTrue(json.contains("VERTICAL"))
     }
+
+    @Test
+    fun testRichMediaAndStackToFigma() {
+        val dacSource = """
+            block MediaBlock {
+                component HeroBanner {
+                    layout: stack
+                    width: 400
+                    height: 250
+
+                    component BgImage {
+                        image: "hero.png"
+                        fit: cover
+                        width: 400
+                        height: 250
+                        zIndex: 1
+                    }
+
+                    component OverlayCard {
+                        x: 20
+                        y: 30
+                        width: 200
+                        height: 80
+                        color: #FFFFFF
+                        zIndex: 2
+
+                        component Title {
+                            text: "Card on Image"
+                            fontSize: 16
+                        }
+                    }
+
+                    component PromoVideo {
+                        video: "promo.mp4"
+                        poster: "poster.jpg"
+                        width: 300
+                        height: 180
+                        zIndex: 3
+                    }
+                }
+            }
+        """.trimIndent()
+
+        val parseResult = Parser.parse(dacSource, "media.dac")
+        assertTrue(parseResult is VireoResult.Ok)
+        val file = parseResult.value
+
+        val analysisResult = Analyzer.analyze(file, assetChecker = { true })
+        assertTrue(analysisResult is VireoResult.Ok)
+        val resolvedFile = analysisResult.value
+
+        val renderResult = FigmaRenderer.render(resolvedFile)
+        assertTrue(renderResult is VireoResult.Ok)
+        val doc = renderResult.value
+
+        assertEquals(2, doc.schemaVersion)
+        val canvas = doc.nodes[0]
+        val block = canvas.children?.get(0)
+        assertNotNull(block)
+
+        val heroBanner = block.children?.get(0)
+        assertNotNull(heroBanner)
+        assertEquals("HeroBanner", heroBanner.name)
+        // Stack layout should not force VERTICAL or HORIZONTAL Auto Layout
+        assertEquals(null, heroBanner.layoutMode)
+
+        val heroChildren = heroBanner.children
+        assertNotNull(heroChildren)
+        assertEquals(3, heroChildren.size)
+
+        // Check children ordered by zIndex
+        val imgChild = heroChildren[0]
+        assertEquals("BgImage", imgChild.name)
+        assertEquals("RECTANGLE", imgChild.type)
+        assertEquals("IMAGE", imgChild.mediaType)
+        assertEquals("hero.png", imgChild.mediaUrl)
+        assertEquals("FILL", imgChild.scaleMode)
+        assertNotNull(imgChild.fills)
+        assertEquals("IMAGE", imgChild.fills?.get(0)?.type)
+
+        val cardChild = heroChildren[1]
+        assertEquals("OverlayCard", cardChild.name)
+        assertEquals(20f, cardChild.absoluteBoundingBox?.x)
+        assertEquals(30f, cardChild.absoluteBoundingBox?.y)
+
+        val videoChild = heroChildren[2]
+        assertEquals("PromoVideo", videoChild.name)
+        assertEquals("FRAME", videoChild.type)
+        assertEquals("VIDEO", videoChild.mediaType)
+        assertEquals("promo.mp4", videoChild.mediaUrl)
+
+        val json = doc.toJson(pretty = true)
+        assertTrue(json.contains("\"schemaVersion\": 2"))
+        assertTrue(json.contains("\"mediaType\": \"IMAGE\""))
+        assertTrue(json.contains("\"mediaType\": \"VIDEO\""))
+        assertTrue(json.contains("\"scaleMode\": \"FILL\""))
+    }
 }
+

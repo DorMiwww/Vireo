@@ -4,6 +4,7 @@ import com.vireo.analysis.Analyzer
 import com.vireo.core.VireoError
 import com.vireo.core.VireoResult
 import com.vireo.parser.Parser
+import com.vireo.renderer.figma.FigmaNode
 import com.vireo.renderer.figma.FigmaRenderer
 import com.vireo.renderer.html.HtmlRenderOptions
 import com.vireo.renderer.html.HtmlRenderer
@@ -77,7 +78,7 @@ fun executeCli(
 }
 
 private fun printVersion(out: PrintStream) {
-    out.println("vireo version 0.1.0 (pure JVM 21)")
+    out.println("vireo version 0.2.0 (pure JVM 21)")
     out.println("Supported target formats: json, html (standard & snippet), figma")
 }
 
@@ -129,6 +130,9 @@ private fun printRenderUsage(out: PrintStream) {
     out.println("  --token <token>              Figma Personal Access Token (or FIGMA_TOKEN environment variable)")
     out.println("  --pretty                     Format Figma JSON with pretty indentation (default: true)")
     out.println("  --compact                    Output compact/minified Figma JSON")
+    out.println()
+    out.println("Asset Pipeline Parameters:")
+    out.println("  --embed-assets               Embed local images and assets as base64 data URIs in HTML and Figma JSON (default: false)")
     out.println()
     out.println("Examples:")
     out.println("  # Render design to card.html automatically")
@@ -220,6 +224,7 @@ private fun handleRender(
     var htmlTitle: String? = null
     var htmlTheme = "light"
     var prettyFigma = true
+    var embedAssets = false
 
     val recognizedFormats = setOf("json", "html", "figma", "standard-html")
 
@@ -384,6 +389,9 @@ private fun handleRender(
             arg == "--compact" -> {
                 prettyFigma = false
             }
+            arg == "--embed-assets" -> {
+                embedAssets = true
+            }
             arg.startsWith("-") -> {
                 err.println("Error: Unknown option '$arg'. Run with --help for usage.")
                 return 1
@@ -453,10 +461,45 @@ private fun handleRender(
             }
         }
         "html" -> {
+            val inputDir = File(inputFile).parentFile ?: File(".")
+            val assetResolver: (String) -> String = if (embedAssets) {
+                { assetPath ->
+                    val trimmed = assetPath.trim('"', '\'')
+                    if (trimmed.startsWith("data:") || trimmed.startsWith("http://") || trimmed.startsWith("https://") || trimmed.startsWith("//")) {
+                        trimmed
+                    } else {
+                        val assetFile = File(inputDir, trimmed)
+                        if (assetFile.exists() && assetFile.isFile) {
+                            val ext = assetFile.extension.lowercase()
+                            val mime = when (ext) {
+                                "png" -> "image/png"
+                                "jpg", "jpeg" -> "image/jpeg"
+                                "webp" -> "image/webp"
+                                "gif" -> "image/gif"
+                                "avif" -> "image/avif"
+                                "svg" -> "image/svg+xml"
+                                "mp4" -> "video/mp4"
+                                "webm" -> "video/webm"
+                                "mp3" -> "audio/mpeg"
+                                "wav" -> "audio/wav"
+                                "ogg" -> "audio/ogg"
+                                else -> "application/octet-stream"
+                            }
+                            val base64 = java.util.Base64.getEncoder().encodeToString(assetFile.readBytes())
+                            "data:$mime;base64,$base64"
+                        } else {
+                            trimmed
+                        }
+                    }
+                }
+            } else {
+                { it }
+            }
             val htmlOptions = HtmlRenderOptions(
                 standardHtml = standardHtml,
                 title = htmlTitle,
-                theme = htmlTheme
+                theme = htmlTheme,
+                assetResolver = assetResolver
             )
             when (val r = HtmlRenderer.render(resolvedFile, htmlOptions)) {
                 is VireoResult.Err -> { printErrors(r.errors, err); return 1 }
@@ -466,7 +509,16 @@ private fun handleRender(
         "figma" -> {
             when (val r = FigmaRenderer.render(resolvedFile)) {
                 is VireoResult.Err -> { printErrors(r.errors, err); return 1 }
-                is VireoResult.Ok -> r.value.toJson(pretty = prettyFigma)
+                is VireoResult.Ok -> {
+                    val doc = r.value
+                    val finalDoc = if (embedAssets) {
+                        val inputDir = File(inputFile).parentFile ?: File(".")
+                        doc.copy(nodes = doc.nodes.map { embedFigmaNodeAssets(it, inputDir) })
+                    } else {
+                        doc
+                    }
+                    finalDoc.toJson(pretty = prettyFigma)
+                }
             }
         }
         else -> {
@@ -661,7 +713,7 @@ private fun handleInit(
     val configJson = """
         {
           "name": "$effectiveProjectName",
-          "version": "0.1.0",
+          "version": "0.2.0",
           "template": "$template",
           "defaultRenderer": "html",
           "entry": "designs/card.dac"
@@ -827,3 +879,50 @@ private fun printErrors(errors: List<VireoError>, err: PrintStream) {
         err.println("${loc.file}:${loc.line}:${loc.column}: error: ${error.message}")
     }
 }
+
+private fun embedFigmaNodeAssets(node: FigmaNode, baseDir: File): FigmaNode {
+    var newImgBase64 = node.imageBase64
+    var newSvgContent = node.svgContent
+    val mediaUrl = node.mediaUrl
+    if (mediaUrl != null && !mediaUrl.startsWith("http://") && !mediaUrl.startsWith("https://") && !mediaUrl.startsWith("data:")) {
+        val f = File(baseDir, mediaUrl)
+        if (f.exists() && f.isFile) {
+            if (node.mediaType == "SVG" || f.extension.equals("svg", ignoreCase = true)) {
+                newSvgContent = f.readText(Charsets.UTF_8)
+            } else {
+                newImgBase64 = java.util.Base64.getEncoder().encodeToString(f.readBytes())
+            }
+        }
+    }
+    val newFills = node.fills?.map { paint ->
+        val ref = paint.imageRef
+        if (paint.type == "IMAGE" && ref != null && !ref.startsWith("http://") && !ref.startsWith("https://") && !ref.startsWith("data:")) {
+            val f = File(baseDir, ref)
+            if (f.exists() && f.isFile) {
+                val mime = when (f.extension.lowercase()) {
+                    "png" -> "image/png"
+                    "jpg", "jpeg" -> "image/jpeg"
+                    "webp" -> "image/webp"
+                    "gif" -> "image/gif"
+                    "avif" -> "image/avif"
+                    "svg" -> "image/svg+xml"
+                    else -> "application/octet-stream"
+                }
+                val b64 = java.util.Base64.getEncoder().encodeToString(f.readBytes())
+                paint.copy(imageRef = "data:$mime;base64,$b64")
+            } else {
+                paint
+            }
+        } else {
+            paint
+        }
+    }
+    val newChildren = node.children?.map { embedFigmaNodeAssets(it, baseDir) }
+    return node.copy(
+        imageBase64 = newImgBase64,
+        svgContent = newSvgContent,
+        fills = newFills,
+        children = newChildren
+    )
+}
+

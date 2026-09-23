@@ -18,7 +18,7 @@ Verify your installation:
 
 ```bash
 vireo --version
-# Output: vireo 0.1.0
+# Output: vireo 0.2.0
 ```
 
 ### Build from Source

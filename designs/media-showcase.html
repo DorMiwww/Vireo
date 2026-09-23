@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>designs/media-showcase.dac</title>
+  <style>
+    * { box-sizing: border-box; }
+    a.vireo-component { text-decoration: none; }
+    a.vireo-component:hover { opacity: 0.92; filter: brightness(1.05); }
+  </style>
+</head>
+<body style="margin: 0; padding: 0;">
+  <div class="vireo-file" data-path="designs/media-showcase.dac" style="font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: #F3F4F6; margin: 0; box-sizing: border-box;">
+    <div class="vireo-block" data-name="MediaShowcase">
+      <div class="vireo-component" data-name="Page" style="box-sizing: border-box; width: 800px; display: flex; flex-direction: column; gap: 32px; height: fit-content; padding: 40px; background-color: #F8FAFC;">
+        <div class="vireo-component" data-name="Header" style="box-sizing: border-box; display: flex; flex-direction: column; gap: 8px; height: fit-content;">
+          <div class="vireo-component" data-name="Title" style="box-sizing: border-box; font-size: 28px; font-weight: bold; color: #0F172A;">Rich Media &amp; Constraint Stack Showcase</div>
+          <div class="vireo-component" data-name="Subtitle" style="box-sizing: border-box; font-size: 16px; color: #64748B;">Demonstrating images, background layers, video, audio, and YouTube embeds in Vireo DaaC.</div>
+        </div>
+        <div class="vireo-component" data-name="HeroCard" style="box-sizing: border-box; width: 720px; height: 280px; position: relative; display: block; border-radius: 16px;">
+          <img class="vireo-component" data-name="BackgroundImage" src="https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=1000" alt="BackgroundImage" style="box-sizing: border-box; width: 720px; height: 280px; border-radius: 16px; position: absolute; left: 0; top: 0; z-index: 1; object-fit: cover;" />
+          <div class="vireo-component" data-name="TintOverlay" style="box-sizing: border-box; width: 720px; height: 280px; background-color: #000000; border-radius: 16px; position: absolute; left: 0; top: 0; z-index: 2;"></div>
+          <div class="vireo-component" data-name="ContentContainer" style="box-sizing: border-box; position: absolute; left: 32px; position: absolute; top: 60px; width: 480px; display: flex; flex-direction: column; gap: 12px; height: fit-content; z-index: 3;">
+            <div class="vireo-component" data-name="Badge" style="box-sizing: border-box; font-size: 12px; font-weight: bold; color: #38BDF8;">FEATURED</div>
+            <div class="vireo-component" data-name="HeroTitle" style="box-sizing: border-box; font-size: 24px; font-weight: bold; color: #FFFFFF;">Layered Stacks &amp; Rich Visuals</div>
+            <div class="vireo-component" data-name="HeroDesc" style="box-sizing: border-box; font-size: 14px; color: #E2E8F0;">Elements placed cleanly over photography with exact zIndex ordering and relative offsets.</div>
+          </div>
+        </div>
+        <div class="vireo-component" data-name="MediaRow" style="box-sizing: border-box; width: 720px; display: flex; flex-direction: row; gap: 24px; width: fit-content;">
+          <div class="vireo-component" data-name="VideoCard" style="box-sizing: border-box; width: 440px; display: flex; flex-direction: column; gap: 12px; height: fit-content; background-color: #FFFFFF; padding: 16px; border-radius: 12px; border: 1px solid #E2E8F0;">
+            <div class="vireo-component" data-name="VideoTitle" style="box-sizing: border-box; font-size: 16px; font-weight: bold; color: #1E293B;">HTML5 Video Player</div>
+            <video class="vireo-component" data-name="Player" src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" poster="https://images.unsplash.com/photo-1536240478700-b869070f9279?w=600" controls style="box-sizing: border-box; height: 220px; width: 100%; border-radius: 8px;"></video>
+          </div>
+          <div class="vireo-component" data-name="AudioCard" style="box-sizing: border-box; width: 256px; display: flex; flex-direction: column; gap: 16px; height: fit-content; background-color: #FFFFFF; padding: 16px; border-radius: 12px; border: 1px solid #E2E8F0;">
+            <div class="vireo-component" data-name="AudioTitle" style="box-sizing: border-box; font-size: 16px; font-weight: bold; color: #1E293B;">Audio Stream</div>
+            <img class="vireo-component" data-name="AudioCover" src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=400" alt="AudioCover" style="box-sizing: border-box; height: 140px; width: 100%; border-radius: 8px; object-fit: cover;" />
+            <audio class="vireo-component" data-name="AudioPlayer" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" controls style="box-sizing: border-box; width: 100%;"></audio>
+          </div>
+        </div>
+        <div class="vireo-component" data-name="EmbedSection" style="box-sizing: border-box; width: 720px; display: flex; flex-direction: column; gap: 12px; height: fit-content; background-color: #FFFFFF; padding: 20px; border-radius: 12px; border: 1px solid #E2E8F0;">
+          <div class="vireo-component" data-name="EmbedTitle" style="box-sizing: border-box; font-size: 18px; font-weight: bold; color: #1E293B;">Responsive YouTube Embed</div>
+          <iframe class="vireo-component" data-name="YoutubeFrame" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="box-sizing: border-box; height: 380px; width: 100%; border-radius: 8px; border: none;"></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

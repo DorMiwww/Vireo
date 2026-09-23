@@ -1,0 +1,170 @@
+block MediaShowcase {
+    component Page {
+        layout: vertical
+        gap: 32
+        padding: 40
+        width: 800
+        backgroundColor: #F8FAFC
+
+        component Header {
+            layout: vertical
+            gap: 8
+
+            component Title {
+                text: "Rich Media & Constraint Stack Showcase"
+                fontSize: 28
+                fontWeight: bold
+                color: #0F172A
+            }
+
+            component Subtitle {
+                text: "Demonstrating images, background layers, video, audio, and YouTube embeds in Vireo DaaC."
+                fontSize: 16
+                color: #64748B
+            }
+        }
+
+        // 1. Stack Layout: Image layer under content (ConstraintLayout style)
+        component HeroCard {
+            layout: stack
+            width: 720
+            height: 280
+            radius: 16
+
+            component BackgroundImage {
+                image: "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=1000"
+                fit: cover
+                width: 720
+                height: 280
+                radius: 16
+                zIndex: 1
+            }
+
+            component TintOverlay {
+                width: 720
+                height: 280
+                backgroundColor: #000000
+                radius: 16
+                zIndex: 2
+            }
+
+            component ContentContainer {
+                x: 32
+                y: 60
+                width: 480
+                zIndex: 3
+                layout: vertical
+                gap: 12
+
+                component Badge {
+                    text: "FEATURED"
+                    fontSize: 12
+                    fontWeight: bold
+                    color: #38BDF8
+                }
+
+                component HeroTitle {
+                    text: "Layered Stacks & Rich Visuals"
+                    fontSize: 24
+                    fontWeight: bold
+                    color: #FFFFFF
+                }
+
+                component HeroDesc {
+                    text: "Elements placed cleanly over photography with exact zIndex ordering and relative offsets."
+                    fontSize: 14
+                    color: #E2E8F0
+                }
+            }
+        }
+
+        // 2. Video Player & Audio Stream Row
+        component MediaRow {
+            layout: horizontal
+            gap: 24
+            width: 720
+
+            component VideoCard {
+                layout: vertical
+                gap: 12
+                width: 440
+                backgroundColor: #FFFFFF
+                padding: 16
+                radius: 12
+                border: 1 #E2E8F0
+
+                component VideoTitle {
+                    text: "HTML5 Video Player"
+                    fontSize: 16
+                    fontWeight: bold
+                    color: #1E293B
+                }
+
+                component Player {
+                    video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+                    poster: "https://images.unsplash.com/photo-1536240478700-b869070f9279?w=600"
+                    width: fill
+                    height: 220
+                    radius: 8
+                    controls: true
+                }
+            }
+
+            component AudioCard {
+                layout: vertical
+                gap: 16
+                width: 256
+                backgroundColor: #FFFFFF
+                padding: 16
+                radius: 12
+                border: 1 #E2E8F0
+
+                component AudioTitle {
+                    text: "Audio Stream"
+                    fontSize: 16
+                    fontWeight: bold
+                    color: #1E293B
+                }
+
+                component AudioCover {
+                    image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=400"
+                    width: fill
+                    height: 140
+                    radius: 8
+                    fit: cover
+                }
+
+                component AudioPlayer {
+                    audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+                    width: fill
+                    controls: true
+                }
+            }
+        }
+
+        // 3. YouTube Embed
+        component EmbedSection {
+            layout: vertical
+            gap: 12
+            width: 720
+            backgroundColor: #FFFFFF
+            padding: 20
+            radius: 12
+            border: 1 #E2E8F0
+
+            component EmbedTitle {
+                text: "Responsive YouTube Embed"
+                fontSize: 18
+                fontWeight: bold
+                color: #1E293B
+            }
+
+            component YoutubeFrame {
+                iframe: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                width: fill
+                height: 380
+                radius: 8
+            }
+        }
+    }
+}

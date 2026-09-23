@@ -239,13 +239,13 @@ class MainTest {
         val (exitCodeCmd, stdoutCmd, stderrCmd) = runCliTest("version")
         assertEquals(0, exitCodeCmd)
         assertTrue(stderrCmd.isEmpty())
-        assertTrue(stdoutCmd.contains("vireo version 0.1.0"))
+        assertTrue(stdoutCmd.contains("vireo version 0.2.0"))
         assertTrue(stdoutCmd.contains("pure JVM 21"))
 
         val (exitCodeFlag, stdoutFlag, stderrFlag) = runCliTest("--version")
         assertEquals(0, exitCodeFlag)
         assertTrue(stderrFlag.isEmpty())
-        assertTrue(stdoutFlag.contains("vireo version 0.1.0"))
+        assertTrue(stdoutFlag.contains("vireo version 0.2.0"))
     }
 
     @Test

@@ -15,6 +15,7 @@
 * [Badges & Indicators](components/badges.md)
 * [Containers & Cards](components/containers.md)
 * [Forms & Inputs](components/forms.md)
+* [Media & Assets](components/media.md)
 
 ## Layout Engine
 * [Auto Layout & Constraints](layout.md)

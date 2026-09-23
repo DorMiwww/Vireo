@@ -94,6 +94,16 @@ object FigmaRenderer : Renderer<FigmaDocument> {
         var primaryAlign: String? = null
         var counterAlign: String? = null
 
+        var isStack = false
+        var srcProp: String? = null
+        var imageProp: String? = null
+        var bgImageProp: String? = null
+        var videoProp: String? = null
+        var audioProp: String? = null
+        var iframeProp: String? = null
+        var fitProp: String? = null
+        var posterProp: String? = null
+
         // 1. Process constraints
         comp.constraints.forEach { constraint ->
             when (constraint) {
@@ -117,7 +127,20 @@ object FigmaRenderer : Renderer<FigmaDocument> {
                     }
                 }
                 is Constraint.AutoLayout -> {
-                    layoutDir = if (constraint.direction == Direction.VERTICAL) "VERTICAL" else "HORIZONTAL"
+                    when (constraint.direction) {
+                        Direction.VERTICAL -> {
+                            layoutDir = "VERTICAL"
+                            isStack = false
+                        }
+                        Direction.HORIZONTAL -> {
+                            layoutDir = "HORIZONTAL"
+                            isStack = false
+                        }
+                        Direction.STACK -> {
+                            layoutDir = null
+                            isStack = true
+                        }
+                    }
                     itemGap = constraint.gap
                     mainAxisSizing = when (constraint.mainAxis) {
                         Sizing.FILL, Sizing.FIXED -> "FIXED"
@@ -138,6 +161,22 @@ object FigmaRenderer : Renderer<FigmaDocument> {
             val strVal = extractPropertyValueString(rawVal)
 
             when (key) {
+                "layout" -> {
+                    when (strVal.lowercase().trim('"', '\'')) {
+                        "vertical", "column" -> {
+                            layoutDir = "VERTICAL"
+                            isStack = false
+                        }
+                        "horizontal", "row" -> {
+                            layoutDir = "HORIZONTAL"
+                            isStack = false
+                        }
+                        "stack", "layer", "constraint" -> {
+                            layoutDir = null
+                            isStack = true
+                        }
+                    }
+                }
                 "width" -> {
                     when (strVal) {
                         "fill" -> isFillWidth = true
@@ -211,13 +250,96 @@ object FigmaRenderer : Renderer<FigmaDocument> {
                         textContent = strVal
                     }
                 }
+                "src" -> srcProp = strVal
+                "image" -> imageProp = strVal
+                "backgroundImage", "background-image" -> bgImageProp = strVal
+                "video" -> videoProp = strVal
+                "audio" -> audioProp = strVal
+                "iframe", "embed" -> iframeProp = strVal
+                "fit", "objectFit" -> fitProp = strVal
+                "poster" -> posterProp = strVal
+                "zIndex", "z" -> {}
+                "x" -> strVal.toFloatOrNull()?.let { xVal = it }
+                "y" -> strVal.toFloatOrNull()?.let { yVal = it }
             }
         }
 
-        val isInputBox = placeholderText != null || (textContent != null && (radiusVal != null || strokeW != null || strokeHex != null))
-        val isButtonOrContainerWithChildren = comp.children.isNotEmpty() || layoutDir != null
+        val vProp = videoProp
+        val aProp = audioProp
+        val ifrProp = iframeProp
+        val imgProp = imageProp
+        val sProp = srcProp
+        val bgProp = bgImageProp
+        val pProp = posterProp
+        val cHex = colorHex
 
-        val nodeType = if (isInputBox || isButtonOrContainerWithChildren) {
+        val resolvedMediaType: String?
+        val resolvedMediaUrl: String?
+        if (vProp != null) {
+            resolvedMediaType = "VIDEO"
+            resolvedMediaUrl = vProp.trim('"', '\'')
+        } else if (aProp != null) {
+            resolvedMediaType = "AUDIO"
+            resolvedMediaUrl = aProp.trim('"', '\'')
+        } else if (ifrProp != null) {
+            resolvedMediaType = "IFRAME"
+            resolvedMediaUrl = ifrProp.trim('"', '\'')
+        } else if (imgProp != null) {
+            val clean = imgProp.trim('"', '\'')
+            resolvedMediaType = if (clean.endsWith(".svg", ignoreCase = true)) "SVG" else "IMAGE"
+            resolvedMediaUrl = clean
+        } else if (sProp != null) {
+            val clean = sProp.trim('"', '\'')
+            val ext = clean.substringAfterLast('.', "").substringBefore('?').lowercase()
+            resolvedMediaType = when (ext) {
+                "svg" -> "SVG"
+                "mp4", "webm" -> "VIDEO"
+                "mp3", "wav", "ogg" -> "AUDIO"
+                "html" -> "IFRAME"
+                "png", "jpg", "jpeg", "webp", "gif", "avif" -> "IMAGE"
+                else -> if (clean.contains("youtube.com") || clean.contains("youtu.be") || clean.contains("vimeo.com")) "IFRAME" else "IMAGE"
+            }
+            resolvedMediaUrl = clean
+        } else {
+            resolvedMediaType = null
+            resolvedMediaUrl = null
+        }
+
+        val figmaScaleMode = when (fitProp?.lowercase()?.trim('"', '\'')) {
+            "cover" -> "FILL"
+            "contain" -> "FIT"
+            "fill" -> "STRETCH"
+            "none" -> "CROP"
+            else -> if (resolvedMediaType == "IMAGE") "FILL" else null
+        }
+
+        val fillsList = mutableListOf<Paint>()
+        if (cHex != null) {
+            fillsList.add(Paint(type = "SOLID", color = Color.fromHex(cHex)))
+        }
+        if (bgProp != null) {
+            fillsList.add(Paint(type = "IMAGE", scaleMode = figmaScaleMode ?: "FILL", imageRef = bgProp.trim('"', '\'')))
+        }
+        if (resolvedMediaType == "IMAGE" && (bgProp == null || comp.children.isEmpty())) {
+            fillsList.add(Paint(type = "IMAGE", scaleMode = figmaScaleMode ?: "FILL", imageRef = resolvedMediaUrl))
+        }
+        if (pProp != null && resolvedMediaType == "VIDEO") {
+            fillsList.add(Paint(type = "IMAGE", scaleMode = "FILL", imageRef = pProp.trim('"', '\'')))
+        }
+
+        val isInputBox = placeholderText != null || (textContent != null && (radiusVal != null || strokeW != null || strokeHex != null))
+        val isButtonOrContainerWithChildren = comp.children.isNotEmpty() || (layoutDir != null && !isStack) || isStack
+        val isCardMedia = resolvedMediaType in listOf("VIDEO", "AUDIO", "IFRAME")
+
+        if (isInputBox && fillsList.isEmpty()) {
+            fillsList.add(Paint(type = "SOLID", color = Color(1f, 1f, 1f)))
+        }
+        if (fillsList.isEmpty() && isCardMedia) {
+            val defaultColor = if (resolvedMediaType == "AUDIO") "#0F172A" else "#1E293B"
+            fillsList.add(Paint(type = "SOLID", color = Color.fromHex(defaultColor)))
+        }
+
+        val nodeType = if (isInputBox || isButtonOrContainerWithChildren || isCardMedia) {
             "FRAME"
         } else if (textContent != null) {
             "TEXT"
@@ -226,22 +348,29 @@ object FigmaRenderer : Renderer<FigmaDocument> {
         }
 
         // Auto Layout defaults for containers
-        var effectiveLayoutDir = layoutDir
+        var effectiveLayoutDir = if (isStack) null else layoutDir
         var effectivePrimaryAlign = primaryAlign
         var effectiveCounterAlign = counterAlign
 
-        if (isInputBox && effectiveLayoutDir == null) {
+        if (isInputBox && effectiveLayoutDir == null && !isStack) {
             effectiveLayoutDir = "HORIZONTAL"
             if (effectiveCounterAlign == null) effectiveCounterAlign = "CENTER"
             if (pLeft == null) pLeft = 16f
             if (pRight == null) pRight = 16f
             if (heightVal == null) heightVal = 44f
-        } else if (comp.children.isNotEmpty() && effectiveLayoutDir == null) {
+        } else if (comp.children.isNotEmpty() && effectiveLayoutDir == null && !isStack) {
             // Button-like container centering its children
             effectiveLayoutDir = "HORIZONTAL"
             if (effectivePrimaryAlign == null) effectivePrimaryAlign = "CENTER"
             if (effectiveCounterAlign == null) effectiveCounterAlign = "CENTER"
             if (heightVal == null) heightVal = 44f
+        } else if (isCardMedia && comp.children.isEmpty() && !isStack) {
+            effectiveLayoutDir = "HORIZONTAL"
+            if (effectivePrimaryAlign == null) effectivePrimaryAlign = "CENTER"
+            if (effectiveCounterAlign == null) effectiveCounterAlign = "CENTER"
+            if (heightVal == null) heightVal = if (resolvedMediaType == "AUDIO") 54f else 200f
+            if (widthVal == null) widthVal = 320f
+            if (radiusVal == null) radiusVal = 8f
         }
 
         // Sizing in Auto Layout
@@ -292,7 +421,6 @@ object FigmaRenderer : Renderer<FigmaDocument> {
             else -> null
         }
 
-        val fillsList = colorHex?.let { listOf(Paint(type = "SOLID", color = Color.fromHex(it))) }
         val strokesList = strokeHex?.let { listOf(Paint(type = "SOLID", color = Color.fromHex(it))) }
 
         val typeStyle = if (fontSizeVal != null || fontWeightVal != null) {
@@ -312,8 +440,34 @@ object FigmaRenderer : Renderer<FigmaDocument> {
                     fills = listOf(Paint(type = "SOLID", color = Color.fromHex("#9CA3AF")))
                 )
             )
+        } else if (isCardMedia && comp.children.isEmpty()) {
+            val labelText = when (resolvedMediaType) {
+                "VIDEO" -> "▶ Video: ${resolvedMediaUrl ?: ""}"
+                "AUDIO" -> "🎵 Audio: ${resolvedMediaUrl ?: ""}"
+                "IFRAME" -> "🌐 Embed: ${resolvedMediaUrl ?: ""}"
+                else -> resolvedMediaUrl ?: ""
+            }
+            listOf(
+                FigmaNode(
+                    id = "$nodeId:label",
+                    name = "MediaLabel",
+                    type = "TEXT",
+                    characters = labelText,
+                    style = TypeStyle(fontSize = 12f, fontWeight = 500f),
+                    fills = listOf(Paint(type = "SOLID", color = Color.fromHex("#FFFFFF")))
+                )
+            )
         } else if (comp.children.isNotEmpty()) {
-            comp.children.map { child ->
+            val sortedChildren = if (isStack) {
+                comp.children.sortedBy { child ->
+                    child.properties.find { it.key == "zIndex" || it.key == "z" }?.let {
+                        extractPropertyValueString(it.value).toIntOrNull()
+                    } ?: 0
+                }
+            } else {
+                comp.children
+            }
+            sortedChildren.map { child ->
                 renderComponent(child, "$nodeId:${childCounter++}", file, loadedFiles, effectiveLayoutDir)
             }
         } else null
@@ -334,7 +488,7 @@ object FigmaRenderer : Renderer<FigmaDocument> {
             children = renderedChildren,
             characters = if (nodeType == "TEXT") textContent else null,
             style = typeStyle,
-            fills = fillsList ?: (if (isInputBox) listOf(Paint(type = "SOLID", color = Color(1f, 1f, 1f))) else null),
+            fills = if (fillsList.isNotEmpty()) fillsList else null,
             strokes = strokesList,
             strokeWeight = strokeW,
             cornerRadius = radiusVal,
@@ -350,7 +504,10 @@ object FigmaRenderer : Renderer<FigmaDocument> {
             paddingRight = pRight,
             paddingTop = pTop,
             paddingBottom = pBottom,
-            absoluteBoundingBox = boundingBox
+            absoluteBoundingBox = boundingBox,
+            mediaType = resolvedMediaType,
+            mediaUrl = resolvedMediaUrl,
+            scaleMode = figmaScaleMode
         )
     }
 

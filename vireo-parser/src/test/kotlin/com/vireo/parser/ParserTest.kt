@@ -580,6 +580,89 @@ class ParserTest {
 
         assertEquals(3, condExpr.location.line)
     }
+
+    @Test
+    fun `Phase 8 - parses stack layout and rich media properties`() {
+        val source = """
+            block MediaBlock {
+                component HeroBanner {
+                    layout: stack
+                    width: 800
+                    height: 400
+
+                    component BackgroundPhoto {
+                        src: "./assets/hero.jpg"
+                        fit: cover
+                        width: fill
+                        height: fill
+                        zIndex: 0
+                    }
+
+                    component VideoPlayer {
+                        src: "./assets/trailer.mp4"
+                        poster: "./assets/poster.jpg"
+                        controls: true
+                        autoplay: false
+                        loop: true
+                        muted: true
+                        x: 20
+                        y: 50
+                        zIndex: 1
+                    }
+
+                    component AudioTrack {
+                        audio: "./assets/music.mp3"
+                        controls: true
+                        zIndex: 2
+                    }
+
+                    component WebEmbed {
+                        iframe: "https://www.youtube.com/embed/dQw4w9WgXcQ"
+                        allowFullscreen: true
+                        zIndex: 3
+                    }
+                }
+            }
+        """.trimIndent()
+
+        val result = Parser.parse(source, "media.dac")
+        assertIs<VireoResult.Ok<VireoFile>>(result)
+
+        val hero = result.value.blocks[0].components[0]
+        assertEquals("HeroBanner", hero.name)
+        val autoLayout = hero.constraints.filterIsInstance<Constraint.AutoLayout>().firstOrNull()
+        assertEquals(Direction.STACK, autoLayout?.direction)
+
+        assertEquals(4, hero.children.size)
+
+        val bg = hero.children[0]
+        assertEquals("BackgroundPhoto", bg.name)
+        val bgProps = bg.properties.associate { it.key to (it.value as? PropertyValue.Literal)?.value }
+        assertEquals("./assets/hero.jpg", bgProps["src"])
+        assertEquals("cover", bgProps["fit"])
+        assertEquals(0, bgProps["zIndex"])
+
+        val video = hero.children[1]
+        assertEquals("VideoPlayer", video.name)
+        val vidProps = video.properties.associate { it.key to (it.value as? PropertyValue.Literal)?.value }
+        assertEquals("./assets/trailer.mp4", vidProps["src"])
+        assertEquals("./assets/poster.jpg", vidProps["poster"])
+        assertEquals(true, vidProps["controls"])
+        assertEquals(false, vidProps["autoplay"])
+        assertEquals(true, vidProps["loop"])
+        assertEquals(true, vidProps["muted"])
+
+        val audio = hero.children[2]
+        assertEquals("AudioTrack", audio.name)
+        val audioProps = audio.properties.associate { it.key to (it.value as? PropertyValue.Literal)?.value }
+        assertEquals("./assets/music.mp3", audioProps["audio"])
+
+        val embed = hero.children[3]
+        assertEquals("WebEmbed", embed.name)
+        val embedProps = embed.properties.associate { it.key to (it.value as? PropertyValue.Literal)?.value }
+        assertEquals("https://www.youtube.com/embed/dQw4w9WgXcQ", embedProps["iframe"])
+        assertEquals(true, embedProps["allowFullscreen"])
+    }
 }
 
 

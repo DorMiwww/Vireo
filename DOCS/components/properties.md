@@ -57,7 +57,7 @@ This document is the comprehensive reference for all properties recognized by th
 
 | Property | Type / Values | Description | Example |
 | :--- | :--- | :--- | :--- |
-| `layout` | `"horizontal"`, `"vertical"` | Direction of children (renders flexbox / Figma auto layout) | `layout: vertical` |
+| `layout` | `"horizontal"`, `"vertical"`, `"stack"` | Direction of children (flexbox, or layered stack) | `layout: vertical`<br>`layout: stack` |
 | `gap` | `Number` | Gap in pixels between child components | `gap: 16` |
 | `alignItems` | `"flex-start"`, `"center"`, `"flex-end"`, `"stretch"` | Cross-axis alignment of children | `alignItems: center` |
 | `justifyContent` | `"flex-start"`, `"center"`, `"space-between"`, etc. | Main-axis distribution of children | `justifyContent: "space-between"` |
@@ -72,3 +72,23 @@ This document is the comprehensive reference for all properties recognized by th
 | `label` | `String` | Shorthand text label for button or input elements | `label: "Sign In"` |
 | `href` / `url` / `link` | `String` | Web hyperlink (renders an `<a>` anchor element) | `href: "https://vireo.dev"` |
 | `ref` | Dot-notation identifier | Inherit definition from another component | `ref: buttons.Primary.Default` |
+
+---
+
+## 8. Rich Media & Layer Stacking (Phase 8)
+
+| Property | Type / Values | Description | Example |
+| :--- | :--- | :--- | :--- |
+| `image` / `src` | `String` (path or URL) | Path or URL to raster image (`.png`, `.jpg`, `.webp`, `.gif`, `.avif`) or vector (`.svg`) | `image: "avatar.png"` |
+| `backgroundImage` | `String` (path or URL) | Background image applied to a container frame | `backgroundImage: "hero-bg.jpg"` |
+| `fit` / `objectFit` | `"cover"`, `"contain"`, `"fill"`, `"none"` | Scale mode for image assets | `fit: cover` |
+| `video` | `String` (path or URL) | HTML5 video player stream (`.mp4`, `.webm`) | `video: "demo.mp4"` |
+| `poster` | `String` (path or URL) | Video preview poster thumbnail | `poster: "thumb.jpg"` |
+| `controls` | `Boolean` | Show audio/video native browser player controls | `controls: true` |
+| `autoplay` | `Boolean` | Autoplay video on load | `autoplay: true` |
+| `loop` | `Boolean` | Loop media playback | `loop: true` |
+| `muted` | `Boolean` | Mute media audio | `muted: true` |
+| `audio` | `String` (path or URL) | HTML5 audio player stream (`.mp3`, `.wav`, `.ogg`) | `audio: "song.mp3"` |
+| `iframe` / `embed` | `String` (URL or path) | Embedded webpage or YouTube iframe | `iframe: "https://www.youtube.com/watch?v=..."` |
+| `zIndex` / `z` | `Number` (integer) | Stacking layer order inside stack layouts | `zIndex: 2` |
+

@@ -5,7 +5,7 @@
 [![CI](https://github.com/DorMiwww/Vireo/actions/workflows/ci.yml/badge.svg)](https://github.com/DorMiwww/Vireo/actions)
 [![Documentation](https://img.shields.io/badge/docs-online-blue)](https://dormiwww.github.io/Vireo/)
 [![Agent Skill](https://img.shields.io/badge/Agent%20Skill-Claude%20%26%20Antigravity-teal)](https://github.com/DorMiwww/vireo-skill)
-[![Version](https://img.shields.io/badge/version-0.1.0-orange)]()
+[![Version](https://img.shields.io/badge/version-0.2.0-orange)]()
 [![Kotlin](https://img.shields.io/badge/Kotlin-2.0-blue.svg)]()
 [![Figma Plugin](https://img.shields.io/badge/Figma-Plugin%20Supported-purple)]()
 [![License](https://img.shields.io/badge/license-MIT-green)]()

@@ -47,7 +47,8 @@ export default defineConfig({
           { text: 'Buttons & Actions', link: '/components/buttons' },
           { text: 'Badges & Indicators', link: '/components/badges' },
           { text: 'Containers & Cards', link: '/components/containers' },
-          { text: 'Forms & Inputs', link: '/components/forms' }
+          { text: 'Forms & Inputs', link: '/components/forms' },
+          { text: 'Media & Assets', link: '/components/media' }
         ]
       },
       {

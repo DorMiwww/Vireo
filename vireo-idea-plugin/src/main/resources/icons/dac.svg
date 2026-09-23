@@ -7,17 +7,12 @@
     </linearGradient>
   </defs>
 
-  <!-- Векторне перо / крива, що перетікає в кодовий символ -->
-  <!-- Ліва дужка коду '<', трансформована у векторний маніпулятор -->
   <path d="M5.5 3.5L2 8L5.5 12.5" stroke="url(#dacIconGrad)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
 
-  <!-- Права дужка коду '>' -->
   <path d="M10.5 3.5L14 8L10.5 12.5" stroke="url(#dacIconGrad)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
 
-  <!-- Центральний діагональний слеш з векторною точкою посередині -->
   <path d="M9.5 3L6.5 13" stroke="url(#dacIconGrad)" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
 
-  <!-- Центральний вузол Bezier / Anchor Point (дизайн) -->
   <rect x="6.5" y="6.5" width="3" height="3" rx="0.6" fill="#FFFFFF" stroke="#A855F7" stroke-width="0.8"/>
   <circle cx="8" cy="8" r="0.6" fill="#F43F5E"/>
 </svg>

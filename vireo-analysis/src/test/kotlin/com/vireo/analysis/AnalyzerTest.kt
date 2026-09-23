@@ -162,9 +162,9 @@ class AnalyzerTest {
         val parseResult = Parser.parse(loginSource, "login.dac")
         assertTrue(parseResult is VireoResult.Ok)
 
-        val analysisResult = Analyzer.analyze(parseResult.value) { path ->
+        val analysisResult = Analyzer.analyze(parseResult.value, fileLoader = { path ->
             throw java.io.FileNotFoundException("File $path not found")
-        }
+        })
 
         val errors = when (analysisResult) {
             is VireoResult.Err -> analysisResult.errors
@@ -255,5 +255,99 @@ class AnalyzerTest {
             else -> throw AssertionError("Expected Err but got $analysisResult")
         }
         assertEquals(2, errors.size, "Should collect all 2 errors instead of stopping at 1")
+    }
+
+    @Test
+    fun testValidRichMediaAssets() {
+        val source = """
+            block MediaBlock {
+                component ValidCard {
+                    layout: stack
+                    width: 400
+                    height: 300
+                    zIndex: 1
+
+                    component Bg {
+                        backgroundImage: "./assets/photo.jpg"
+                        fit: cover
+                    }
+                    component Avatar {
+                        src: "./assets/avatar.png"
+                        fit: contain
+                    }
+                    component RemoteVideo {
+                        src: "https://example.com/stream.mp4"
+                        poster: "https://example.com/poster.jpg"
+                    }
+                    component Embed {
+                        iframe: "https://www.youtube.com/embed/xyz"
+                    }
+                }
+            }
+        """.trimIndent()
+
+        val parsed = Parser.parse(source, "media.dac")
+        assertTrue(parsed is VireoResult.Ok)
+
+        // Pass mock assetChecker where relative asset paths exist
+        val result = Analyzer.analyze(parsed.value, assetChecker = { true })
+        assertTrue(result is VireoResult.Ok, "Expected Ok but got: $result")
+    }
+
+    @Test
+    fun testMissingLocalAssetError() {
+        val source = """
+            block MediaBlock {
+                component MissingPhoto {
+                    src: "./assets/nonexistent.png"
+                }
+            }
+        """.trimIndent()
+
+        val parsed = Parser.parse(source, "designs/test.dac")
+        assertTrue(parsed is VireoResult.Ok)
+
+        val result = Analyzer.analyze(parsed.value, assetChecker = { false })
+        assertTrue(result is VireoResult.Err)
+        val err = (result as VireoResult.Err).errors.first()
+        assertTrue(err.message.contains("Asset file './assets/nonexistent.png' not found"))
+    }
+
+    @Test
+    fun testUnsupportedAssetFormatError() {
+        val source = """
+            block MediaBlock {
+                component BadFile {
+                    src: "./assets/program.exe"
+                }
+            }
+        """.trimIndent()
+
+        val parsed = Parser.parse(source, "test.dac")
+        assertTrue(parsed is VireoResult.Ok)
+
+        val result = Analyzer.analyze(parsed.value, assetChecker = { true })
+        assertTrue(result is VireoResult.Err)
+        val err = (result as VireoResult.Err).errors.first()
+        assertTrue(err.message.contains("Unsupported asset format '.exe'"))
+    }
+
+    @Test
+    fun testInvalidFitPropertyError() {
+        val source = """
+            block MediaBlock {
+                component Box {
+                    fit: stretched
+                }
+            }
+        """.trimIndent()
+
+        val parsed = Parser.parse(source, "test.dac")
+        assertTrue(parsed is VireoResult.Ok)
+
+        val result = Analyzer.analyze(parsed.value)
+        assertTrue(result is VireoResult.Err)
+        val err = (result as VireoResult.Err).errors.first()
+        assertTrue(err.message.contains("Property 'fit' expects 'cover', 'contain', 'fill', or 'none'"))
     }
 }
