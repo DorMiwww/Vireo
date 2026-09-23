@@ -29,3 +29,10 @@ vireo-idea-plugin/libs/*.jar
 # IntelliJ plugin sandbox & temporary cache
 .intellijPlatform/
 **/.intellijPlatform/
+
+# VitePress & Node
+node_modules/
+.vitepress/cache/
+.vitepress/dist/
+DOCS/.vitepress/cache/
+DOCS/.vitepress/dist/

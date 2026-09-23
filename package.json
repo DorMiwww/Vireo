@@ -1,0 +1,13 @@
+{
+  "name": "vireo-docs",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "docs:dev": "vitepress dev DOCS",
+    "docs:build": "vitepress build DOCS",
+    "docs:preview": "vitepress preview DOCS"
+  },
+  "devDependencies": {
+    "vitepress": "^1.6.3"
+  }
+}
