@@ -13,6 +13,7 @@ Explore the core sections of the Vireo platform:
 | Section | Description |
 | :--- | :--- |
 | [Getting Started](./getting-started.md) | Install Vireo CLI, initialize your workspace, and render your first design |
+| [Design Showcases](./showcase.md) | Ready-to-test production showcase designs featuring rich media, photography, and stack layouts |
 | [Core Concepts](./concepts/index.md) | The DaaC philosophy, file structure, and compiler architecture |
 | [Addressing & Composition](./concepts/addressing.md) | Cross-file references with dot-notation (`file.block.component`) and `ref:` overrides |
 | [Expressions & Variables](./concepts/expressions.md) | Dynamic design tokens with `var`, helper `fun`, and conditionals |

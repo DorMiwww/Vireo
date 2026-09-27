@@ -18,6 +18,7 @@ export default defineConfig({
     nav: [
       { text: 'Home', link: '/' },
       { text: 'Getting Started', link: '/getting-started' },
+      { text: 'Showcases', link: '/showcase' },
       { text: 'Components', link: '/components/' },
       { text: 'CLI', link: '/cli' },
       { text: 'Figma', link: '/figma-plugin' }
@@ -28,7 +29,8 @@ export default defineConfig({
         text: 'Introduction',
         items: [
           { text: 'Overview', link: '/' },
-          { text: 'Getting Started', link: '/getting-started' }
+          { text: 'Getting Started', link: '/getting-started' },
+          { text: 'Design Showcases', link: '/showcase' }
         ]
       },
       {

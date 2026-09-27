@@ -2,6 +2,7 @@
 
 * [Vireo Overview](index.md)
 * [Getting Started](getting-started.md)
+* [Design Showcases](showcase.md)
 
 ## Core Concepts
 * [Fundamentals](concepts/index.md)

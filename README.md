@@ -227,36 +227,54 @@ Vireo includes a private development plugin located in [`figma-plugin/`](figma-p
 
 ## Showcase Designs & HTML Previews
 
-Vireo compiles declarative `.dac` files directly into pixel-perfect standalone HTML5/CSS Flexbox previews. Below are previews of ready-to-test components available in the [`showcase/`](showcase/) directory:
+Vireo compiles declarative `.dac` files directly into pixel-perfect standalone HTML5/CSS Flexbox previews and native Figma Auto Layout components. Below are previews of ready-to-test components available in the [`showcase/`](showcase/) directory:
 
-### 1. Large SaaS Analytics Dashboard ([`showcase/dashboard.dac`](showcase/dashboard.dac))
+### 1. E-Commerce Product Showcase ([`showcase/product.dac`](showcase/product.dac))
+Modern e-commerce product card featuring high-resolution photography, layered constraint stack layout (`layout: stack`) with floating `-30% OFF` discount badge and heart wishlist button, star rating metrics, color variant selectors, dynamic pricing, and action buttons.
+
+![Vireo E-Commerce Product Card Preview](DOCS/images/preview-product.png)
+
+---
+
+### 2. Cinematic Streaming & Media Hub ([`showcase/media-stream.dac`](showcase/media-stream.dac))
+Comprehensive rich media entertainment interface showcasing photographic hero banner with dark tint overlay and play CTA (`layout: stack`), HTML5 video player with poster, audio soundtrack stream card with album cover art, and responsive YouTube trailer embed.
+
+![Vireo Streaming & Media Hub Preview](DOCS/images/preview-media.png)
+
+---
+
+### 3. Profile Card with Photographic Cover & Portrait Avatar ([`showcase/card.dac`](showcase/card.dac))
+User profile card demonstrating photographic header banner (`layout: stack`), circular portrait photo avatar (`image: ...`, `fit: cover`), verified status badge, followers metrics grid, and tag chips.
+
+![Vireo Profile Card Preview](DOCS/images/preview-card.png)
+
+---
+
+### 4. Large SaaS Analytics Dashboard ([`showcase/dashboard.dac`](showcase/dashboard.dac))
 Complete responsive analytics dashboard featuring navigation, hero greetings, key performance metrics, data tables with pagination, and interactive sidebars.
 
 ![Vireo SaaS Analytics Dashboard](DOCS/images/preview-dashboard.png)
 
 ---
 
-### 2. SaaS Pricing Table ([`showcase/pricing.dac`](showcase/pricing.dac))
+### 5. SaaS Pricing Table ([`showcase/pricing.dac`](showcase/pricing.dac))
 Multi-tier comparative pricing table with highlight badges, feature lists, and action buttons.
 
 ![Vireo Pricing Table Preview](DOCS/images/preview-pricing.png)
 
 ---
 
-### 3. Profile Card ([`showcase/card.dac`](showcase/card.dac))
-User profile component demonstrating nested Auto Layout, avatar typography, followers metrics grid, and tag chips.
-
-<p align="center">
-  <img src="DOCS/images/preview-card.png" alt="Vireo Profile Card Preview" width="600" />
-</p>
-
-You can preview the pre-rendered HTML files directly in your browser:
+You can preview any pre-rendered HTML file directly in your browser:
 ```bash
+open showcase/product.html
+# or
+open showcase/media-stream.html
+# or
+open showcase/card.html
+# or
 open showcase/dashboard.html
 # or
 open showcase/pricing.html
-# or
-open showcase/card.html
 ```
 
 ---

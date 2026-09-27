@@ -1,0 +1,940 @@
+{
+    "schemaVersion": 2,
+    "name": "showcase/media-stream.dac",
+    "nodes": [
+        {
+            "id": "0:1",
+            "name": "showcase/media-stream.dac",
+            "type": "CANVAS",
+            "children": [
+                {
+                    "id": "1:1",
+                    "name": "Stream",
+                    "type": "FRAME",
+                    "children": [
+                        {
+                            "id": "1:1:1",
+                            "name": "Hub",
+                            "type": "FRAME",
+                            "children": [
+                                {
+                                    "id": "1:1:1:1",
+                                    "name": "Header",
+                                    "type": "FRAME",
+                                    "children": [
+                                        {
+                                            "id": "1:1:1:1:1",
+                                            "name": "BrandBadge",
+                                            "type": "FRAME",
+                                            "children": [
+                                                {
+                                                    "id": "1:1:1:1:1:1",
+                                                    "name": "LiveDot",
+                                                    "type": "TEXT",
+                                                    "characters": "● LIVE",
+                                                    "style": {
+                                                        "fontSize": 11.0,
+                                                        "fontWeight": 700.0
+                                                    },
+                                                    "fills": [
+                                                        {
+                                                            "color": {
+                                                                "r": 0.9372549,
+                                                                "g": 0.26666668,
+                                                                "b": 0.26666668
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "id": "1:1:1:1:1:2",
+                                                    "name": "Channel",
+                                                    "type": "TEXT",
+                                                    "characters": "NEBULA STREAMING NETWORK",
+                                                    "style": {
+                                                        "fontSize": 11.0,
+                                                        "fontWeight": 700.0
+                                                    },
+                                                    "fills": [
+                                                        {
+                                                            "color": {
+                                                                "r": 0.5803922,
+                                                                "g": 0.6392157,
+                                                                "b": 0.72156864
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ],
+                                            "layoutMode": "HORIZONTAL",
+                                            "primaryAxisSizingMode": "AUTO",
+                                            "counterAxisSizingMode": "AUTO",
+                                            "counterAxisAlignItems": "CENTER",
+                                            "itemSpacing": 8.0
+                                        },
+                                        {
+                                            "id": "1:1:1:1:2",
+                                            "name": "HubTitle",
+                                            "type": "TEXT",
+                                            "characters": "Cinematic Media & Entertainment Showcase",
+                                            "style": {
+                                                "fontSize": 26.0,
+                                                "fontWeight": 700.0
+                                            },
+                                            "fills": [
+                                                {
+                                                    "color": {
+                                                        "r": 0.972549,
+                                                        "g": 0.98039216,
+                                                        "b": 0.9882353
+                                                    }
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "id": "1:1:1:1:3",
+                                            "name": "Subtitle",
+                                            "type": "TEXT",
+                                            "characters": "Featuring layered constraint stacks, HTML5 video players, audio streams, and responsive embeds.",
+                                            "style": {
+                                                "fontSize": 14.0
+                                            },
+                                            "fills": [
+                                                {
+                                                    "color": {
+                                                        "r": 0.39215687,
+                                                        "g": 0.45490196,
+                                                        "b": 0.54509807
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "layoutMode": "VERTICAL",
+                                    "primaryAxisSizingMode": "AUTO",
+                                    "counterAxisSizingMode": "AUTO",
+                                    "itemSpacing": 6.0
+                                },
+                                {
+                                    "id": "1:1:1:2",
+                                    "name": "HeroBanner",
+                                    "type": "FRAME",
+                                    "children": [
+                                        {
+                                            "id": "1:1:1:2:1",
+                                            "name": "HeroPhoto",
+                                            "type": "RECTANGLE",
+                                            "fills": [
+                                                {
+                                                    "type": "IMAGE",
+                                                    "scaleMode": "FILL",
+                                                    "imageRef": "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=1000"
+                                                }
+                                            ],
+                                            "cornerRadius": 16.0,
+                                            "absoluteBoundingBox": {
+                                                "width": 696.0,
+                                                "height": 280.0
+                                            },
+                                            "mediaType": "IMAGE",
+                                            "mediaUrl": "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=1000",
+                                            "scaleMode": "FILL"
+                                        },
+                                        {
+                                            "id": "1:1:1:2:2",
+                                            "name": "DarkOverlay",
+                                            "type": "RECTANGLE",
+                                            "fills": [
+                                                {
+                                                    "color": {
+                                                        "r": 0.0,
+                                                        "g": 0.0,
+                                                        "b": 0.0
+                                                    }
+                                                }
+                                            ],
+                                            "cornerRadius": 16.0,
+                                            "absoluteBoundingBox": {
+                                                "width": 696.0,
+                                                "height": 280.0
+                                            }
+                                        },
+                                        {
+                                            "id": "1:1:1:2:3",
+                                            "name": "HeroContent",
+                                            "type": "FRAME",
+                                            "children": [
+                                                {
+                                                    "id": "1:1:1:2:3:1",
+                                                    "name": "TagRow",
+                                                    "type": "FRAME",
+                                                    "children": [
+                                                        {
+                                                            "id": "1:1:1:2:3:1:1",
+                                                            "name": "PremiereBadge",
+                                                            "type": "FRAME",
+                                                            "children": [
+                                                                {
+                                                                    "id": "1:1:1:2:3:1:1:1",
+                                                                    "name": "BadgeText",
+                                                                    "type": "TEXT",
+                                                                    "characters": "ORIGINAL PREMIERE",
+                                                                    "style": {
+                                                                        "fontSize": 10.0,
+                                                                        "fontWeight": 700.0
+                                                                    },
+                                                                    "fills": [
+                                                                        {
+                                                                            "color": {
+                                                                                "r": 1.0,
+                                                                                "g": 1.0,
+                                                                                "b": 1.0
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            ],
+                                                            "fills": [
+                                                                {
+                                                                    "color": {
+                                                                        "r": 0.23137255,
+                                                                        "g": 0.50980395,
+                                                                        "b": 0.9647059
+                                                                    }
+                                                                }
+                                                            ],
+                                                            "cornerRadius": 6.0,
+                                                            "layoutMode": "HORIZONTAL",
+                                                            "primaryAxisSizingMode": "AUTO",
+                                                            "counterAxisSizingMode": "FIXED",
+                                                            "primaryAxisAlignItems": "CENTER",
+                                                            "counterAxisAlignItems": "CENTER",
+                                                            "paddingLeft": 10.0,
+                                                            "paddingRight": 10.0,
+                                                            "paddingTop": 4.0,
+                                                            "paddingBottom": 4.0,
+                                                            "absoluteBoundingBox": {
+                                                                "height": 44.0
+                                                            }
+                                                        },
+                                                        {
+                                                            "id": "1:1:1:2:3:1:2",
+                                                            "name": "QualityBadge",
+                                                            "type": "FRAME",
+                                                            "children": [
+                                                                {
+                                                                    "id": "1:1:1:2:3:1:2:1",
+                                                                    "name": "QualityText",
+                                                                    "type": "TEXT",
+                                                                    "characters": "4K ULTRA HD • DOLBY ATMOS",
+                                                                    "style": {
+                                                                        "fontSize": 10.0,
+                                                                        "fontWeight": 700.0
+                                                                    },
+                                                                    "fills": [
+                                                                        {
+                                                                            "color": {
+                                                                                "r": 0.5803922,
+                                                                                "g": 0.6392157,
+                                                                                "b": 0.72156864
+                                                                            }
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            ],
+                                                            "fills": [
+                                                                {
+                                                                    "color": {
+                                                                        "r": 0.11764706,
+                                                                        "g": 0.16078432,
+                                                                        "b": 0.23137255
+                                                                    }
+                                                                }
+                                                            ],
+                                                            "cornerRadius": 6.0,
+                                                            "layoutMode": "HORIZONTAL",
+                                                            "primaryAxisSizingMode": "AUTO",
+                                                            "counterAxisSizingMode": "FIXED",
+                                                            "primaryAxisAlignItems": "CENTER",
+                                                            "counterAxisAlignItems": "CENTER",
+                                                            "paddingLeft": 10.0,
+                                                            "paddingRight": 10.0,
+                                                            "paddingTop": 4.0,
+                                                            "paddingBottom": 4.0,
+                                                            "absoluteBoundingBox": {
+                                                                "height": 44.0
+                                                            }
+                                                        }
+                                                    ],
+                                                    "layoutMode": "HORIZONTAL",
+                                                    "primaryAxisSizingMode": "AUTO",
+                                                    "counterAxisSizingMode": "AUTO",
+                                                    "itemSpacing": 8.0
+                                                },
+                                                {
+                                                    "id": "1:1:1:2:3:2",
+                                                    "name": "MovieTitle",
+                                                    "type": "TEXT",
+                                                    "characters": "Chronicles of the Cosmos",
+                                                    "style": {
+                                                        "fontSize": 24.0,
+                                                        "fontWeight": 700.0
+                                                    },
+                                                    "fills": [
+                                                        {
+                                                            "color": {
+                                                                "r": 1.0,
+                                                                "g": 1.0,
+                                                                "b": 1.0
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "id": "1:1:1:2:3:3",
+                                                    "name": "MovieDescription",
+                                                    "type": "TEXT",
+                                                    "characters": "An odyssey across unseen planetary systems, capturing gravitational anomalies and the dawn of interstellar exploration.",
+                                                    "style": {
+                                                        "fontSize": 13.0
+                                                    },
+                                                    "fills": [
+                                                        {
+                                                            "color": {
+                                                                "r": 0.79607844,
+                                                                "g": 0.8352941,
+                                                                "b": 0.88235295
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "id": "1:1:1:2:3:4",
+                                                    "name": "PlayAction",
+                                                    "type": "FRAME",
+                                                    "children": [
+                                                        {
+                                                            "id": "1:1:1:2:3:4:1",
+                                                            "name": "PlayIcon",
+                                                            "type": "TEXT",
+                                                            "characters": "▶",
+                                                            "style": {
+                                                                "fontSize": 14.0
+                                                            },
+                                                            "fills": [
+                                                                {
+                                                                    "color": {
+                                                                        "r": 1.0,
+                                                                        "g": 1.0,
+                                                                        "b": 1.0
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "id": "1:1:1:2:3:4:2",
+                                                            "name": "PlayText",
+                                                            "type": "TEXT",
+                                                            "characters": "Watch Trailer",
+                                                            "style": {
+                                                                "fontSize": 13.0,
+                                                                "fontWeight": 700.0
+                                                            },
+                                                            "fills": [
+                                                                {
+                                                                    "color": {
+                                                                        "r": 1.0,
+                                                                        "g": 1.0,
+                                                                        "b": 1.0
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    ],
+                                                    "fills": [
+                                                        {
+                                                            "color": {
+                                                                "r": 0.14509805,
+                                                                "g": 0.3882353,
+                                                                "b": 0.92156863
+                                                            }
+                                                        }
+                                                    ],
+                                                    "cornerRadius": 8.0,
+                                                    "layoutMode": "HORIZONTAL",
+                                                    "primaryAxisSizingMode": "AUTO",
+                                                    "counterAxisSizingMode": "AUTO",
+                                                    "counterAxisAlignItems": "CENTER",
+                                                    "itemSpacing": 10.0,
+                                                    "paddingLeft": 18.0,
+                                                    "paddingRight": 18.0,
+                                                    "paddingTop": 8.0,
+                                                    "paddingBottom": 8.0
+                                                }
+                                            ],
+                                            "layoutMode": "VERTICAL",
+                                            "primaryAxisSizingMode": "AUTO",
+                                            "counterAxisSizingMode": "FIXED",
+                                            "itemSpacing": 12.0,
+                                            "absoluteBoundingBox": {
+                                                "x": 32.0,
+                                                "y": 40.0,
+                                                "width": 460.0
+                                            }
+                                        }
+                                    ],
+                                    "cornerRadius": 16.0,
+                                    "itemSpacing": 0.0,
+                                    "absoluteBoundingBox": {
+                                        "width": 696.0,
+                                        "height": 280.0
+                                    }
+                                },
+                                {
+                                    "id": "1:1:1:3",
+                                    "name": "MediaGrid",
+                                    "type": "FRAME",
+                                    "children": [
+                                        {
+                                            "id": "1:1:1:3:1",
+                                            "name": "VideoCard",
+                                            "type": "FRAME",
+                                            "children": [
+                                                {
+                                                    "id": "1:1:1:3:1:1",
+                                                    "name": "CardHeader",
+                                                    "type": "FRAME",
+                                                    "children": [
+                                                        {
+                                                            "id": "1:1:1:3:1:1:1",
+                                                            "name": "Title",
+                                                            "type": "TEXT",
+                                                            "characters": "HTML5 Video Player",
+                                                            "style": {
+                                                                "fontSize": 15.0,
+                                                                "fontWeight": 700.0
+                                                            },
+                                                            "fills": [
+                                                                {
+                                                                    "color": {
+                                                                        "r": 0.972549,
+                                                                        "g": 0.98039216,
+                                                                        "b": 0.9882353
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "id": "1:1:1:3:1:1:2",
+                                                            "name": "Status",
+                                                            "type": "TEXT",
+                                                            "characters": "1080p HD",
+                                                            "style": {
+                                                                "fontSize": 11.0
+                                                            },
+                                                            "fills": [
+                                                                {
+                                                                    "color": {
+                                                                        "r": 0.21960784,
+                                                                        "g": 0.7411765,
+                                                                        "b": 0.972549
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    ],
+                                                    "layoutMode": "HORIZONTAL",
+                                                    "primaryAxisSizingMode": "AUTO",
+                                                    "counterAxisSizingMode": "AUTO",
+                                                    "counterAxisAlignItems": "CENTER",
+                                                    "itemSpacing": 0.0
+                                                },
+                                                {
+                                                    "id": "1:1:1:3:1:2",
+                                                    "name": "VideoPlayer",
+                                                    "type": "FRAME",
+                                                    "children": [
+                                                        {
+                                                            "id": "1:1:1:3:1:2:label",
+                                                            "name": "MediaLabel",
+                                                            "type": "TEXT",
+                                                            "characters": "▶ Video: https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+                                                            "style": {
+                                                                "fontSize": 12.0,
+                                                                "fontWeight": 500.0
+                                                            },
+                                                            "fills": [
+                                                                {
+                                                                    "color": {
+                                                                        "r": 1.0,
+                                                                        "g": 1.0,
+                                                                        "b": 1.0
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    ],
+                                                    "fills": [
+                                                        {
+                                                            "type": "IMAGE",
+                                                            "scaleMode": "FILL",
+                                                            "imageRef": "https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?w=800"
+                                                        }
+                                                    ],
+                                                    "cornerRadius": 8.0,
+                                                    "layoutMode": "HORIZONTAL",
+                                                    "primaryAxisSizingMode": "FIXED",
+                                                    "counterAxisSizingMode": "FIXED",
+                                                    "primaryAxisAlignItems": "CENTER",
+                                                    "counterAxisAlignItems": "CENTER",
+                                                    "layoutAlign": "STRETCH",
+                                                    "absoluteBoundingBox": {
+                                                        "width": 320.0,
+                                                        "height": 200.0
+                                                    },
+                                                    "mediaType": "VIDEO",
+                                                    "mediaUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+                                                }
+                                            ],
+                                            "fills": [
+                                                {
+                                                    "color": {
+                                                        "r": 0.06666667,
+                                                        "g": 0.09411765,
+                                                        "b": 0.15294118
+                                                    }
+                                                }
+                                            ],
+                                            "strokes": [
+                                                {
+                                                    "color": {
+                                                        "r": 0.12156863,
+                                                        "g": 0.16078432,
+                                                        "b": 0.21568628
+                                                    }
+                                                }
+                                            ],
+                                            "strokeWeight": 1.0,
+                                            "cornerRadius": 14.0,
+                                            "layoutMode": "VERTICAL",
+                                            "primaryAxisSizingMode": "AUTO",
+                                            "counterAxisSizingMode": "FIXED",
+                                            "itemSpacing": 12.0,
+                                            "paddingLeft": 16.0,
+                                            "paddingRight": 16.0,
+                                            "paddingTop": 16.0,
+                                            "paddingBottom": 16.0,
+                                            "absoluteBoundingBox": {
+                                                "width": 420.0
+                                            }
+                                        },
+                                        {
+                                            "id": "1:1:1:3:2",
+                                            "name": "AudioCard",
+                                            "type": "FRAME",
+                                            "children": [
+                                                {
+                                                    "id": "1:1:1:3:2:1",
+                                                    "name": "AudioHeader",
+                                                    "type": "FRAME",
+                                                    "children": [
+                                                        {
+                                                            "id": "1:1:1:3:2:1:1",
+                                                            "name": "Title",
+                                                            "type": "TEXT",
+                                                            "characters": "Original Score",
+                                                            "style": {
+                                                                "fontSize": 15.0,
+                                                                "fontWeight": 700.0
+                                                            },
+                                                            "fills": [
+                                                                {
+                                                                    "color": {
+                                                                        "r": 0.972549,
+                                                                        "g": 0.98039216,
+                                                                        "b": 0.9882353
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "id": "1:1:1:3:2:1:2",
+                                                            "name": "Format",
+                                                            "type": "TEXT",
+                                                            "characters": "Lossless",
+                                                            "style": {
+                                                                "fontSize": 11.0
+                                                            },
+                                                            "fills": [
+                                                                {
+                                                                    "color": {
+                                                                        "r": 0.0627451,
+                                                                        "g": 0.7254902,
+                                                                        "b": 0.5058824
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    ],
+                                                    "layoutMode": "HORIZONTAL",
+                                                    "primaryAxisSizingMode": "AUTO",
+                                                    "counterAxisSizingMode": "AUTO",
+                                                    "counterAxisAlignItems": "CENTER",
+                                                    "itemSpacing": 0.0
+                                                },
+                                                {
+                                                    "id": "1:1:1:3:2:2",
+                                                    "name": "AlbumArt",
+                                                    "type": "RECTANGLE",
+                                                    "fills": [
+                                                        {
+                                                            "type": "IMAGE",
+                                                            "scaleMode": "FILL",
+                                                            "imageRef": "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=400"
+                                                        }
+                                                    ],
+                                                    "cornerRadius": 8.0,
+                                                    "layoutAlign": "STRETCH",
+                                                    "absoluteBoundingBox": {
+                                                        "height": 120.0
+                                                    },
+                                                    "mediaType": "IMAGE",
+                                                    "mediaUrl": "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=400",
+                                                    "scaleMode": "FILL"
+                                                },
+                                                {
+                                                    "id": "1:1:1:3:2:3",
+                                                    "name": "TrackInfo",
+                                                    "type": "FRAME",
+                                                    "children": [
+                                                        {
+                                                            "id": "1:1:1:3:2:3:1",
+                                                            "name": "TrackName",
+                                                            "type": "TEXT",
+                                                            "characters": "Theme of Deep Space",
+                                                            "style": {
+                                                                "fontSize": 13.0,
+                                                                "fontWeight": 700.0
+                                                            },
+                                                            "fills": [
+                                                                {
+                                                                    "color": {
+                                                                        "r": 0.8862745,
+                                                                        "g": 0.9098039,
+                                                                        "b": 0.9411765
+                                                                    }
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "id": "1:1:1:3:2:3:2",
+                                                            "name": "Artist",
+                                                            "type": "TEXT",
+                                                            "characters": "Symphonic Ensemble",
+                                                            "style": {
+                                                                "fontSize": 11.0
+                                                            },
+                                                            "fills": [
+                                                                {
+                                                                    "color": {
+                                                                        "r": 0.39215687,
+                                                                        "g": 0.45490196,
+                                                                        "b": 0.54509807
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    ],
+                                                    "layoutMode": "VERTICAL",
+                                                    "primaryAxisSizingMode": "AUTO",
+                                                    "counterAxisSizingMode": "AUTO",
+                                                    "itemSpacing": 2.0
+                                                },
+                                                {
+                                                    "id": "1:1:1:3:2:4",
+                                                    "name": "AudioPlayer",
+                                                    "type": "FRAME",
+                                                    "children": [
+                                                        {
+                                                            "id": "1:1:1:3:2:4:label",
+                                                            "name": "MediaLabel",
+                                                            "type": "TEXT",
+                                                            "characters": "🎵 Audio: https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+                                                            "style": {
+                                                                "fontSize": 12.0,
+                                                                "fontWeight": 500.0
+                                                            },
+                                                            "fills": [
+                                                                {
+                                                                    "color": {
+                                                                        "r": 1.0,
+                                                                        "g": 1.0,
+                                                                        "b": 1.0
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    ],
+                                                    "fills": [
+                                                        {
+                                                            "color": {
+                                                                "r": 0.05882353,
+                                                                "g": 0.09019608,
+                                                                "b": 0.16470589
+                                                            }
+                                                        }
+                                                    ],
+                                                    "cornerRadius": 8.0,
+                                                    "layoutMode": "HORIZONTAL",
+                                                    "primaryAxisSizingMode": "FIXED",
+                                                    "counterAxisSizingMode": "FIXED",
+                                                    "primaryAxisAlignItems": "CENTER",
+                                                    "counterAxisAlignItems": "CENTER",
+                                                    "layoutAlign": "STRETCH",
+                                                    "absoluteBoundingBox": {
+                                                        "width": 320.0,
+                                                        "height": 54.0
+                                                    },
+                                                    "mediaType": "AUDIO",
+                                                    "mediaUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+                                                }
+                                            ],
+                                            "fills": [
+                                                {
+                                                    "color": {
+                                                        "r": 0.06666667,
+                                                        "g": 0.09411765,
+                                                        "b": 0.15294118
+                                                    }
+                                                }
+                                            ],
+                                            "strokes": [
+                                                {
+                                                    "color": {
+                                                        "r": 0.12156863,
+                                                        "g": 0.16078432,
+                                                        "b": 0.21568628
+                                                    }
+                                                }
+                                            ],
+                                            "strokeWeight": 1.0,
+                                            "cornerRadius": 14.0,
+                                            "layoutMode": "VERTICAL",
+                                            "primaryAxisSizingMode": "AUTO",
+                                            "counterAxisSizingMode": "FIXED",
+                                            "itemSpacing": 12.0,
+                                            "paddingLeft": 16.0,
+                                            "paddingRight": 16.0,
+                                            "paddingTop": 16.0,
+                                            "paddingBottom": 16.0,
+                                            "absoluteBoundingBox": {
+                                                "width": 256.0
+                                            }
+                                        }
+                                    ],
+                                    "layoutMode": "HORIZONTAL",
+                                    "primaryAxisSizingMode": "FIXED",
+                                    "counterAxisSizingMode": "AUTO",
+                                    "itemSpacing": 20.0,
+                                    "absoluteBoundingBox": {
+                                        "width": 696.0
+                                    }
+                                },
+                                {
+                                    "id": "1:1:1:4",
+                                    "name": "EmbedCard",
+                                    "type": "FRAME",
+                                    "children": [
+                                        {
+                                            "id": "1:1:1:4:1",
+                                            "name": "EmbedHeader",
+                                            "type": "FRAME",
+                                            "children": [
+                                                {
+                                                    "id": "1:1:1:4:1:1",
+                                                    "name": "Title",
+                                                    "type": "TEXT",
+                                                    "characters": "YouTube Trailer Embed",
+                                                    "style": {
+                                                        "fontSize": 16.0,
+                                                        "fontWeight": 700.0
+                                                    },
+                                                    "fills": [
+                                                        {
+                                                            "color": {
+                                                                "r": 0.972549,
+                                                                "g": 0.98039216,
+                                                                "b": 0.9882353
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "id": "1:1:1:4:1:2",
+                                                    "name": "Badge",
+                                                    "type": "FRAME",
+                                                    "children": [
+                                                        {
+                                                            "id": "1:1:1:4:1:2:1",
+                                                            "name": "Label",
+                                                            "type": "TEXT",
+                                                            "characters": "YouTube",
+                                                            "style": {
+                                                                "fontSize": 11.0,
+                                                                "fontWeight": 700.0
+                                                            },
+                                                            "fills": [
+                                                                {
+                                                                    "color": {
+                                                                        "r": 1.0,
+                                                                        "g": 1.0,
+                                                                        "b": 1.0
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    ],
+                                                    "fills": [
+                                                        {
+                                                            "color": {
+                                                                "r": 0.8627451,
+                                                                "g": 0.14901961,
+                                                                "b": 0.14901961
+                                                            }
+                                                        }
+                                                    ],
+                                                    "cornerRadius": 4.0,
+                                                    "layoutMode": "HORIZONTAL",
+                                                    "primaryAxisSizingMode": "AUTO",
+                                                    "counterAxisSizingMode": "FIXED",
+                                                    "primaryAxisAlignItems": "CENTER",
+                                                    "counterAxisAlignItems": "CENTER",
+                                                    "paddingLeft": 8.0,
+                                                    "paddingRight": 8.0,
+                                                    "paddingTop": 3.0,
+                                                    "paddingBottom": 3.0,
+                                                    "absoluteBoundingBox": {
+                                                        "height": 44.0
+                                                    }
+                                                }
+                                            ],
+                                            "layoutMode": "HORIZONTAL",
+                                            "primaryAxisSizingMode": "AUTO",
+                                            "counterAxisSizingMode": "AUTO",
+                                            "counterAxisAlignItems": "CENTER",
+                                            "itemSpacing": 0.0
+                                        },
+                                        {
+                                            "id": "1:1:1:4:2",
+                                            "name": "EmbedFrame",
+                                            "type": "FRAME",
+                                            "children": [
+                                                {
+                                                    "id": "1:1:1:4:2:label",
+                                                    "name": "MediaLabel",
+                                                    "type": "TEXT",
+                                                    "characters": "🌐 Embed: https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+                                                    "style": {
+                                                        "fontSize": 12.0,
+                                                        "fontWeight": 500.0
+                                                    },
+                                                    "fills": [
+                                                        {
+                                                            "color": {
+                                                                "r": 1.0,
+                                                                "g": 1.0,
+                                                                "b": 1.0
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ],
+                                            "fills": [
+                                                {
+                                                    "color": {
+                                                        "r": 0.11764706,
+                                                        "g": 0.16078432,
+                                                        "b": 0.23137255
+                                                    }
+                                                }
+                                            ],
+                                            "cornerRadius": 10.0,
+                                            "layoutMode": "HORIZONTAL",
+                                            "primaryAxisSizingMode": "FIXED",
+                                            "counterAxisSizingMode": "FIXED",
+                                            "primaryAxisAlignItems": "CENTER",
+                                            "counterAxisAlignItems": "CENTER",
+                                            "layoutAlign": "STRETCH",
+                                            "absoluteBoundingBox": {
+                                                "width": 320.0,
+                                                "height": 320.0
+                                            },
+                                            "mediaType": "IFRAME",
+                                            "mediaUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                                        }
+                                    ],
+                                    "fills": [
+                                        {
+                                            "color": {
+                                                "r": 0.06666667,
+                                                "g": 0.09411765,
+                                                "b": 0.15294118
+                                            }
+                                        }
+                                    ],
+                                    "strokes": [
+                                        {
+                                            "color": {
+                                                "r": 0.12156863,
+                                                "g": 0.16078432,
+                                                "b": 0.21568628
+                                            }
+                                        }
+                                    ],
+                                    "strokeWeight": 1.0,
+                                    "cornerRadius": 14.0,
+                                    "layoutMode": "VERTICAL",
+                                    "primaryAxisSizingMode": "AUTO",
+                                    "counterAxisSizingMode": "FIXED",
+                                    "itemSpacing": 12.0,
+                                    "paddingLeft": 20.0,
+                                    "paddingRight": 20.0,
+                                    "paddingTop": 20.0,
+                                    "paddingBottom": 20.0,
+                                    "absoluteBoundingBox": {
+                                        "width": 696.0
+                                    }
+                                }
+                            ],
+                            "fills": [
+                                {
+                                    "color": {
+                                        "r": 0.043137256,
+                                        "g": 0.05882353,
+                                        "b": 0.09803922
+                                    }
+                                }
+                            ],
+                            "cornerRadius": 24.0,
+                            "layoutMode": "VERTICAL",
+                            "primaryAxisSizingMode": "AUTO",
+                            "counterAxisSizingMode": "FIXED",
+                            "itemSpacing": 24.0,
+                            "paddingLeft": 32.0,
+                            "paddingRight": 32.0,
+                            "paddingTop": 32.0,
+                            "paddingBottom": 32.0,
+                            "absoluteBoundingBox": {
+                                "width": 760.0
+                            }
+                        }
+                    ],
+                    "layoutMode": "VERTICAL",
+                    "primaryAxisSizingMode": "AUTO",
+                    "counterAxisSizingMode": "AUTO",
+                    "itemSpacing": 16.0
+                }
+            ]
+        }
+    ]
+}

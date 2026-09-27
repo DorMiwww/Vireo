@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>showcase/product.dac</title>
+  <style>
+    * { box-sizing: border-box; }
+    a.vireo-component { text-decoration: none; }
+    a.vireo-component:hover { opacity: 0.92; filter: brightness(1.05); }
+  </style>
+</head>
+<body style="margin: 0; padding: 0;">
+  <div class="vireo-file" data-path="showcase/product.dac" style="font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: #F3F4F6; margin: 0; box-sizing: border-box;">
+    <div class="vireo-block" data-name="Product">
+      <div class="vireo-component" data-name="Card" style="box-sizing: border-box; width: 400px; display: flex; flex-direction: column; gap: 16px; height: fit-content; background-color: #FFFFFF; border-radius: 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); padding: 20px;">
+        <div class="vireo-component" data-name="MediaStack" style="box-sizing: border-box; width: 360px; height: 280px; position: relative; display: block; border-radius: 14px;">
+          <img class="vireo-component" data-name="ProductImage" src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800" alt="ProductImage" style="box-sizing: border-box; width: 360px; height: 280px; border-radius: 14px; position: absolute; left: 0; top: 0; z-index: 1; object-fit: cover;" />
+          <div class="vireo-component" data-name="DiscountBadge" style="box-sizing: border-box; position: absolute; left: 14px; position: absolute; top: 14px; display: flex; flex-direction: row; width: fit-content; background-color: #0F172A; padding: 6px 12px; border-radius: 99px; align-items: center; z-index: 2;">
+            <div class="vireo-component" data-name="Text" style="box-sizing: border-box; font-size: 12px; font-weight: bold; color: #FACC15;">-30% OFF</div>
+          </div>
+          <div class="vireo-component" data-name="WishlistBtn" style="box-sizing: border-box; position: absolute; left: 310px; position: absolute; top: 14px; width: 36px; height: 36px; display: flex; flex-direction: row; width: fit-content; background-color: #FFFFFF; border-radius: 99px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); align-items: center; justify-content: center; z-index: 2;">
+            <div class="vireo-component" data-name="HeartIcon" style="box-sizing: border-box; font-size: 16px; color: #EF4444;">♥</div>
+          </div>
+        </div>
+        <div class="vireo-component" data-name="MetaRow" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; justify-content: spaceBetween; align-items: center; width: 100%;">
+          <div class="vireo-component" data-name="Category" style="box-sizing: border-box; font-size: 11px; font-weight: bold; color: #6366F1;">AUDIO • NOISE CANCELLING</div>
+          <div class="vireo-component" data-name="RatingBadge" style="box-sizing: border-box; display: flex; flex-direction: row; gap: 4px; width: fit-content; align-items: center;">
+            <div class="vireo-component" data-name="Star" style="box-sizing: border-box; font-size: 12px; font-weight: bold; color: #F59E0B;">★ 4.9</div>
+            <div class="vireo-component" data-name="ReviewCount" style="box-sizing: border-box; font-size: 12px; color: #9CA3AF;">(1,280)</div>
+          </div>
+        </div>
+        <div class="vireo-component" data-name="Title" style="box-sizing: border-box; font-size: 20px; font-weight: bold; color: #0F172A;">Zenith Pro Wireless Headphones</div>
+        <div class="vireo-component" data-name="Description" style="box-sizing: border-box; font-size: 13px; color: #64748B;">Engineered with custom 40mm dynamic drivers, hybrid ANC, lossless spatial audio, and 40-hour ultra battery life.</div>
+        <div class="vireo-component" data-name="ColorSection" style="box-sizing: border-box; display: flex; flex-direction: row; gap: 8px; width: fit-content; align-items: center; width: 100%;">
+          <div class="vireo-component" data-name="ColorLabel" style="box-sizing: border-box; font-size: 12px; font-weight: bold; color: #475569;">Color:</div>
+          <div class="vireo-component" data-name="SwatchDark" style="box-sizing: border-box; width: 22px; height: 22px; border-radius: 99px; background-color: #0F172A; border: 2px solid #6366F1;"></div>
+          <div class="vireo-component" data-name="SwatchSilver" style="box-sizing: border-box; width: 20px; height: 20px; border-radius: 99px; background-color: #CBD5E1;"></div>
+          <div class="vireo-component" data-name="SwatchBlue" style="box-sizing: border-box; width: 20px; height: 20px; border-radius: 99px; background-color: #3B82F6;"></div>
+        </div>
+        <div class="vireo-component" data-name="PriceRow" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; justify-content: spaceBetween; align-items: center; width: 100%;">
+          <div class="vireo-component" data-name="PriceContainer" style="box-sizing: border-box; display: flex; flex-direction: row; gap: 8px; width: fit-content; align-items: center;">
+            <div class="vireo-component" data-name="PriceCurrent" style="box-sizing: border-box; font-size: 24px; font-weight: bold; color: #0F172A;">$209.30</div>
+            <div class="vireo-component" data-name="PriceOriginal" style="box-sizing: border-box; font-size: 14px; color: #94A3B8;">$299.00</div>
+          </div>
+          <div class="vireo-component" data-name="StockBadge" style="box-sizing: border-box; display: flex; flex-direction: row; width: fit-content; background-color: #ECFDF5; padding: 4px 10px; border-radius: 99px; align-items: center;">
+            <div class="vireo-component" data-name="StockText" style="box-sizing: border-box; font-size: 12px; font-weight: bold; color: #059669;">● In Stock</div>
+          </div>
+        </div>
+        <div class="vireo-component" data-name="ActionRow" style="box-sizing: border-box; display: flex; flex-direction: row; gap: 12px; width: fit-content; width: 100%;">
+          <div class="vireo-component" data-name="AddToCartBtn" style="box-sizing: border-box; height: 44px; display: flex; flex-direction: row; width: fit-content; flex: 1; width: 100%; background-color: #4F46E5; border-radius: 10px; align-items: center; justify-content: center;">
+            <div class="vireo-component" data-name="Label" style="box-sizing: border-box; font-size: 14px; font-weight: bold; color: #FFFFFF;">Add to Bag</div>
+          </div>
+          <div class="vireo-component" data-name="BuyNowBtn" style="box-sizing: border-box; height: 44px; display: flex; flex-direction: row; width: fit-content; flex: 1; width: 100%; background-color: #F8FAFC; border: 1px solid #CBD5E1; border-radius: 10px; align-items: center; justify-content: center;">
+            <div class="vireo-component" data-name="Label" style="box-sizing: border-box; font-size: 14px; font-weight: bold; color: #1E293B;">Quick Buy</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

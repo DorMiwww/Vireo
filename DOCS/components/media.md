@@ -174,3 +174,13 @@ vireo render designs/card.dac --html --embed-assets
 # Embed assets into the Figma AST JSON file
 vireo render designs/card.dac --figma --embed-assets
 ```
+
+---
+
+## 7. Ready-to-Test Showcases
+
+To see comprehensive examples combining photography, stack layouts, video players, and audio streams in action, explore the official [**Design Showcases**](../showcase.md):
+- [`showcase/product.dac`](../showcase.md#1-e-commerce-product-showcase): E-commerce product card with high-resolution photography and floating discount stack overlay.
+- [`showcase/media-stream.dac`](../showcase.md#2-cinematic-streaming--media-hub): Dark-themed entertainment hub with cinematic hero stack, HTML5 video player, audio stream, and YouTube embed.
+- [`showcase/card.dac`](../showcase.md#3-profile-card-with-photographic-header--avatar): Profile card featuring photographic cover banner and portrait avatar.
+

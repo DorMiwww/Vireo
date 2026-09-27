@@ -1,0 +1,235 @@
+block Product {
+    component Card {
+        width: 400
+        backgroundColor: #FFFFFF
+        radius: 20
+        shadow: true
+        padding: 20
+        layout: vertical
+        gap: 16
+
+        // 1. Stack Layout: Product Photography with Floating Overlays
+        component MediaStack {
+            layout: stack
+            width: 360
+            height: 280
+            radius: 14
+
+            component ProductImage {
+                image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800"
+                fit: cover
+                width: 360
+                height: 280
+                radius: 14
+                zIndex: 1
+            }
+
+            component DiscountBadge {
+                x: 14
+                y: 14
+                zIndex: 2
+                backgroundColor: #0F172A
+                padding: 6 12
+                radius: 99
+                layout: horizontal
+                alignItems: center
+
+                component Text {
+                    text: "-30% OFF"
+                    fontSize: 12
+                    fontWeight: bold
+                    color: #FACC15
+                }
+            }
+
+            component WishlistBtn {
+                x: 310
+                y: 14
+                width: 36
+                height: 36
+                zIndex: 2
+                backgroundColor: #FFFFFF
+                radius: 99
+                shadow: true
+                layout: horizontal
+                alignItems: center
+                justifyContent: center
+
+                component HeartIcon {
+                    text: "♥"
+                    fontSize: 16
+                    color: #EF4444
+                }
+            }
+        }
+
+        // 2. Product Meta & Brand
+        component MetaRow {
+            layout: horizontal
+            justifyContent: spaceBetween
+            alignItems: center
+            width: fill
+
+            component Category {
+                text: "AUDIO • NOISE CANCELLING"
+                fontSize: 11
+                fontWeight: bold
+                color: #6366F1
+            }
+
+            component RatingBadge {
+                layout: horizontal
+                gap: 4
+                alignItems: center
+
+                component Star {
+                    text: "★ 4.9"
+                    fontSize: 12
+                    fontWeight: bold
+                    color: #F59E0B
+                }
+
+                component ReviewCount {
+                    text: "(1,280)"
+                    fontSize: 12
+                    color: #9CA3AF
+                }
+            }
+        }
+
+        // 3. Title & Specs
+        component Title {
+            text: "Zenith Pro Wireless Headphones"
+            fontSize: 20
+            fontWeight: bold
+            color: #0F172A
+        }
+
+        component Description {
+            text: "Engineered with custom 40mm dynamic drivers, hybrid ANC, lossless spatial audio, and 40-hour ultra battery life."
+            fontSize: 13
+            color: #64748B
+        }
+
+        // 4. Color Swatches
+        component ColorSection {
+            layout: horizontal
+            gap: 8
+            alignItems: center
+            width: fill
+
+            component ColorLabel {
+                text: "Color:"
+                fontSize: 12
+                fontWeight: bold
+                color: #475569
+            }
+
+            component SwatchDark {
+                width: 22
+                height: 22
+                radius: 99
+                backgroundColor: #0F172A
+                border: 2 #6366F1
+            }
+
+            component SwatchSilver {
+                width: 20
+                height: 20
+                radius: 99
+                backgroundColor: #CBD5E1
+            }
+
+            component SwatchBlue {
+                width: 20
+                height: 20
+                radius: 99
+                backgroundColor: #3B82F6
+            }
+        }
+
+        // 5. Price & Stock Status
+        component PriceRow {
+            layout: horizontal
+            justifyContent: spaceBetween
+            alignItems: center
+            width: fill
+
+            component PriceContainer {
+                layout: horizontal
+                gap: 8
+                alignItems: center
+
+                component PriceCurrent {
+                    text: "$209.30"
+                    fontSize: 24
+                    fontWeight: bold
+                    color: #0F172A
+                }
+
+                component PriceOriginal {
+                    text: "$299.00"
+                    fontSize: 14
+                    color: #94A3B8
+                }
+            }
+
+            component StockBadge {
+                backgroundColor: #ECFDF5
+                padding: 4 10
+                radius: 99
+                layout: horizontal
+                alignItems: center
+
+                component StockText {
+                    text: "● In Stock"
+                    fontSize: 12
+                    fontWeight: bold
+                    color: #059669
+                }
+            }
+        }
+
+        // 6. Action Buttons
+        component ActionRow {
+            layout: horizontal
+            gap: 12
+            width: fill
+
+            component AddToCartBtn {
+                height: 44
+                width: fill
+                backgroundColor: #4F46E5
+                radius: 10
+                layout: horizontal
+                alignItems: center
+                justifyContent: center
+
+                component Label {
+                    text: "Add to Bag"
+                    fontSize: 14
+                    fontWeight: bold
+                    color: #FFFFFF
+                }
+            }
+
+            component BuyNowBtn {
+                height: 44
+                width: fill
+                backgroundColor: #F8FAFC
+                border: 1 #CBD5E1
+                radius: 10
+                layout: horizontal
+                alignItems: center
+                justifyContent: center
+
+                component Label {
+                    text: "Quick Buy"
+                    fontSize: 14
+                    fontWeight: bold
+                    color: #1E293B
+                }
+            }
+        }
+    }
+}

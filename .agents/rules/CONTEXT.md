@@ -68,26 +68,15 @@ Implemented `kubectl`-style CLI ergonomics, per-command `--help` (`vireo render 
 
 ---
 
-## What Was Done Last Session
-
-- **Phase 5 — CLI Improvements & Init Wizard**:
-  - Implemented `HtmlRenderOptions` in `vireo-renderer-html`:
-    - Full standard HTML5 document mode (`<!DOCTYPE html>`, `<html lang="en">`, `<head>`, `<meta charset>`, viewport, `<title>`, and centered preview container).
-    - Embeddable component fragment / snippet mode (`--snippet`, omitting outer DOCTYPE/head/body wrappers).
-    - Custom `--title` and preview background `--theme` (`light` vs `dark`).
-    - Added unit tests in `HtmlRendererTest.kt`.
-  - Implemented `kubectl`-style CLI in `vireo-cli`:
-    - First-class per-command help: `vireo render --help`, `vireo check --help`, `vireo init --help`, `vireo version`.
-    - Output format flags: `-o, --output <format>` (`json`, `html`, `figma`, `standard-html`), plus backward-compatible `--to <format>`.
-    - Convenience format flags: `--html`, `--figma`, `--json`.
-    - Destination output flags: `--out <file>`, `--output-file <file>`, and smart `-o <file>` fallback.
-    - Figma options: `--pretty` (default) vs `--compact` minified AST JSON, and `--token`.
-    - Global `vireo version` command.
-  - Implemented Phase 5 `vireo init` Project Wizard:
-    - Scaffolds a complete project with `vireo.config.json`, `designs/tokens.dac`, `designs/components/button.dac`, `designs/card.dac`, and `README.md`.
-    - Tested that the generated project passes `vireo check` and renders with `vireo render --html`.
-  - Updated `DOCS/cli.md` with complete reference manual, option tables, and examples.
-  - Authored and verified unlazy acceptance gates ledger `GATES.md` (all 7 gates met with machine evidence).
+- **Rich Media Showcases & Documentation Gallery**:
+  - Authored new flagship showcases utilizing Phase 8 rich media, photography, and stack layouts:
+    - `showcase/product.dac`: E-commerce product card with high-resolution photography, layered constraint stack layout (`layout: stack`) with floating `-30% OFF` discount badge and wishlist heart button overlay, star rating metrics, color variant selectors, dynamic pricing, and action buttons. Pre-rendered to `showcase/product.html` and `showcase/product.figma.json`.
+    - `showcase/media-stream.dac`: Dark-themed cinematic streaming entertainment hub featuring photographic hero banner with dark tint overlay and play CTA (`layout: stack`), HTML5 video player, audio soundtrack stream card with album cover art, and responsive YouTube trailer embed. Pre-rendered to `showcase/media-stream.html` and `showcase/media-stream.figma.json`.
+    - `showcase/card.dac`: Upgraded user profile card with photographic header cover banner (`layout: stack`), circular portrait photo avatar (`image: ...`, `fit: cover`, `border: 3 #FFFFFF`), verified status badge, followers metrics grid, and tag chips. Pre-rendered to `showcase/card.html` and `showcase/card.figma.json`.
+  - Generated high-resolution PNG previews in `DOCS/images/`: `preview-product.png`, `preview-media.png`, and updated `preview-card.png`.
+  - Updated `README.md` showcase section with the new rich media showcases, high-res previews, and browser preview commands.
+  - Added comprehensive documentation showcase gallery in `DOCS/showcase.md`, updated `DOCS/components/media.md`, `DOCS/index.md`, `DOCS/SUMMARY.md`, and `DOCS/.vitepress/config.mts` navigation.
+  - Authored and verified unlazy acceptance gates ledger `GATES.md` with 7 automated checks (all passed).
 
 ---
 

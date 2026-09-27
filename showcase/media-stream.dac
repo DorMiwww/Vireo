@@ -1,0 +1,302 @@
+block Stream {
+    component Hub {
+        width: 760
+        backgroundColor: #0B0F19
+        radius: 24
+        padding: 32
+        layout: vertical
+        gap: 24
+
+        // 1. Hub Header
+        component Header {
+            layout: vertical
+            gap: 6
+
+            component BrandBadge {
+                layout: horizontal
+                gap: 8
+                alignItems: center
+
+                component LiveDot {
+                    text: "● LIVE"
+                    fontSize: 11
+                    fontWeight: bold
+                    color: #EF4444
+                }
+
+                component Channel {
+                    text: "NEBULA STREAMING NETWORK"
+                    fontSize: 11
+                    fontWeight: bold
+                    color: #94A3B8
+                }
+            }
+
+            component HubTitle {
+                text: "Cinematic Media & Entertainment Showcase"
+                fontSize: 26
+                fontWeight: bold
+                color: #F8FAFC
+            }
+
+            component Subtitle {
+                text: "Featuring layered constraint stacks, HTML5 video players, audio streams, and responsive embeds."
+                fontSize: 14
+                color: #64748B
+            }
+        }
+
+        // 2. Cinematic Hero Banner with Stack Layout
+        component HeroBanner {
+            layout: stack
+            width: 696
+            height: 280
+            radius: 16
+
+            component HeroPhoto {
+                image: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=1000"
+                fit: cover
+                width: 696
+                height: 280
+                radius: 16
+                zIndex: 1
+            }
+
+            component DarkOverlay {
+                width: 696
+                height: 280
+                backgroundColor: #000000
+                radius: 16
+                zIndex: 2
+            }
+
+            component HeroContent {
+                x: 32
+                y: 40
+                width: 460
+                zIndex: 3
+                layout: vertical
+                gap: 12
+
+                component TagRow {
+                    layout: horizontal
+                    gap: 8
+
+                    component PremiereBadge {
+                        backgroundColor: #3B82F6
+                        padding: 4 10
+                        radius: 6
+
+                        component BadgeText {
+                            text: "ORIGINAL PREMIERE"
+                            fontSize: 10
+                            fontWeight: bold
+                            color: #FFFFFF
+                        }
+                    }
+
+                    component QualityBadge {
+                        backgroundColor: #1E293B
+                        padding: 4 10
+                        radius: 6
+
+                        component QualityText {
+                            text: "4K ULTRA HD • DOLBY ATMOS"
+                            fontSize: 10
+                            fontWeight: bold
+                            color: #94A3B8
+                        }
+                    }
+                }
+
+                component MovieTitle {
+                    text: "Chronicles of the Cosmos"
+                    fontSize: 24
+                    fontWeight: bold
+                    color: #FFFFFF
+                }
+
+                component MovieDescription {
+                    text: "An odyssey across unseen planetary systems, capturing gravitational anomalies and the dawn of interstellar exploration."
+                    fontSize: 13
+                    color: #CBD5E1
+                }
+
+                component PlayAction {
+                    layout: horizontal
+                    gap: 10
+                    alignItems: center
+                    backgroundColor: #2563EB
+                    padding: 8 18
+                    radius: 8
+                    width: hug
+
+                    component PlayIcon {
+                        text: "▶"
+                        fontSize: 14
+                        color: #FFFFFF
+                    }
+
+                    component PlayText {
+                        text: "Watch Trailer"
+                        fontSize: 13
+                        fontWeight: bold
+                        color: #FFFFFF
+                    }
+                }
+            }
+        }
+
+        // 3. Media Players Grid
+        component MediaGrid {
+            layout: horizontal
+            gap: 20
+            width: 696
+
+            // HTML5 Video Card
+            component VideoCard {
+                layout: vertical
+                gap: 12
+                width: 420
+                backgroundColor: #111827
+                padding: 16
+                radius: 14
+                border: 1 #1F2937
+
+                component CardHeader {
+                    layout: horizontal
+                    justifyContent: spaceBetween
+                    alignItems: center
+
+                    component Title {
+                        text: "HTML5 Video Player"
+                        fontSize: 15
+                        fontWeight: bold
+                        color: #F8FAFC
+                    }
+
+                    component Status {
+                        text: "1080p HD"
+                        fontSize: 11
+                        color: #38BDF8
+                    }
+                }
+
+                component VideoPlayer {
+                    video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+                    poster: "https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?w=800"
+                    width: fill
+                    height: 200
+                    radius: 8
+                    controls: true
+                }
+            }
+
+            // Audio Stream Card
+            component AudioCard {
+                layout: vertical
+                gap: 12
+                width: 256
+                backgroundColor: #111827
+                padding: 16
+                radius: 14
+                border: 1 #1F2937
+
+                component AudioHeader {
+                    layout: horizontal
+                    justifyContent: spaceBetween
+                    alignItems: center
+
+                    component Title {
+                        text: "Original Score"
+                        fontSize: 15
+                        fontWeight: bold
+                        color: #F8FAFC
+                    }
+
+                    component Format {
+                        text: "Lossless"
+                        fontSize: 11
+                        color: #10B981
+                    }
+                }
+
+                component AlbumArt {
+                    image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=400"
+                    fit: cover
+                    width: fill
+                    height: 120
+                    radius: 8
+                }
+
+                component TrackInfo {
+                    layout: vertical
+                    gap: 2
+
+                    component TrackName {
+                        text: "Theme of Deep Space"
+                        fontSize: 13
+                        fontWeight: bold
+                        color: #E2E8F0
+                    }
+
+                    component Artist {
+                        text: "Symphonic Ensemble"
+                        fontSize: 11
+                        color: #64748B
+                    }
+                }
+
+                component AudioPlayer {
+                    audio: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+                    width: fill
+                    controls: true
+                }
+            }
+        }
+
+        // 4. Interactive Video Embed Card
+        component EmbedCard {
+            layout: vertical
+            gap: 12
+            width: 696
+            backgroundColor: #111827
+            padding: 20
+            radius: 14
+            border: 1 #1F2937
+
+            component EmbedHeader {
+                layout: horizontal
+                justifyContent: spaceBetween
+                alignItems: center
+
+                component Title {
+                    text: "YouTube Trailer Embed"
+                    fontSize: 16
+                    fontWeight: bold
+                    color: #F8FAFC
+                }
+
+                component Badge {
+                    backgroundColor: #DC2626
+                    padding: 3 8
+                    radius: 4
+
+                    component Label {
+                        text: "YouTube"
+                        fontSize: 11
+                        fontWeight: bold
+                        color: #FFFFFF
+                    }
+                }
+            }
+
+            component EmbedFrame {
+                iframe: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                width: fill
+                height: 320
+                radius: 10
+            }
+        }
+    }
+}
