@@ -237,7 +237,7 @@ Modern e-commerce product card featuring high-resolution photography, layered co
 ---
 
 ### 2. Cinematic Streaming & Media Hub ([`showcase/media-stream.dac`](showcase/media-stream.dac))
-Comprehensive rich media entertainment interface showcasing photographic hero banner with dark tint overlay and play CTA (`layout: stack`), HTML5 video player with poster, audio soundtrack stream card with album cover art, and responsive YouTube trailer embed.
+Comprehensive rich media entertainment interface showcasing photographic hero banner with frosted glass content card and play CTA (`layout: stack`), HTML5 video player with poster, audio soundtrack stream card with album cover art, and featured 4K cinematic trailer player.
 
 ![Vireo Streaming & Media Hub Preview](DOCS/images/preview-media.png)
 

@@ -26,18 +26,10 @@ block Profile {
                 zIndex: 1
             }
 
-            component TintOverlay {
-                width: 380
-                height: 130
-                backgroundColor: #0F172A
-                radius: 20
-                zIndex: 2
-            }
-
             component ProBadge {
-                x: 290
-                y: 16
-                zIndex: 3
+                x: 294
+                y: 14
+                zIndex: 2
                 backgroundColor: #2563EB
                 padding: 4 10
                 radius: 99

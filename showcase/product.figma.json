@@ -130,7 +130,6 @@
                                             "counterAxisSizingMode": "FIXED",
                                             "primaryAxisAlignItems": "CENTER",
                                             "counterAxisAlignItems": "CENTER",
-                                            "itemSpacing": 0.0,
                                             "absoluteBoundingBox": {
                                                 "x": 310.0,
                                                 "y": 14.0,
@@ -223,6 +222,7 @@
                                     "layoutMode": "HORIZONTAL",
                                     "primaryAxisSizingMode": "FIXED",
                                     "counterAxisSizingMode": "AUTO",
+                                    "primaryAxisAlignItems": "SPACE_BETWEEN",
                                     "counterAxisAlignItems": "CENTER",
                                     "layoutAlign": "STRETCH",
                                     "itemSpacing": 0.0
@@ -466,6 +466,7 @@
                                     "layoutMode": "HORIZONTAL",
                                     "primaryAxisSizingMode": "FIXED",
                                     "counterAxisSizingMode": "AUTO",
+                                    "primaryAxisAlignItems": "SPACE_BETWEEN",
                                     "counterAxisAlignItems": "CENTER",
                                     "layoutAlign": "STRETCH",
                                     "itemSpacing": 0.0

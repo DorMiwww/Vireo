@@ -68,15 +68,14 @@ Implemented `kubectl`-style CLI ergonomics, per-command `--help` (`vireo render 
 
 ---
 
-- **Rich Media Showcases & Documentation Gallery**:
+- **Rich Media Showcases & Authentic WebKit Snapshot Engine**:
   - Authored new flagship showcases utilizing Phase 8 rich media, photography, and stack layouts:
     - `showcase/product.dac`: E-commerce product card with high-resolution photography, layered constraint stack layout (`layout: stack`) with floating `-30% OFF` discount badge and wishlist heart button overlay, star rating metrics, color variant selectors, dynamic pricing, and action buttons. Pre-rendered to `showcase/product.html` and `showcase/product.figma.json`.
-    - `showcase/media-stream.dac`: Dark-themed cinematic streaming entertainment hub featuring photographic hero banner with dark tint overlay and play CTA (`layout: stack`), HTML5 video player, audio soundtrack stream card with album cover art, and responsive YouTube trailer embed. Pre-rendered to `showcase/media-stream.html` and `showcase/media-stream.figma.json`.
+    - `showcase/media-stream.dac`: Dark-themed cinematic streaming entertainment hub featuring neon cinema hero banner with frosted glass content card and play CTA (`layout: stack`), HTML5 video player with 1080p tag, audio soundtrack stream card with album cover art and lossless badge, and featured 4K cinematic trailer player. Pre-rendered to `showcase/media-stream.html` and `showcase/media-stream.figma.json`.
     - `showcase/card.dac`: Upgraded user profile card with photographic header cover banner (`layout: stack`), circular portrait photo avatar (`image: ...`, `fit: cover`, `border: 3 #FFFFFF`), verified status badge, followers metrics grid, and tag chips. Pre-rendered to `showcase/card.html` and `showcase/card.figma.json`.
-  - Generated high-resolution PNG previews in `DOCS/images/`: `preview-product.png`, `preview-media.png`, and updated `preview-card.png`.
-  - Updated `README.md` showcase section with the new rich media showcases, high-res previews, and browser preview commands.
-  - Added comprehensive documentation showcase gallery in `DOCS/showcase.md`, updated `DOCS/components/media.md`, `DOCS/index.md`, `DOCS/SUMMARY.md`, and `DOCS/.vitepress/config.mts` navigation.
-  - Authored and verified unlazy acceptance gates ledger `GATES.md` with 7 automated checks (all passed).
+  - Built native macOS WebKit snapshot pipeline (`scripts/snapshot.swift`) to capture authentic 1:1 pixel-perfect screenshots of rendered HTML5 files directly to `DOCS/images/` (`preview-product.png`, `preview-media.png`, `preview-card.png`), ensuring zero AI hallucination or mockup discrepancy with actual browser renders.
+  - Normalized `alignItems` and `justifyContent` CSS and Figma values across `vireo-renderer-html` and `vireo-renderer-figma` to seamlessly map camelCase DSL properties (`spaceBetween`, `spaceAround`, `spaceEvenly`, `flexStart`, `flexEnd`) into valid CSS kebab-case and Figma layout modes.
+  - Updated `README.md` and `DOCS/showcase.md` documentation, verification scripts, and acceptance gates.
 
 ---
 

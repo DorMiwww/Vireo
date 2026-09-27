@@ -62,21 +62,16 @@ block Stream {
                 zIndex: 1
             }
 
-            component DarkOverlay {
-                width: 696
-                height: 280
-                backgroundColor: #000000
-                radius: 16
-                zIndex: 2
-            }
-
             component HeroContent {
-                x: 32
-                y: 40
-                width: 460
-                zIndex: 3
+                x: 28
+                y: 32
+                width: 440
+                zIndex: 2
                 layout: vertical
                 gap: 12
+                padding: 16
+                backgroundColor: #0B0F19EE
+                radius: 12
 
                 component TagRow {
                     layout: horizontal
@@ -167,6 +162,7 @@ block Stream {
                     layout: horizontal
                     justifyContent: spaceBetween
                     alignItems: center
+                    width: fill
 
                     component Title {
                         text: "HTML5 Video Player"
@@ -206,6 +202,7 @@ block Stream {
                     layout: horizontal
                     justifyContent: spaceBetween
                     alignItems: center
+                    width: fill
 
                     component Title {
                         text: "Original Score"
@@ -255,8 +252,8 @@ block Stream {
             }
         }
 
-        // 4. Interactive Video Embed Card
-        component EmbedCard {
+        // 4. Feature Trailer Video Card
+        component FeaturedTrailerCard {
             layout: vertical
             gap: 12
             width: 696
@@ -265,25 +262,26 @@ block Stream {
             radius: 14
             border: 1 #1F2937
 
-            component EmbedHeader {
+            component Header {
                 layout: horizontal
                 justifyContent: spaceBetween
                 alignItems: center
+                width: fill
 
                 component Title {
-                    text: "YouTube Trailer Embed"
+                    text: "Official 4K Cinematic Teaser"
                     fontSize: 16
                     fontWeight: bold
                     color: #F8FAFC
                 }
 
                 component Badge {
-                    backgroundColor: #DC2626
+                    backgroundColor: #2563EB
                     padding: 3 8
                     radius: 4
 
                     component Label {
-                        text: "YouTube"
+                        text: "EXCLUSIVE PREVIEW"
                         fontSize: 11
                         fontWeight: bold
                         color: #FFFFFF
@@ -291,11 +289,13 @@ block Stream {
                 }
             }
 
-            component EmbedFrame {
-                iframe: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+            component TrailerVideo {
+                video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4"
+                poster: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1000"
                 width: fill
                 height: 320
                 radius: 10
+                controls: true
             }
         }
     }

@@ -298,10 +298,14 @@ object HtmlRenderer : Renderer<String> {
                     cssStyles.add("background-color: $strVal;")
                 }
                 "alignItems" -> {
-                    cssStyles.add("align-items: ${strVal.trim('"', '\'')};")
+                    val raw = strVal.trim('"', '\'')
+                    val cssVal = raw.replace(Regex("([a-z])([A-Z])"), "$1-$2").lowercase()
+                    cssStyles.add("align-items: $cssVal;")
                 }
                 "justifyContent" -> {
-                    cssStyles.add("justify-content: ${strVal.trim('"', '\'')};")
+                    val raw = strVal.trim('"', '\'')
+                    val cssVal = raw.replace(Regex("([a-z])([A-Z])"), "$1-$2").lowercase()
+                    cssStyles.add("justify-content: $cssVal;")
                 }
                 "placeholder" -> {
                     placeholderText = strVal

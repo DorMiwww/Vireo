@@ -142,40 +142,21 @@
                                         },
                                         {
                                             "id": "1:1:1:2:2",
-                                            "name": "DarkOverlay",
-                                            "type": "RECTANGLE",
-                                            "fills": [
-                                                {
-                                                    "color": {
-                                                        "r": 0.0,
-                                                        "g": 0.0,
-                                                        "b": 0.0
-                                                    }
-                                                }
-                                            ],
-                                            "cornerRadius": 16.0,
-                                            "absoluteBoundingBox": {
-                                                "width": 696.0,
-                                                "height": 280.0
-                                            }
-                                        },
-                                        {
-                                            "id": "1:1:1:2:3",
                                             "name": "HeroContent",
                                             "type": "FRAME",
                                             "children": [
                                                 {
-                                                    "id": "1:1:1:2:3:1",
+                                                    "id": "1:1:1:2:2:1",
                                                     "name": "TagRow",
                                                     "type": "FRAME",
                                                     "children": [
                                                         {
-                                                            "id": "1:1:1:2:3:1:1",
+                                                            "id": "1:1:1:2:2:1:1",
                                                             "name": "PremiereBadge",
                                                             "type": "FRAME",
                                                             "children": [
                                                                 {
-                                                                    "id": "1:1:1:2:3:1:1:1",
+                                                                    "id": "1:1:1:2:2:1:1:1",
                                                                     "name": "BadgeText",
                                                                     "type": "TEXT",
                                                                     "characters": "ORIGINAL PREMIERE",
@@ -218,12 +199,12 @@
                                                             }
                                                         },
                                                         {
-                                                            "id": "1:1:1:2:3:1:2",
+                                                            "id": "1:1:1:2:2:1:2",
                                                             "name": "QualityBadge",
                                                             "type": "FRAME",
                                                             "children": [
                                                                 {
-                                                                    "id": "1:1:1:2:3:1:2:1",
+                                                                    "id": "1:1:1:2:2:1:2:1",
                                                                     "name": "QualityText",
                                                                     "type": "TEXT",
                                                                     "characters": "4K ULTRA HD • DOLBY ATMOS",
@@ -272,7 +253,7 @@
                                                     "itemSpacing": 8.0
                                                 },
                                                 {
-                                                    "id": "1:1:1:2:3:2",
+                                                    "id": "1:1:1:2:2:2",
                                                     "name": "MovieTitle",
                                                     "type": "TEXT",
                                                     "characters": "Chronicles of the Cosmos",
@@ -291,7 +272,7 @@
                                                     ]
                                                 },
                                                 {
-                                                    "id": "1:1:1:2:3:3",
+                                                    "id": "1:1:1:2:2:3",
                                                     "name": "MovieDescription",
                                                     "type": "TEXT",
                                                     "characters": "An odyssey across unseen planetary systems, capturing gravitational anomalies and the dawn of interstellar exploration.",
@@ -309,12 +290,12 @@
                                                     ]
                                                 },
                                                 {
-                                                    "id": "1:1:1:2:3:4",
+                                                    "id": "1:1:1:2:2:4",
                                                     "name": "PlayAction",
                                                     "type": "FRAME",
                                                     "children": [
                                                         {
-                                                            "id": "1:1:1:2:3:4:1",
+                                                            "id": "1:1:1:2:2:4:1",
                                                             "name": "PlayIcon",
                                                             "type": "TEXT",
                                                             "characters": "▶",
@@ -332,7 +313,7 @@
                                                             ]
                                                         },
                                                         {
-                                                            "id": "1:1:1:2:3:4:2",
+                                                            "id": "1:1:1:2:2:4:2",
                                                             "name": "PlayText",
                                                             "type": "TEXT",
                                                             "characters": "Watch Trailer",
@@ -372,14 +353,29 @@
                                                     "paddingBottom": 8.0
                                                 }
                                             ],
+                                            "fills": [
+                                                {
+                                                    "color": {
+                                                        "r": 0.043137256,
+                                                        "g": 0.05882353,
+                                                        "b": 0.09803922,
+                                                        "a": 0.93333334
+                                                    }
+                                                }
+                                            ],
+                                            "cornerRadius": 12.0,
                                             "layoutMode": "VERTICAL",
                                             "primaryAxisSizingMode": "AUTO",
                                             "counterAxisSizingMode": "FIXED",
                                             "itemSpacing": 12.0,
+                                            "paddingLeft": 16.0,
+                                            "paddingRight": 16.0,
+                                            "paddingTop": 16.0,
+                                            "paddingBottom": 16.0,
                                             "absoluteBoundingBox": {
-                                                "x": 32.0,
-                                                "y": 40.0,
-                                                "width": 460.0
+                                                "x": 28.0,
+                                                "y": 32.0,
+                                                "width": 440.0
                                             }
                                         }
                                     ],
@@ -444,9 +440,11 @@
                                                         }
                                                     ],
                                                     "layoutMode": "HORIZONTAL",
-                                                    "primaryAxisSizingMode": "AUTO",
+                                                    "primaryAxisSizingMode": "FIXED",
                                                     "counterAxisSizingMode": "AUTO",
+                                                    "primaryAxisAlignItems": "SPACE_BETWEEN",
                                                     "counterAxisAlignItems": "CENTER",
+                                                    "layoutAlign": "STRETCH",
                                                     "itemSpacing": 0.0
                                                 },
                                                 {
@@ -577,9 +575,11 @@
                                                         }
                                                     ],
                                                     "layoutMode": "HORIZONTAL",
-                                                    "primaryAxisSizingMode": "AUTO",
+                                                    "primaryAxisSizingMode": "FIXED",
                                                     "counterAxisSizingMode": "AUTO",
+                                                    "primaryAxisAlignItems": "SPACE_BETWEEN",
                                                     "counterAxisAlignItems": "CENTER",
+                                                    "layoutAlign": "STRETCH",
                                                     "itemSpacing": 0.0
                                                 },
                                                 {
@@ -742,19 +742,19 @@
                                 },
                                 {
                                     "id": "1:1:1:4",
-                                    "name": "EmbedCard",
+                                    "name": "FeaturedTrailerCard",
                                     "type": "FRAME",
                                     "children": [
                                         {
                                             "id": "1:1:1:4:1",
-                                            "name": "EmbedHeader",
+                                            "name": "Header",
                                             "type": "FRAME",
                                             "children": [
                                                 {
                                                     "id": "1:1:1:4:1:1",
                                                     "name": "Title",
                                                     "type": "TEXT",
-                                                    "characters": "YouTube Trailer Embed",
+                                                    "characters": "Official 4K Cinematic Teaser",
                                                     "style": {
                                                         "fontSize": 16.0,
                                                         "fontWeight": 700.0
@@ -778,7 +778,7 @@
                                                             "id": "1:1:1:4:1:2:1",
                                                             "name": "Label",
                                                             "type": "TEXT",
-                                                            "characters": "YouTube",
+                                                            "characters": "EXCLUSIVE PREVIEW",
                                                             "style": {
                                                                 "fontSize": 11.0,
                                                                 "fontWeight": 700.0
@@ -797,9 +797,9 @@
                                                     "fills": [
                                                         {
                                                             "color": {
-                                                                "r": 0.8627451,
-                                                                "g": 0.14901961,
-                                                                "b": 0.14901961
+                                                                "r": 0.14509805,
+                                                                "g": 0.3882353,
+                                                                "b": 0.92156863
                                                             }
                                                         }
                                                     ],
@@ -819,21 +819,23 @@
                                                 }
                                             ],
                                             "layoutMode": "HORIZONTAL",
-                                            "primaryAxisSizingMode": "AUTO",
+                                            "primaryAxisSizingMode": "FIXED",
                                             "counterAxisSizingMode": "AUTO",
+                                            "primaryAxisAlignItems": "SPACE_BETWEEN",
                                             "counterAxisAlignItems": "CENTER",
+                                            "layoutAlign": "STRETCH",
                                             "itemSpacing": 0.0
                                         },
                                         {
                                             "id": "1:1:1:4:2",
-                                            "name": "EmbedFrame",
+                                            "name": "TrailerVideo",
                                             "type": "FRAME",
                                             "children": [
                                                 {
                                                     "id": "1:1:1:4:2:label",
                                                     "name": "MediaLabel",
                                                     "type": "TEXT",
-                                                    "characters": "🌐 Embed: https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+                                                    "characters": "▶ Video: https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
                                                     "style": {
                                                         "fontSize": 12.0,
                                                         "fontWeight": 500.0
@@ -851,11 +853,9 @@
                                             ],
                                             "fills": [
                                                 {
-                                                    "color": {
-                                                        "r": 0.11764706,
-                                                        "g": 0.16078432,
-                                                        "b": 0.23137255
-                                                    }
+                                                    "type": "IMAGE",
+                                                    "scaleMode": "FILL",
+                                                    "imageRef": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1000"
                                                 }
                                             ],
                                             "cornerRadius": 10.0,
@@ -869,8 +869,8 @@
                                                 "width": 320.0,
                                                 "height": 320.0
                                             },
-                                            "mediaType": "IFRAME",
-                                            "mediaUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                                            "mediaType": "VIDEO",
+                                            "mediaUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4"
                                         }
                                     ],
                                     "fills": [

@@ -51,7 +51,6 @@ block Product {
                 backgroundColor: #FFFFFF
                 radius: 99
                 shadow: true
-                layout: horizontal
                 alignItems: center
                 justifyContent: center
 

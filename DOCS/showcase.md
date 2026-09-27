@@ -83,15 +83,15 @@ open showcase/product.html
 
 ## 2. Cinematic Streaming & Media Hub
 
-A comprehensive dark-themed entertainment dashboard demonstrating rich media pipelines, HTML5 video playback, audio soundtrack streaming, and responsive YouTube video embeds.
+A comprehensive dark-themed entertainment dashboard demonstrating rich media pipelines, HTML5 video playback, audio soundtrack streaming, and featured 4K trailer players.
 
 ![Vireo Streaming & Media Hub Preview](./images/preview-media.png)
 
 ### Key Features Demonstrated
-- **Hero Cinematic Stack (`layout: stack`)**: Background photography overlaid with a dark gradient tint and a floating play CTA.
+- **Hero Cinematic Stack (`layout: stack`)**: Neon cinema photography overlaid with a frosted glass content card and floating play CTA.
 - **HTML5 Video Player**: `<video>` tag with custom poster, player controls, and rounded border.
 - **Audio Stream Player**: Music player with album cover art and native `<audio>` controls.
-- **YouTube Embed**: Responsive iframe auto-conversion from standard YouTube watch URLs.
+- **Featured 4K Teaser Player**: Full-width cinematic trailer video with custom high-resolution poster.
 
 ### Source Code (`showcase/media-stream.dac`)
 ```dac
@@ -119,21 +119,16 @@ block Stream {
                 zIndex: 1
             }
 
-            component DarkOverlay {
-                width: 696
-                height: 280
-                backgroundColor: #000000
-                radius: 16
-                zIndex: 2
-            }
-
             component HeroContent {
-                x: 32
-                y: 40
-                width: 460
-                zIndex: 3
+                x: 28
+                y: 32
+                width: 440
+                zIndex: 2
                 layout: vertical
                 gap: 12
+                padding: 16
+                backgroundColor: #0B0F19EE
+                radius: 12
 
                 component MovieTitle {
                     text: "Chronicles of the Cosmos"
@@ -143,7 +138,7 @@ block Stream {
                 }
             }
         }
-        // ... video card, audio card, and YouTube embed
+        // ... video card, audio stream card, and featured trailer video
     }
 }
 ```
@@ -165,9 +160,61 @@ A modern user profile card demonstrating cover photo banners, circular photo ava
 
 ### Key Features Demonstrated
 - **Cover Photo Stack**: Photographic landscape banner with floating "PRO" membership badge.
-- **Circular Photo Avatar**: `fit: cover` with `radius: 99` and contrasting white border ring.
+- **Circular Photo Avatar**: `fit: cover` with `radius: 99`, shadow, and contrasting white border ring.
 - **Verified Status**: Verified badge icon with inline styling.
 - **Modular Imports**: Component referencing via `ref: buttons.Primary.Default` and `ref: badges.Badges.Success`.
+
+### Source Code (`showcase/card.dac`)
+```dac
+import buttons from "./components/buttons.dac"
+import badges from "./components/badges.dac"
+
+block Profile {
+    component Card {
+        width: 380
+        backgroundColor: #FFFFFF
+        radius: 20
+        shadow: true
+        layout: vertical
+        gap: 0
+
+        component BannerStack {
+            layout: stack
+            width: 380
+            height: 130
+            radius: 20
+
+            component CoverPhoto {
+                image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800"
+                fit: cover
+                width: 380
+                height: 130
+                radius: 20
+                zIndex: 1
+            }
+
+            component ProBadge {
+                x: 294
+                y: 14
+                zIndex: 2
+                backgroundColor: #2563EB
+                padding: 4 10
+                radius: 99
+                layout: horizontal
+                alignItems: center
+
+                component Text {
+                    text: "★ PRO"
+                    fontSize: 11
+                    fontWeight: bold
+                    color: #FFFFFF
+                }
+            }
+        }
+        // ... avatar header, user bio, stats row, tag chips, and action buttons
+    }
+}
+```
 
 ### Compile & Preview
 ```bash

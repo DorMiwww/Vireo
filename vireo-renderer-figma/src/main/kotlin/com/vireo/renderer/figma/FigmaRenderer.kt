@@ -221,17 +221,17 @@ object FigmaRenderer : Renderer<FigmaDocument> {
                 "alignItems" -> {
                     counterAlign = when (strVal.lowercase().trim('"', '\'')) {
                         "center" -> "CENTER"
-                        "flex-start", "start", "min" -> "MIN"
-                        "flex-end", "end", "max" -> "MAX"
+                        "flex-start", "flexstart", "start", "min" -> "MIN"
+                        "flex-end", "flexend", "end", "max" -> "MAX"
                         else -> null
                     }
                 }
                 "justifyContent" -> {
                     primaryAlign = when (strVal.lowercase().trim('"', '\'')) {
                         "center" -> "CENTER"
-                        "space-between" -> "SPACE_BETWEEN"
-                        "flex-start", "start", "min" -> "MIN"
-                        "flex-end", "end", "max" -> "MAX"
+                        "space-between", "spacebetween" -> "SPACE_BETWEEN"
+                        "flex-start", "flexstart", "start", "min" -> "MIN"
+                        "flex-end", "flexend", "end", "max" -> "MAX"
                         else -> null
                     }
                 }
